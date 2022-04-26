@@ -1,4 +1,4 @@
-# Contributing to Casper ObjectiveC SDK
+# Contributing to Casper PerlSDK
 We appreciate all type of inputs. We want to make contributing to this project as easy and transparent as possible, whether it's:
 
 - Reporting a bug
@@ -31,7 +31,6 @@ We use the Developer Certificate of Origin (DCO) as a additional safeguard
 for the Casper Kotlin SDK project. This is a well established and widely used
 mechanism to assure contributors have confirmed their right to license
 their contribution under the project's license.
-Please read [developer-certificate-of-origin](.github/developer-certificate-of-origin).
 If you can certify it, then just add a line to every git commit message:
 
 ````
