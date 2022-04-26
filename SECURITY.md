@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-If you find a security vulnerability in Casper ObjectiveC SDK, please send an email to tqhuy2018@gmail.com.
+If you find a security vulnerability in Casper Perl SDK, please send an email to tqhuy2018@gmail.com.
