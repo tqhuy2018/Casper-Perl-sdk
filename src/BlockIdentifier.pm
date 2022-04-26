@@ -1,4 +1,4 @@
-
+#!/usr/bin/perl
 package BlockIdentifier;
 
 sub new {
@@ -29,5 +29,9 @@ sub setIsNone {
 sub getBlockHash {
 	my ( $self ) = @_;
 	return $self->{_blockHash};
+}
+sub generatePostParam {
+	my $retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Hash" : "d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}}, "jsonrpc" :  "2.0"}';
+	return $retStr;
 }
 1;
