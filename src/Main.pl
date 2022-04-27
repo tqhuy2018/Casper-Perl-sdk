@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use Error ':try';
 
 package main;
 
@@ -9,6 +10,9 @@ use GetPeerRPC;
 use BlockIdentifier;
 
 use GetStateRootHashRPC;
+use GetDeploy::GetDeployParams;
+use GetDeploy::GetDeployRPC;
+use GetDeploy::GetDeployResult;
 
 
 sub getPeer {
@@ -59,9 +63,24 @@ sub getStateRootHash {
 	my $postParamStr5 = $bi->generatePostParam();
 	print "\npostparams is:".$postParamStr5;
 	my $getStateRootHashRPC5 = new GetStateRootHashRPC();
-	my $stateRootHash5 = $getStateRootHashRPC5->getStateRootHash($postParamStr5);
-	print "state root hash 3 :".$stateRootHash4."\n"
+	#my $stateRootHash5 = $getStateRootHashRPC5->getStateRootHash($postParamStr5);
+	#print "state root hash 5 :".$stateRootHash4."\n"
+	
+	try{
+		$getStateRootHashRPC5->getStateRootHash($postParamStr5);
+	} catch Error::Simple with {
+	     my $err = shift;
+	     print "ERROR: $err";
+	};
 }
-
-getPeer();
-getStateRootHash();
+sub getDeploy {
+	my $getDeployParams = new GetDeployParams();
+	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	print "\nget deploy params:".$paramStr."\n";
+	my $getDeployRPC = new GetDeployRPC();
+	$getDeployRPC->getDeploy($paramStr);
+}
+#getPeer();
+#getStateRootHash();
+getDeploy();

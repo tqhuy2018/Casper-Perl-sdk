@@ -2,6 +2,7 @@
 This class handles error information when call for  RPC method.
 The error can be invalid param, 
 =cut
+#!/usr/bin/perl
 package ErrorException;
 
 use JSON qw( decode_json );

@@ -1,22 +1,21 @@
-#!/usr/bin/perl
-use LWP::UserAgent;
-use Data::Dumper;
-
-package GetStateRootHashRPC;
-
-use ErrorException;
+=comment
+This class handles info_get_deploy RPC call
+=cut
+package GetDeployRPC;
 
 use JSON qw( decode_json );
 
 sub new {
-	print "GetStateRootHashRPC called";
+	print "GetDeployRPC called";
 	my $class = shift;
 	my $self = {};
 	bless $self, $class;
 	return $self;
 }
-
-sub getStateRootHash {
+=comment
+This function does info_get_deploy RPC call
+=cut
+sub getDeploy {
 	my @list = @_;
 	print "\nparameter str is:".$list[1]."\n";
 	my $uri = 'https://node-clarity-testnet.make.services/rpc';
@@ -41,8 +40,6 @@ sub getStateRootHash {
 	    	die "\nError exception";
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
-		    my $stateRootHash = $decoded->{'result'}{'state_root_hash'};
-		   	print "state root hash:".$stateRootHash."\n";
 	    }
 	}
 	else {
