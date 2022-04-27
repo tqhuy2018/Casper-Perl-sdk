@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+
 package BlockIdentifier;
 
 sub new {
@@ -6,32 +7,62 @@ sub new {
 	my $self = {
 		_blockHash => shift,
 		_blockHeight => shift,
-		_isNone => shift,
+		_blockType => shift,
 	};
 	bless $self, $class;
 	return $self;
 }
+
 sub setBlockHash {
 	my ( $self, $blockHash) = @_;
 	$self->{_blockHash} = $blockHash if defined($blockHash);
 	return $self->{_blockHash};
 }
+
+sub getBlockHash {
+	my ( $self ) = @_;
+	return $self->{_blockHash};
+}
+
+sub setBlockType {
+	my ( $self, $blockType) = @_;
+	$self->{_blockType} = $blockType if defined($blockType);
+	return $self->{_blockType};
+}
+
+sub getBlockType {
+	my ( $self ) = @_;
+	return $self->{_blockType};
+}
+
 sub setBlockHeight {
 	my ( $self, $blockHeight) = @_;
 	$self->{_blockHeight} = $blockHeight if defined($blockHeight);
 	return $self->{_blockHeight};
 }
-sub setIsNone {
-	my ( $self, $isNone) = @_;
-	$self->{_isNone} = $isNone if defined($isNone);
-	return $self->{_isNone};
-}
-sub getBlockHash {
+
+sub getBlockHeight {
 	my ( $self ) = @_;
-	return $self->{_blockHash};
+	return $self->{_blockHeight};
 }
+
 sub generatePostParam {
-	my $retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Hash" : "d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}}, "jsonrpc" :  "2.0"}';
+	my $retStr = "";
+	my ( $self ) = @_;
+	my $blockType = $self->{_blockType};
+	if ($self->{_blockType} eq "hash") {
+		print "\nGet state root hash by Block Hash\n";
+		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Hash" : "'.$self->{_blockHash}.'"}}, "jsonrpc" :  "2.0"}';
+	} elsif ($self->{_blockType} eq "height") {
+		print "\nGet state root hash by Block Height\n";
+		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Height" : '.$self->{_blockHeight}.'}}, "jsonrpc" :  "2.0"}';		
+	} elsif ($self->{_blockType} eq "none") {
+		print "\nGet state root hash by Block none\n";
+		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" : [], "jsonrpc" :  "2.0"}';
+	} else {
+		print "No thing match the Post Param";
+	}
 	return $retStr;
 }
+
 1;
