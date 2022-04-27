@@ -1,8 +1,10 @@
 =comment
 This class handles info_get_deploy RPC call
 =cut
-package GetDeployRPC;
 
+use Deploy;
+
+package GetDeployRPC;
 use JSON qw( decode_json );
 
 sub new {
@@ -40,6 +42,8 @@ sub getDeploy {
 	    	die "\nError exception";
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
+		    my $deployJson = $decoded->{'result'}{'deploy'};
+		    my $deploy = Deploy.fromJsonObjectToDeploy($deployJson);
 	    }
 	}
 	else {
