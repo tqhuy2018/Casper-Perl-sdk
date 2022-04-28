@@ -9,7 +9,7 @@ sub new {
 		_moduleBytes => shift,
 		_args => shift,
 	};
-	bless $class, $self;
+	bless  $self, $class;
 	return $self;
 }
 
@@ -38,6 +38,5 @@ sub getArgs {
 	my ( $self ) = @_;
 	return $self->{_args};
 }
-
 
 1;

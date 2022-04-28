@@ -17,6 +17,8 @@ package GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 
 use JSON;
 
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
+
 sub new {
 	my $class = shift;
 	my $self = {
@@ -63,6 +65,18 @@ sub fromJsonToExecutableDeployItem {
     print "about to parse the json to get deploy ExecutableDeployItem";
     my $json = decode_json($list[1]);
     my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
+    my $ediMBJson = $json->{'ModuleBytes'};
+    if($ediMBJson) {
+    	print "\nedi of type Module bytes";
+    	my $ediMB = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes();
+    	my $mb = $ediMBJson->{'module_bytes'};
+    	if ($mb eq "") {
+    		print "\nModule bytes is empty";
+    	}
+    	$ediMB->setModuleBytes($mb);
+    	my @listValue = [$ediMB];
+    	$ret->setItsValue(@listValue);
+    }
     $ret->setItsType("ModuleBytes");
     return $ret;
 }
