@@ -102,7 +102,7 @@ sub getGasPrice {
 #get-set methods for dependencies
 
 sub setDependencies {
-	my ( $self, $dependencies) = @_;
+	my ( $self, @dependencies) = @_;
 	$self->{_dependencies} = \@dependencies;
 	return $self->{_dependencies};
 }
