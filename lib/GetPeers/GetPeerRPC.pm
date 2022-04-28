@@ -3,7 +3,7 @@
 =comment
 This class handles info_get_peers RPC call
 =cut
-package Common::GetPeerRPC;
+package GetPeers::GetPeerRPC;
 use LWP::UserAgent;
 use Data::Dumper;
 use JSON qw( decode_json );

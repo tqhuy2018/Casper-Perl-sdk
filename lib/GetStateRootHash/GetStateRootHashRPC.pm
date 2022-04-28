@@ -1,8 +1,8 @@
-package Common::GetStateRootHashRPC;
-
+package GetStateRootHash::GetStateRootHashRPC;
+#use lib 'Common/ErrorException';
+use Common::ErrorException;
 use LWP::UserAgent;
 use Data::Dumper;
-use Common::ErrorException;
 use JSON qw( decode_json );
 
 sub new {
@@ -30,7 +30,7 @@ sub getStateRootHash {
 	    print "\nid=".$decoded->{'id'}."\n";
 	    my $errorCode = $decoded->{'error'}{'code'};
 	    if($errorCode) {
-	    	my $errorException = new ErrorException();
+	    	my $errorException = new Common::ErrorException();
 	    	print "error code:".$errorCode."\n";
 	    	print "error message:".$decoded->{'error'}{'message'}."\n";
 	    	$errorException->setErrorCode($errorCode);

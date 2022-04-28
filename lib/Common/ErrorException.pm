@@ -5,8 +5,6 @@ The error can be invalid param,
 
 package Common::ErrorException;
 
-use JSON qw( decode_json );
-
 sub new {
 	my $class = shift;
 	my $self = {

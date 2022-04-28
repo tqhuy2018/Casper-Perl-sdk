@@ -5,9 +5,10 @@ This class handles info_get_deploy RPC call
 package GetDeploy::GetDeployRPC;
 
 use JSON qw( decode_json );
+use JSON qw( encode_json );
 
-use GetDeploy::DeployHeader;
 use GetDeploy::Deploy;
+use GetDeploy::DeployHeader;
 
 sub new {
 	print "GetDeployRPC called";
@@ -44,8 +45,15 @@ sub getDeploy {
 	    	die "\nError exception";
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
-		    my $deployJson = $decoded->{'result'}{'deploy'};
-		    my $deploy = GetDeploy::Deploy.fromJsonObjectToDeploy($deployJson);
+		    my $deployHeaderJson = $decoded->{'result'}{'deploy'}{'header'};
+		    print "deployHeaderJson is:".encode_json($deployHeaderJson)."\n";
+		    my $deployHeaderStr = encode_json($deployHeaderJson);
+		    my $deployHeader = GetDeploy::DeployHeader->fromJsonObjectToDeployHeader($deployHeaderStr);
+		    print "deploy header hash: ".$deployHeader->getBodyHash()."\n";
+		    my $deploy = new GetDeploy::Deploy();
+		    $deploy->setDeployHash($decoded->{'result'}{'deploy'}{'hash'});
+		    $deploy->setHeader($deployHeader);
+		    return $deploy;
 	    }
 	}
 	else {

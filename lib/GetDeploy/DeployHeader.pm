@@ -51,11 +51,25 @@ sub getChainName {
 	my ( $self ) = @_;
 	return $self->{_chainName};
 }
+
+
 =comment
 This function log information of a deploy header
 =cut
 sub logInfo {
 	my ( $self ) = @_;
 	print "\nDeploy header account :".$self->{_account}."\n";
+}
+
+=comment
+Static function - This function turn a json object to a deploy header object
+=cut
+sub fromJsonObjectToDeployHeader {
+	my @list = @_;
+	print "\nparameter in get deploy header str is:".$list[1]."\n";
+    print "about to parse the json to get deploy header";
+	my $retDeployHeader = new GetDeploy::DeployHeader();
+	$retDeployHeader->setBodyHash("aaaa");
+	return $retDeployHeader;
 }
 1;

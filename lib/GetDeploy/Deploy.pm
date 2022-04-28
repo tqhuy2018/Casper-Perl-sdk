@@ -4,7 +4,8 @@ This class is for storing Deploy information
 
 package GetDeploy::Deploy;
 
-use Common::ConstValues;
+#use Common::ConstValues;
+
 use JSON qw( decode_json );
 
 sub new {
@@ -45,11 +46,15 @@ sub getHeader {
 Static function - This function turn a json object to a deploy object
 =cut
 sub fromJsonObjectToDeploy {
-	print("In deploy, The value of PI is $ConstValues::BLOCK_HASH.\n");
+	my @list = @_;
+	print "\nparameter in get deploy str is:".$list[1]."\n";
+	#print("In deploy, The value of PI is $Common::ConstValues::BLOCK_HASH.\n");
 	my ($class, @args) = @_;
-    die "class method invoked on object" if ref $class;
+	print "\nparameter in get deploy str2 is:".$args[0]."\n";
+   # die "class method invoked on object" if ref $class;
     print "about to parse the json to get deploy";
-	my $retDeploy = new Deploy();
+	my $retDeploy = new GetDeploy::Deploy();
+	$retDeploy->setDeployHash("aaaa");
 	return $retDeploy;
 }
 =comment
