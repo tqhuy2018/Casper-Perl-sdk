@@ -122,7 +122,7 @@ sub logInfo {
 }
 
 =comment
-Static function - This function turn a json object to a deploy header object
+This function turn a json object to a deploy header object
 =cut
 sub fromJsonObjectToDeployHeader {
 	my @list = @_;

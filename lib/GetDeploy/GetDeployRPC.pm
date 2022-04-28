@@ -9,6 +9,7 @@ use JSON qw( encode_json );
 
 use GetDeploy::Deploy;
 use GetDeploy::DeployHeader;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 
 sub new {
 	print "GetDeployRPC called";
@@ -45,6 +46,8 @@ sub getDeploy {
 	    	die "\nError exception";
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
+		    
+		    #get the deploy header
 		    my $deployHeaderJson = $decoded->{'result'}{'deploy'}{'header'};
 		    print "deployHeaderJson is:".encode_json($deployHeaderJson)."\n";
 		    my $deployHeaderStr = encode_json($deployHeaderJson);
@@ -53,6 +56,12 @@ sub getDeploy {
 		    my $deploy = new GetDeploy::Deploy();
 		    $deploy->setDeployHash($decoded->{'result'}{'deploy'}{'hash'});
 		    $deploy->setHeader($deployHeader);
+		    
+		    #get the deploy payment
+		    my $paymentJson = $decoded->{'result'}{'deploy'}{'payment'};
+		    my $paymentStr = encode_json($paymentJson);
+		    my $payment = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($paymentStr);
+		    print "\npayment type:".$payment->getItsType();
 		    return $deploy;
 	    }
 	}

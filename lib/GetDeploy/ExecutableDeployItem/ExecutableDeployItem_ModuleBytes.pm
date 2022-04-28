@@ -1,3 +1,6 @@
+=comment
+Class built for storing ExecutableDeployItem enum of type ModuleBytes
+=cut
 package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 
 sub new {
