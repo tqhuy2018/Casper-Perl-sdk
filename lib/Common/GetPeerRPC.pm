@@ -1,13 +1,11 @@
-#!/usr/bin/perl
 
-$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
-use LWP::UserAgent;
-use Data::Dumper;
+
 =comment
 This class handles info_get_peers RPC call
 =cut
-package GetPeerRPC;
-
+package Common::GetPeerRPC;
+use LWP::UserAgent;
+use Data::Dumper;
 use JSON qw( decode_json );
 
 sub new {

@@ -1,7 +1,8 @@
 =comment
 This class is for storing Deploy header information
 =cut
-package Deploy;
+
+package GetDeploy::DeployHeader;
 
 sub new {
 	my $class = shift;

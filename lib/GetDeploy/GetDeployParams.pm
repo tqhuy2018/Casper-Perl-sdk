@@ -3,7 +3,7 @@ This class generate the parameter for sending for POST method of info_get_deploy
 The generated parameter is somehow like this:
 {"id" :  1, "method" :  "info_get_deploy", "params" :  {"deploy_hash" :  "6e74f836d7b10dd5db7430497e106ddf56e30afee993dd29b85a91c1cd903583"}, "jsonrpc" :  "2.0"}
 =cut
-package GetDeployParams;
+package GetDeploy::GetDeployParams;
 
 sub new {
 	my $class = shift;

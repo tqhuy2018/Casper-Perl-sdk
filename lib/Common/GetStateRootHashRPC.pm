@@ -1,11 +1,8 @@
-#!/usr/bin/perl
+package Common::GetStateRootHashRPC;
+
 use LWP::UserAgent;
 use Data::Dumper;
-
-package GetStateRootHashRPC;
-
-use ErrorException;
-
+use Common::ErrorException;
 use JSON qw( decode_json );
 
 sub new {

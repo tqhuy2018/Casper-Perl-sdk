@@ -1,27 +1,31 @@
 #!/usr/bin/perl
 
-use Error ':try';
+$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
+
+
 
 package main;
 
+use Error ':try';
+use strict;
+use warnings;
 
-use GetPeerRPC;
+use Common::GetPeerRPC;
+use Common::ConstValues;
+use Common::BlockIdentifier;
+use Common::GetStateRootHashRPC;
 
-use BlockIdentifier;
-
-use GetStateRootHashRPC;
 use GetDeploy::GetDeployParams;
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployResult;
 
 
 sub getPeer {
-	$getPeer = new GetPeerRPC();
+	my $getPeer = new GetPeerRPC();
 	$getPeer->getPeers();
 }
 sub getStateRootHash {
 	print "\nget State root hash called";
-	print "\nTest 1: Call with block hash, type:".BLOCK_HASH."\n";
 	my $bi = new BlockIdentifier();
 	$bi->setBlockType("hash");
 	print "Block type:".$bi->getBlockType()."\n";
@@ -74,11 +78,12 @@ sub getStateRootHash {
 	};
 }
 sub getDeploy {
-	my $getDeployParams = new GetDeployParams();
+	print("The value of PI is $ConstValues::BLOCK_HASH.\n");
+	my $getDeployParams = new GetDeploy::GetDeployParams();
 	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	print "\nget deploy params:".$paramStr."\n";
-	my $getDeployRPC = new GetDeployRPC();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	$getDeployRPC->getDeploy($paramStr);
 }
 #getPeer();

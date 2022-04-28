@@ -2,10 +2,12 @@
 This class handles info_get_deploy RPC call
 =cut
 
-use Deploy;
+package GetDeploy::GetDeployRPC;
 
-package GetDeployRPC;
 use JSON qw( decode_json );
+
+use GetDeploy::DeployHeader;
+use GetDeploy::Deploy;
 
 sub new {
 	print "GetDeployRPC called";
@@ -43,7 +45,7 @@ sub getDeploy {
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 		    my $deployJson = $decoded->{'result'}{'deploy'};
-		    my $deploy = Deploy.fromJsonObjectToDeploy($deployJson);
+		    my $deploy = GetDeploy::Deploy.fromJsonObjectToDeploy($deployJson);
 	    }
 	}
 	else {

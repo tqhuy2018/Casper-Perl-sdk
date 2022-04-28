@@ -1,8 +1,12 @@
 =comment
 This class is for storing Deploy information
 =cut
-package Deploy;
+
+package GetDeploy::Deploy;
+
+use Common::ConstValues;
 use JSON qw( decode_json );
+
 sub new {
 	my $class = shift;
 	my $self = {
@@ -41,6 +45,7 @@ sub getHeader {
 Static function - This function turn a json object to a deploy object
 =cut
 sub fromJsonObjectToDeploy {
+	print("In deploy, The value of PI is $ConstValues::BLOCK_HASH.\n");
 	my ($class, @args) = @_;
     die "class method invoked on object" if ref $class;
     print "about to parse the json to get deploy";

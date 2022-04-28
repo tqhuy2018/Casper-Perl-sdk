@@ -2,7 +2,7 @@
 This class stored the information of the GetDeployRPC call and encapsulated it 
 in the class GetDeployResult
 =cut
-package GetDeployResult;
+package GetDeploy::GetDeployResult;
 sub new {
 	my $class = shift;
 	my $self = {
