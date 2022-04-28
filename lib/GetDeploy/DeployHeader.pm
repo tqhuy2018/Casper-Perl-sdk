@@ -4,13 +4,15 @@ This class is for storing Deploy header information
 
 package GetDeploy::DeployHeader;
 
+use JSON qw( decode_json );
+
 sub new {
 	my $class = shift;
 	my $self = {
 		_account => shift,
 		_bodyHash => shift,
 		_chainName => shift,
-		_dependencies => shift,
+		_dependencies => [ @_ ],
 		_gasPrice => shift,
 		_timeStamp => shift,
 		_ttl => shift,
@@ -18,6 +20,8 @@ sub new {
 	bless $self, $class;
 	return $self;
 }
+
+#get-set methods for account
 
 sub setAccount {
 	my ( $self, $account) = @_;
@@ -30,6 +34,8 @@ sub getAccount {
 	return $self->{_account};
 }
 
+#get-set methods for body_hash
+
 sub setBodyHash {
 	my ( $self, $bodyHash) = @_;
 	$self->{_bodyHash} = $bodyHash if defined($bodyHash);
@@ -40,6 +46,8 @@ sub getBodyHash {
 	my ( $self ) = @_;
 	return $self->{_bodyHash};
 }
+
+#get-set methods for chain_name
 
 sub setChainName {
 	my ( $self, $chainName) = @_;
@@ -52,6 +60,58 @@ sub getChainName {
 	return $self->{_chainName};
 }
 
+#get-set methods for timestamp
+
+sub setTimestamp {
+	my ( $self, $timeStamp) = @_;
+	$self->{_timeStamp} = $timeStamp if defined($timeStamp);
+	return $self->{_timeStamp};
+}
+
+sub getTimestamp {
+	my ( $self ) = @_;
+	return $self->{_timeStamp};
+}
+
+#get-set methods for ttl
+
+sub setTTL {
+	my ( $self, $ttl) = @_;
+	$self->{_ttl} = $ttl if defined($ttl);
+	return $self->{_ttl};
+}
+
+sub getTTL {
+	my ( $self ) = @_;
+	return $self->{_ttl};
+}
+
+#get-set methods for gas_price
+
+sub setGasPrice {
+	my ( $self, $gasPrice) = @_;
+	$self->{_gasPrice} = $gasPrice if defined($gasPrice);
+	return $self->{_gasPrice};
+}
+
+sub getGasPrice {
+	my ( $self ) = @_;
+	return $self->{_gasPrice};
+}
+
+#get-set methods for dependencies
+
+sub setDependencies {
+	my ( $self, $dependencies) = @_;
+	$self->{_dependencies} = \@dependencies;
+	return $self->{_dependencies};
+}
+
+sub getDependencies {
+	my ( $self ) = @_;
+	my @dependencies = @{ $self->{_dependencies} };
+	wantarray ? @dependencies :\@dependencies;
+}
 
 =comment
 This function log information of a deploy header
@@ -68,8 +128,16 @@ sub fromJsonObjectToDeployHeader {
 	my @list = @_;
 	print "\nparameter in get deploy header str is:".$list[1]."\n";
     print "about to parse the json to get deploy header";
+    my $json = decode_json($list[1]);
 	my $retDeployHeader = new GetDeploy::DeployHeader();
-	$retDeployHeader->setBodyHash("aaaa");
+	$retDeployHeader->setBodyHash($json->{'body_hash'});
+	$retDeployHeader->setAccount($json->{'account'});
+	$retDeployHeader->setChainName($json->{'chain_name'});
+	$retDeployHeader->setTTL($json->{'ttl'});
+	$retDeployHeader->setGasPrice($json->{'gas_price'});
+	my @dependencies = @{$json->{'dependencies'}};
+	#$retDeployHeader->setDependencies($json->{'dependencies'});
+	$retDeployHeader->setDependencies(@dependencies);
 	return $retDeployHeader;
 }
 1;

@@ -82,11 +82,14 @@ sub getDeploy {
 	my $getDeployParams = new GetDeploy::GetDeployParams();
 	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
 	my $paramStr = $getDeployParams->generateParameterStr();
-	print "\nget deploy params:".$paramStr."\n";
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	my $deploy = $getDeployRPC->getDeploy($paramStr);
 	print "\ndeploy hash:".$deploy->getDeployHash();
 	print "\ndeploy header body hash:".$deploy->getHeader()->getBodyHash()."\n";
+	print "\ndeploy header account:".$deploy->getHeader()->getAccount()."\n";
+	my @d = $deploy->getHeader()->getDependencies();
+	my $dl = @d;
+	print "total d:".$dl."\n";
 }
 #getPeer();
 #getStateRootHash();
