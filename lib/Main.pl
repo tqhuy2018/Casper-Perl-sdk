@@ -38,6 +38,7 @@ sub getStateRootHash {
 	print "\nTest 2: Call with block height\n";
 	$bi->setBlockType("height");
 	$bi->setBlockHeight("1234");
+	
 	my $postParamHeightStr = $bi->generatePostParam();
 	print "\npostparams is:".$postParamHeightStr;
 	my $getStateRootHashRPC2 = new GetStateRootHash::GetStateRootHashRPC();

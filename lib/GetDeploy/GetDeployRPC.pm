@@ -62,6 +62,15 @@ sub getDeploy {
 		    my $paymentStr = encode_json($paymentJson);
 		    my $payment = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($paymentStr);
 		    print "\npayment type:".$payment->getItsType();
+		    
+		    print "\n----------------------------------------------------------------------\n";
+		    print "\n----------------------------------------------------------------------\n";
+		    #get the deploy session
+		    my $sessionJson = $decoded->{'result'}{'deploy'}{'session'};
+		    my $sessionStr = encode_json($sessionJson);
+		    my $session = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($sessionStr);
+		    print "\nsession type:".$session->getItsType();
+		    
 		    return $deploy;
 	    }
 	}

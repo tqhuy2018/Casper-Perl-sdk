@@ -18,6 +18,7 @@ package GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use JSON;
 
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
 
 sub new {
 	my $class = shift;
@@ -67,17 +68,20 @@ sub fromJsonToExecutableDeployItem {
     my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
     my $ediMBJson = $json->{'ModuleBytes'};
     if($ediMBJson) {
-    	print "\nedi of type Module bytes";
-    	my $ediMB = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes();
-    	my $mb = $ediMBJson->{'module_bytes'};
-    	if ($mb eq "") {
-    		print "\nModule bytes is empty";
-    	}
-    	$ediMB->setModuleBytes($mb);
+    	print "\nedi of type ModuleBytes";
+    	my $ediMB = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes->fromJsonObjectToEDIModuleBytes($ediMBJson);
     	my @listValue = [$ediMB];
     	$ret->setItsValue(@listValue);
+    	$ret->setItsType("ModuleBytes");
     }
-    $ret->setItsType("ModuleBytes");
+     my $ediSCBHJson = $json->{'StoredContractByHash'};
+    if($ediSCBHJson) {
+    	print "\nedi of type StoredContractByHash";
+    	my $ediSCBH = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash->fromJsonObjectToEDIStoredContractByHash($ediSCBHJson);
+    	my @listValue = [$ediSCBH];
+    	$ret->setItsValue(@listValue);
+    	$ret->setItsType("StoredContractByHash");
+    }
     return $ret;
 }
 1;
