@@ -25,15 +25,30 @@ sub getDeploy {
 	print "\ndeploy hash:".$deploy->getDeployHash();
 	print "\ndeploy header body hash:".$deploy->getHeader()->getBodyHash()."\n";
 	print "\ndeploy header account:".$deploy->getHeader()->getAccount()."\n";
+	my $deployPayment = $deploy->getPayment();
+	print "deployPayment type:".$deployPayment->getItsType();
+	
+	# Test assertion for Deploy Header
 	ok($deploy->getHeader()->getAccount() eq "01a080d935c4c9415b3d296f7570d99a49e10da8dc293c7ec3a6a3d8758f2e128c","Test deploy header account - Passed");
 	ok($deploy->getHeader()->getBodyHash() eq "dfa3a2b76fdbe1e2fd8fc37e2feaabb4d0a5392e9b82a68372f2921c899326bb","Test deploy body account - Passed");
-	ok($deploy->getDeployHash() eq "55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa","Test deploy hash - Passed");
+	ok($deploy->getHeader()->getChainName() eq "casper-test","Test deploy header chain name - Passed");
+	ok($deploy->getHeader()->getTimestamp() eq "2022-04-27T08:23:59.420Z","Test deploy header timestamp - Passed");
+	ok($deploy->getHeader()->getTTL() eq "30m","Test deploy header ttl - Passed");
+	ok($deploy->getHeader()->getGasPrice() == 1,"Test deploy header gas price - Passed");
 	my @d = $deploy->getHeader()->getDependencies();
 	my $dl = @d;
-	print "total d:".$dl."\n";
+	ok($dl == 0, "Test deploy header dependencies - Passed");
+	
+	# Test assertion for Deploy hash
+	ok($deploy->getDeployHash() eq "55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa","Test deploy hash - Passed");
+	
+	# Test assertion for Deploy payment
+	my $payment = $deploy->getPayment();
+	ok($payment->getItsType() eq "ModuleBytes","Test deploy payment of type ModuleBytes - Passed");
+	my $paymentValue = $payment->getItsValue();
+	ok($paymentValue->getModuleBytes() eq "","Test deploy payment module_bytes - Passed");
+	
 	return 100;
 }
 
-
-#ok( hello_world( ) eq "Hello world!", "My Testcase 1" );
-ok( getDeploy( ) > 0, "My Testcase 2" );
+getDeploy();

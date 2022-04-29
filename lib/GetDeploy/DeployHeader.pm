@@ -134,6 +134,7 @@ sub fromJsonObjectToDeployHeader {
 	$retDeployHeader->setAccount($json->{'account'});
 	$retDeployHeader->setChainName($json->{'chain_name'});
 	$retDeployHeader->setTTL($json->{'ttl'});
+	$retDeployHeader->setTimestamp($json->{'timestamp'});
 	$retDeployHeader->setGasPrice($json->{'gas_price'});
 	my @dependencies = @{$json->{'dependencies'}};
 	#$retDeployHeader->setDependencies($json->{'dependencies'});

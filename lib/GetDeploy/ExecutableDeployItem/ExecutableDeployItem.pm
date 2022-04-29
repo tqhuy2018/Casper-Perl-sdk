@@ -24,7 +24,7 @@ sub new {
 	my $class = shift;
 	my $self = {
 		_itsType => shift,
-		_itsValue => [ @_ ],
+		_itsValue => shift,
 	};
 	bless  $self, $class;
 	return $self;
@@ -44,17 +44,15 @@ sub getItsType {
 
 #get-set method for itsValue
 sub setItsValue {
-	my ($self,@itsValue) = @_;
-	$self->{_itsValue} = \@itsValue;
+	my ($self,$itsValue) = @_;
+	$self->{_itsValue} = $itsValue if defined($itsValue);
 	return $self->{_itsValue};
 }
 
 sub getItsvalue {
 	my ($self) = @_;
-	my @itsValue = @ {$self->{_itsValue}};
-	wantarray ? @itsValue : \@itsValue;
+	return $self->{_itsValue};
 }
-
 
 =comment
 This function turn a json object to an ExecutableDeployItem object
@@ -70,16 +68,14 @@ sub fromJsonToExecutableDeployItem {
     if($ediMBJson) {
     	print "\nedi of type ModuleBytes";
     	my $ediMB = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes->fromJsonObjectToEDIModuleBytes($ediMBJson);
-    	my @listValue = [$ediMB];
-    	$ret->setItsValue(@listValue);
+    	$ret->setItsValue($ediMB);
     	$ret->setItsType("ModuleBytes");
     }
      my $ediSCBHJson = $json->{'StoredContractByHash'};
     if($ediSCBHJson) {
     	print "\nedi of type StoredContractByHash";
     	my $ediSCBH = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash->fromJsonObjectToEDIStoredContractByHash($ediSCBHJson);
-    	my @listValue = [$ediSCBH];
-    	$ret->setItsValue(@listValue);
+    	$ret->setItsValue($ediSCBH);
     	$ret->setItsType("StoredContractByHash");
     }
     return $ret;
