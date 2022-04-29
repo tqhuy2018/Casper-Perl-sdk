@@ -27,19 +27,19 @@ sub getListNamedArg {
 
 sub fromJsonListToRuntimeArgs {
 	my @list = @_;
-	print "\n**********parameter in get RuntimeArgs str is:".$list[1]."\n";
     my @argListJson = @{$list[1]};
     my $totalArgs = @argListJson;
     print "Total args:".$totalArgs."\n";
     my @listNamedArg = @_;
+    my $counter = 0;
     foreach(@argListJson) {
     	my @oneArg = @{$_};
     	my $jsonOA = encode_json(@oneArg);
-    	print "*************oneArg JSON str:".$jsonOA."\n";
+    	print "******** GET NAMED ARGS NUMBER ".$counter." ***********\n";
+    	$counter ++;
     	my $oneNamedArg = GetDeploy::ExecutableDeployItem::NamedArg->fromJsonArrayToNamedArg($_);
     	push(@listNamedArg,$oneNamedArg);
     }
-    print "about to parse the json to get deploy RuntimeArgs";
     my $ret = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
     $ret->setListNamedArg(@listNamedArg);
     return $ret;

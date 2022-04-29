@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-
+$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
@@ -8,10 +8,12 @@ use Test::Simple tests => 2;
 #use CLValue::CLType;
 #use  GetPeers::GetPeerRPC;
 
-use lib '.';
+
+use FindBin qw( $RealBin );
+use lib "$RealBin/../lib";
 
 use GetDeploy::GetDeployRPC;
-
+use GetDeploy::GetDeployParams;
 
 sub getDeploy {
 	#print("In deploy, The value of PI is $Common::ConstValues::BLOCK_HASH.\n");

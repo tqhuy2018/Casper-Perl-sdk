@@ -7,6 +7,8 @@ package GetDeploy::GetDeployRPC;
 use JSON qw( decode_json );
 use JSON qw( encode_json );
 
+use HTTP::Request;
+use LWP::UserAgent;
 use GetDeploy::Deploy;
 use GetDeploy::DeployHeader;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;

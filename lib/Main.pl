@@ -79,7 +79,7 @@ sub getStateRootHash {
 sub getDeploy {
 	#print("In deploy, The value of PI is $Common::ConstValues::BLOCK_HASH.\n");
 	my $getDeployParams = new GetDeploy::GetDeployParams();
-	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
+	$getDeployParams->setDeployHash("9ff98d8027795a002e41a709d5b5846e49c2e9f9c8bfbe74e4c857adc26d5571");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	my $deploy = $getDeployRPC->getDeploy($paramStr);
