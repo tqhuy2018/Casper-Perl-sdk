@@ -2,8 +2,6 @@
 
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 
-
-
 package main;
 
 use Error ':try';
@@ -18,7 +16,6 @@ use GetStateRootHash::GetStateRootHashRPC;
 use GetDeploy::GetDeployParams;
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployResult;
-
 
 sub getPeer {
 	my $getPeer = new GetPeers::GetPeerRPC();
@@ -38,6 +35,7 @@ sub getStateRootHash {
 	print "\nTest 2: Call with block height\n";
 	$bi->setBlockType("height");
 	$bi->setBlockHeight("1234");
+	
 	
 	my $postParamHeightStr = $bi->generatePostParam();
 	print "\npostparams is:".$postParamHeightStr;

@@ -1,6 +1,7 @@
 package GetDeploy::ExecutableDeployItem::NamedArg;
 
 use JSON;
+use CLValue::CLType;
 
 sub new {
 	my $class = shift;
@@ -45,10 +46,12 @@ sub fromJsonArrayToNamedArg {
 	foreach(@nameArgJson) {
     	if($counter == 0) {
     		my $account = $_;
-   			print "account is:".$account."\n";
+   			print "counter 0, account is:".$account."\n";
    		} elsif($counter == 1) {
    			my $clValue = $_;
-   			print "clValue is:".$clValue."\n";    		
+   			print "counter 1, clValue is:".$clValue."\n";    
+   			my $bytes = $clValue->{'bytes'};
+   			print "byte is:".$bytes."\n";		
    		}
     	$counter ++;
     }

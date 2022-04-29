@@ -52,7 +52,7 @@ sub fromJsonObjectToEDIModuleBytes {
     }
     $ret->setModuleBytes($mb);
     my @argsJson = $json->{'args'};
-    print "\nargs for payment:".@argsJson."\n";
+    print "\nargs in json:".@argsJson."\n";
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);
 	return $ret;
 }
