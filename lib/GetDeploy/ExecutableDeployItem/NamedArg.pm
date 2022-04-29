@@ -53,7 +53,7 @@ sub fromJsonArrayToNamedArg {
    			my $bytes = $clValue->{'bytes'};
    			print "byte is:".$bytes."\n";
    			my $clTypeStr = $clValue->{'cl_type'};
-   			print "clType is:".$clTypeStr."\n";
+   			print "From get Arg of Session and Payment, clType is:".$clTypeStr."\n";
    			my $clType = CLValue::CLType->getCLType($clTypeStr);
    			print "*******------******After parseing, the cltype is:".$clType->getItsTypeStr()."\n";
    		}

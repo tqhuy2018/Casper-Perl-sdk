@@ -14,7 +14,7 @@ used to build   recursived CLType,  such as List,  Map,  Tuple,  Result,  Option
 package CLValue::CLType;
 
 use feature qw(switch);
-
+use JSON;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -138,6 +138,7 @@ sub isCLTypePrimitive {
 sub getCLType{
 	my @list = @_;
 	my $input = $list[1];
+	print "-----get cltype from this str:".$input."\n";
 	if (isInputPrimitive($input)) {
 		print "\nCltype of primitive\n";
 		return getCLTypePrimitive($input);
@@ -164,9 +165,10 @@ sub getCLTypeCompound {
 	if($typeOption) {
 		print "Of type option";
 		$ret->setItsTypeStr("Option");
-		my $innerType = getCLType($typeOption);
-		print "INner type for Option is:".$innerType->getItsTypeStr()."\n";
-		$ret->setInnerCLType1(innerType);
+		print "ABOUT TO GET INNER CLTYPE FOR OPTION WITH jsonOption type:".$typeOption."\n";
+		my $innerType = CLValue::CLType->getCLType($typeOption);
+		print "Inner type for Option is:".$innerType->getItsTypeStr()."\n";
+		$ret->setInnerCLType1($innerType);
 	}
 	return $ret;
 }
