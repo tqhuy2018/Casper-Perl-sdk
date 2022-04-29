@@ -49,7 +49,7 @@ sub setItsValue {
 	return $self->{_itsValue};
 }
 
-sub getItsvalue {
+sub getItsValue {
 	my ($self) = @_;
 	return $self->{_itsValue};
 }
@@ -60,9 +60,10 @@ This function turn a json object to an ExecutableDeployItem object
 
 sub fromJsonToExecutableDeployItem {
 	my @list = @_;
-	print "\nparameter in get deploy ExecutableDeployItem str is:".$list[1]."\n";
+	print "\nparameter in get deploy ExecutableDeployItem str is:".encode_json($list[1])."\n";
     print "about to parse the json to get deploy ExecutableDeployItem";
-    my $json = decode_json($list[1]);
+    #my $json = decode_json($list[1]);
+    my $json = $list[1];
     my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
     my $ediMBJson = $json->{'ModuleBytes'};
     if($ediMBJson) {

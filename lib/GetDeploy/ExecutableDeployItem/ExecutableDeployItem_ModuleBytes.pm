@@ -9,7 +9,7 @@ sub new {
 	my $class = shift;
 	my $self = {
 		_moduleBytes => shift,
-		_args => shift,
+		_args => shift, # RuntimeArgs object
 	};
 	bless  $self, $class;
 	return $self;
@@ -54,6 +54,7 @@ sub fromJsonObjectToEDIModuleBytes {
     my @argsJson = $json->{'args'};
     print "\nargs in json:".@argsJson."\n";
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);
+    $ret->setArgs($args);
 	return $ret;
 }
 

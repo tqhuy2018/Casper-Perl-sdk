@@ -47,6 +47,11 @@ sub getDeploy {
 	ok($payment->getItsType() eq "ModuleBytes","Test deploy payment of type ModuleBytes - Passed");
 	my $paymentValue = $payment->getItsValue();
 	ok($paymentValue->getModuleBytes() eq "","Test deploy payment module_bytes - Passed");
+	my $paymentArgs = $paymentValue->getArgs();
+	my @listArgs = @{$paymentArgs->getListNamedArg()};
+	my $totalArgs = @listArgs;
+	print "total Args:".$totalArgs."\n";
+	ok($totalArgs == 1, "Test payment total args = 1 - Passed");
 	
 	return 100;
 }
