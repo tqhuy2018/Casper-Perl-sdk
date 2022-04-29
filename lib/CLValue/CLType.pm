@@ -160,8 +160,10 @@ sub getCLTypeCompound {
 	my @list = @_;
 	my $input = $list[0];
 	print "Get clType compound from this Str:".$input."\n";
-	my $typeOption = $input->{'Option'};
 	my $ret = new CLValue::CLType();
+	
+	# Get CLType of Type Option
+	my $typeOption = $input->{'Option'};
 	if($typeOption) {
 		print "Of type option";
 		$ret->setItsTypeStr("Option");
@@ -169,6 +171,121 @@ sub getCLTypeCompound {
 		my $innerType = CLValue::CLType->getCLType($typeOption);
 		print "Inner type for Option is:".$innerType->getItsTypeStr()."\n";
 		$ret->setInnerCLType1($innerType);
+	}
+	
+	# Get CLType of Type List
+	my $typeList = $input->{'List'};
+	if ($typeList) {
+		print "Of type List";
+		$ret->setItsTypeStr("List");
+		print "ABOUT TO GET INNER CLTYPE FOR LIST WITH jsonList type:".$typeList."\n";
+		my $innerType = CLValue::CLType->getCLType($typeList);
+		print "Inner type for List is:".$innerType->getItsTypeStr()."\n";
+		$ret->setInnerCLType1($innerType);
+	}
+	
+	# Get CLType of Type Map
+	my $typeMap = $input->{'Map'};
+	if ($typeMap) {
+		print "Of type Map";
+		$ret->setItsTypeStr("Map");
+		print "ABOUT TO GET INNER CLTYPE FOR MAP WITH jsonMap type:".$typeMap."\n";
+		my $innerType1 = CLValue::CLType->getCLType($typeMap->{'key'});
+		print "Inner type key for Map is:".$innerType1->getItsTypeStr()."\n";
+		my $innerType2 = CLValue::CLType->getCLType($typeMap->{'value'});
+		print "Inner type value for Map is:".$innerType2->getItsTypeStr()."\n";
+		$ret->setInnerCLType1($innerType1);
+		$ret->setInnerCLType2($innerType2);
+	}
+	
+	#Get CLType of Type Result
+	my $typeResult = $input->{'Result'};
+	if ($typeResult) {
+		print "Of type Result";
+		$ret->setItsTypeStr("Result");
+		print "ABOUT TO GET INNER CLTYPE FOR RESULT WITH jsonResult type:".$typeResult."\n";
+		my $innerType1 = CLValue::CLType->getCLType($typeResult->{'ok'});
+		print "Inner type ok for Result is:".$innerType1->getItsTypeStr()."\n";
+		my $innerType2 = CLValue::CLType->getCLType($typeResult->{'err'});
+		print "Inner type err for Map is:".$innerType2->getItsTypeStr()."\n";
+		$ret->setInnerCLType1($innerType1);
+		$ret->setInnerCLType2($innerType2);
+	}
+	
+	#Get CLType of Type ByteArray
+	my $typeBA = $input->{'ByteArray'};
+	if ($typeBA) {
+		print "Of type ByteArray";
+		$ret->setItsTypeStr("ByteArray");
+	}
+	
+	#Get CLType of Type Tuple1
+	my $typeTuple1 = $input->{'Tuple1'};
+	if ($typeTuple1) {
+		print "Of type Tuple1";
+		$ret->setItsTypeStr("Tuple1");
+		my @listTuple1 = @{$typeTuple1};
+		my $counter = 0;
+		foreach(@listTuple1) {
+			if($counter == 0) {
+				my $cl1 = @_;
+				my $innerType1 = CLValue::CLType->getCLType($cl1);
+				$ret->setInnerCLType1($innerType1);
+				print "Inner type for Tuple1 item 1 is:".$innerType1->getItsTypeStr()."\n";
+			}
+			$counter ++;
+		}
+	}
+	
+	#Get CLType of Type Tuple2
+	my $typeTuple2 = $input->{'Tuple2'};
+	if ($typeTuple2) {
+		print "Of type Tuple2";
+		$ret->setItsTypeStr("Tuple2");
+		my @listTuple2 = @{$typeTuple2};
+		my $counter = 0;
+		foreach(@listTuple2) {
+			if($counter == 0) {
+				my $cl1 = @_;
+				my $innerType1 = CLValue::CLType->getCLType($cl1);
+				$ret->setInnerCLType1($innerType1);
+				print "Inner type for Tuple2 item 1 is:".$innerType1->getItsTypeStr()."\n";
+			} elsif($counter == 1) {
+				my $cl2 = @_;
+				my $innerType2 = CLValue::CLType->getCLType($cl2);	
+				$ret->setInnerCLType2($innerType2);			
+				print "Inner type for Tuple2 item 2 is:".$innerType2->getItsTypeStr()."\n";
+			}
+			$counter ++;
+		}
+	}
+
+	#Get CLType of Type Tuple3
+	my $typeTuple3 = $input->{'Tuple3'};
+	if ($typeTuple3) {
+		print "Of type Tuple3";
+		$ret->setItsTypeStr("Tuple3");
+		my @listTuple3 = @{$typeTuple3};
+		my $counter = 0;
+		foreach(@listTuple3) {
+			if($counter == 0) {
+				my $cl1 = @_;
+				my $innerType1 = CLValue::CLType->getCLType($cl1);
+				$ret->setInnerCLType1($innerType1);
+				print "Inner type for Tuple2 item 1 is:".$innerType1->getItsTypeStr()."\n";
+			} elsif($counter == 1) {
+				my $cl2 = @_;
+				my $innerType2 = CLValue::CLType->getCLType($cl2);	
+				$ret->setInnerCLType2($innerType2);			
+				print "Inner type for Tuple2 item 2 is:".$innerType2->getItsTypeStr()."\n";
+			} elsif($counter == 2) {
+				my $cl3 = @_;
+				my $innerType3 = CLValue::CLType->getCLType($cl3);	
+				$ret->setInnerCLType3($innerType3);			
+				print "Inner type for Tuple2 item 3 is:".$innerType3->getItsTypeStr()."\n";
+			}
+			$counter ++;
+		}
 	}
 	return $ret;
 }
