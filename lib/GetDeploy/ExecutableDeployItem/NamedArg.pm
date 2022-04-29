@@ -51,7 +51,11 @@ sub fromJsonArrayToNamedArg {
    			my $clValue = $_;
    			print "counter 1, clValue is:".$clValue."\n";    
    			my $bytes = $clValue->{'bytes'};
-   			print "byte is:".$bytes."\n";		
+   			print "byte is:".$bytes."\n";
+   			my $clTypeStr = $clValue->{'cl_type'};
+   			print "clType is:".$clTypeStr."\n";
+   			my $clType = CLValue::CLType->getCLType($clTypeStr);
+   			print "*******------******After parseing, the cltype is:".$clType->getItsTypeStr()."\n";
    		}
     	$counter ++;
     }

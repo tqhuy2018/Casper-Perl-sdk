@@ -80,43 +80,94 @@ sub getInnerCLType3 {
 	my ($self) = @_;
 	return $self->{_innerCLType3};
 }
+# This function does the work of checking if the  input passing to the function is for primitive CLType,  
+# type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
+sub test{
+	print "\nTESTTEST test called\n";
+}
+
+sub isInputPrimitive {
+	print "---------About to check for primitive with the input";
+	my @list = @_;
+	my $input = $list[0];
+	print "------input for checking primitive:".$input."\n";
+	if($input eq "Bool") {
+		return 1;
+	} elsif ($input eq "I32") {
+		return 1;
+	} elsif ($input eq "I64") {
+		return 1;
+	} elsif ($input eq "U8") {
+		return 1;
+	} elsif ($input eq "U32") {
+		return 1;
+	} elsif ($input eq "U64") {
+		return 1;
+	} elsif ($input eq "U128") {
+		return 1;
+	} elsif ($input eq "U256") {
+		return 1;
+	} elsif ($input eq "U512") {
+		return 1;
+	} elsif ($input eq "String") {
+		return 1;
+	} elsif ($input eq "Unit") {
+		return 1;
+	} elsif ($input eq "PublicKey") {
+		return 1;
+	} elsif ($input eq "Key") {
+		return 1;
+	} elsif ($input eq "URef") {
+		return 1;
+	} elsif ($input eq "ByteArray") {
+		return 1;
+	} elsif ($input eq "Any") {
+		return 1;
+	} else  {
+		return 0;
+	}
+}
+# This function does the work of checking if the  CLType itself is primitive,  
+# type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
 
 sub isCLTypePrimitive {
 	my ($self) = @_;
-	if ($self->{_itsTypeStr} eq "Bool") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "I32") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "I64") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U8") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U32") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U64") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U128") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U256") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "U512") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "String") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "Unit") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "Key") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "URef") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "PublicKey") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "ByteArray") {
-		return 1;
-	} elsif ($self->{_itsTypeStr} eq "Any") {
-		return 1;
+	my $ret = $self->isInputPrimitive($self->{_itsTypeStr});
+	return $ret;
+}
+sub getCLType{
+	my @list = @_;
+	my $input = $list[1];
+	if (isInputPrimitive($input)) {
+		print "\nCltype of primitive\n";
+		return getCLTypePrimitive($input);
 	} else {
-		return 0;
+		print "\nCltype of compound\n";
+		return getCLTypeCompound($input);
 	}
+}
+sub getCLTypePrimitive {
+	my @list = @_;
+	my $input = $list[0];
+	print "Get clType primitive from this Str:".$input."\n";
+	my $ret = new CLValue::CLType();
+	$ret->setItsTypeStr($input);
+	return $ret;
+	
+}
+sub getCLTypeCompound {
+	my @list = @_;
+	my $input = $list[0];
+	print "Get clType compound from this Str:".$input."\n";
+	my $typeOption = $input->{'Option'};
+	my $ret = new CLValue::CLType();
+	if($typeOption) {
+		print "Of type option";
+		$ret->setItsTypeStr("Option");
+		my $innerType = getCLType($typeOption);
+		print "INner type for Option is:".$innerType->getItsTypeStr()."\n";
+		$ret->setInnerCLType1(innerType);
+	}
+	return $ret;
 }
 1;
