@@ -175,16 +175,7 @@ sub getCLParsed {
 	my @list = @_;
 	my $json = $list[1];
 	my $clType = $list[2];
-	print "In get CLParse, json: ".$json;
-	print "And clType:".$clType->getItsTypeStr()."\n";
-	my $ret = new CLValue::CLParse();
-	if ($clType->isCLTypePrimitive()) {
-		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
-		$ret = getCLParsedPrimitive($json,$clType);
-	} else {
-		print "Get parse for cltype compound";
-		$ret = getCLParsedCompound($json,$clType);
-	}
+	my $ret = getCLParsed2($json,$clType);
 	return $ret;
 }
 1;
