@@ -148,6 +148,21 @@ sub getCLParsedCompound {
 		my $innerCLType = $clType->getInnerCLType1();
 		print "\nInner cltype is:".$innerCLType->getItsTypeStr()."\n";
 		$ret = getCLParsed2($json,$innerCLType);
+	} elsif($clType->getItsTypeStr() eq "List") {
+		print "\nAbout to get parse value for List cltype\n";
+		my $innerCLType = $clType->getInnerCLType1();
+		print "\nInner cltype of List is:".$innerCLType->getItsTypeStr()." and Json is:".$json."\n";
+		foreach($json) {
+			my @oneElement = @{$_};
+			print "Element is: ".$_."\n";
+			foreach(@oneElement) {
+				my $oE = $_;
+				print "Inner element is:".$oE."\n";
+			}
+		}
+		#$ret = getCLParsed2($json,$innerCLType);
+	} elsif($clType->getItsTypeStr() eq "Result") {
+		
 	}
 	return $ret;
 }

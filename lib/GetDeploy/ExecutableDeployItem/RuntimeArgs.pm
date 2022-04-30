@@ -38,7 +38,7 @@ sub fromJsonListToRuntimeArgs {
     	print "******** GET NAMED ARGS NUMBER ".$counter." ***********\n";
     	$counter ++;
     	my $oneNamedArg = GetDeploy::ExecutableDeployItem::NamedArg->fromJsonArrayToNamedArg($_);
-    	print "NameArgs name:".$oneNamedArg->getItsName();
+    	print "NameArgs name:".$oneNamedArg->getItsName()."\n";
     	push(@listNamedArg,$oneNamedArg);
     }
     my $ret = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
