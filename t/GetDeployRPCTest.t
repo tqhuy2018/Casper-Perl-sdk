@@ -68,7 +68,7 @@ sub getDeploy {
 	ok($oneNA->getItsName() eq "amount", "Test payment first arg name = amount - Passed");
 	my $paymentFirstArgCLValue = $oneNA->getCLValue();
 	ok($paymentFirstArgCLValue->getBytes() eq "0500c817a804","Test payment first arg CLValue, bytes value = 0500c817a804 - Passed");
-	ok($paymentFirstArgCLValue->getCLType()->setItsTypeStr() eq "U512","Test payment first arg CLValue, cl_type = U512 - Passed");
+	ok($paymentFirstArgCLValue->getCLType()->getItsTypeStr() eq "U512","Test payment first arg CLValue, cl_type = U512 - Passed");
 	
 	#Test assertion for Deploy session
 	
@@ -84,14 +84,26 @@ sub getDeploy {
 	ok($totalArgsSession - 2 == 9, "Test session total args = 9 - Passed");
 	$counter1 = 0;
 	my $oneNASession;
+	my $oneNASession2;
 	foreach(@listArgsSession) {
 		if($counter1 == 10) {
 			$oneNASession = $_;
+		} elsif($counter1 == 2) {
+			$oneNASession2 = $_;
 		}
 		$counter1 ++;
 	}
+	# Assertion for 9th Arg
 	ok($oneNASession->getItsName() eq "pair", "Test session 9th arg name = pair - Passed");
-	
+	my $sessionArgCLValue = $oneNASession->getCLValue();
+	ok($sessionArgCLValue->getBytes() eq "0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test session 9th arg CLValue, bytes value = 0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
+	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 9th arg CLValue, cl_type = Option - Passed");
+	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Key","Test session 9th arg CLValue, cl_type = Option(Key) Passed");
+	# Assertion for first Arg
+	ok($oneNASession2->getItsName() eq "token_a", "Test session first arg name = token_a - Passed");
+	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
+	ok($sessionArgCLValue2->getBytes() eq "01beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test session first arg CLValue, bytes value = 01beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
+	ok($sessionArgCLValue2->getCLType()->getItsTypeStr() eq "Key","Test session first arg CLValue, cl_type = Key - Passed");
 	return 100;
 }
 
