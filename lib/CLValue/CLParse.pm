@@ -168,7 +168,21 @@ sub getCLParsedCompound {
 	} elsif($clType->getItsTypeStr() eq "Result") {
 		
 	} elsif($clType->getItsTypeStr() eq "Map") {
-		
+		foreach($json) {
+			my @oneElement = @{$_};
+			print "MAP---Element is: ".$_."\n";
+			foreach(@oneElement) {
+				my $oE = $_;
+				print "Inner element is:".$oE." and key is:".$oE->{'key'}." and value:".$oE->{'value'}."\n";
+				my $clTypeKey = $clType->getInnerCLType1();
+				my $clTypeValue = $clType->getInnerCLType2();
+				print " with cltype for key:".$clTypeKey->getItsTypeStr()."\n";
+				my $keyParse = getCLParsed2($oE->{'key'},$clTypeKey);
+				my $valueParse = getCLParsed2($oE->{'value'},$clTypeValue);
+				$ret->setInnerParse1($keyParse);
+				$ret->setInnerParse2($valueParse);
+			}
+		}
 	}
 	return $ret;
 }

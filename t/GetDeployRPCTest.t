@@ -399,15 +399,15 @@ sub getDeploy4 {
 	my $oneNASession2;
 	foreach(@listArgsSession) {
 		if($counter1 == 3) {
-			$oneNASession = $_;
+			$oneNASession = $_; # second NamedArg
 		} elsif($counter1 == 4) {
-			$oneNASession1 = $_;
+			$oneNASession1 = $_;# third NamedArg
 		}  elsif($counter1 == 5) {
-			$oneNASession2 = $_;
+			$oneNASession2 = $_;# fourth NamedArg
 		}
 		$counter1 ++;
 	}
-	# Assertion for first Arg
+	# Assertion for second Arg
 	ok($oneNASession->getItsName() eq "token_ids", "Test session second arg name - Passed");
 	my $sessionArgCLValue = $oneNASession->getCLValue();
 	ok($sessionArgCLValue->getBytes() eq "010100000018000000363165353465636231656366653538376561663963636530","Test session second arg CLValue, bytes value - Passed");
@@ -423,6 +423,28 @@ sub getDeploy4 {
 		if($counter1 == 0) {
 			my $parseValue = $_;
 			ok($parseValue->getItsValueStr() eq "61e54ecb1ecfe587eaf9cce0","Test session second arg CLValue, parse first element value is 61e54ecb1ecfe587eaf9cce0 - Passed");
+		}
+	}
+	
+	# Assertion for third Arg
+	ok($oneNASession1->getItsName() eq "token_metas", "Test session third arg name - Passed");
+	my $sessionArgCLValue1 = $oneNASession1->getCLValue();
+	ok($sessionArgCLValue1->getBytes() eq "0100000004000000040000006e616d650f000000546573742050726f642041646d696e0b0000006465736372697074696f6e0700000054657374696e6708000000697066735f75726c5000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d6175505535726338676868795a465178423952356a43626161664777324d6e65514a524d44574c567a6a615511000000697066735f6d657461646174615f75726c5000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d627279797641795664426d355a346e774133613738316d6d717563366e476165754541504b393661334c506e","Test session third arg CLValue, bytes value - Passed");
+	ok($sessionArgCLValue1->getCLType()->getItsTypeStr() eq "List","Test session third arg CLValue, cl_type List - Passed");
+	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Map","Test session third arg CLValue, cl_type = List(Map)- Passed");
+	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) key String - Passed");
+	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) value String - Passed");
+	my @listCLParse1 = $sessionArgCLValue1->getParse()->getItsValueList();
+	my $listLength1 = @listCLParse1;
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 4 element
+	ok($listLength1 == 4,"Test session second arg CLValue, parse List(Map(String,String)) is a list of 4 elements- Passed");
+	$counter1 = 0;
+	foreach(@listCLParse1) {
+		if($counter1 == 0) {
+			my $parseValue = $_;
+			# assertion for key value
+			ok($parseValue->getInnerParse1()->getItsValueStr() eq "name","Test session third arg CLValue, parse first list element is a map with key value: name  - Passed");
+			ok($parseValue->getInnerParse2()->getItsValueStr() eq "Test Prod Admin","Test session third arg CLValue, parse first list element is a map with value value: Test Prod Admin  - Passed");
 		}
 	}
 }
