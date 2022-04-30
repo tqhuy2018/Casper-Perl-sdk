@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 100;
+use Test::Simple tests => 500;
 
 #use CLValue::CLType;
 #use  GetPeers::GetPeerRPC;
@@ -328,7 +328,7 @@ sub getDeploy3 {
 	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
 	ok($sessionArgCLValue2->getBytes() eq "4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f","Test session 7th arg CLValue, bytes value = 4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f - Passed");
 	ok($sessionArgCLValue2->getCLType()->getItsTypeStr() eq "ByteArray","Test session 7th arg CLValue, cl_type = ByteArray - Passed");
-	#ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test payment first arg CLValue, parse = hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
+	ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f","Test payment 7 arg CLValue, parse = 4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f - Passed");
 }
 
 # Test 4: information for deploy at this address: https://testnet.cspr.live/deploy/a91d468e2ddc8936f7866bc594794b322f747508c2192fd4eca90ef8a121d45e
@@ -342,18 +342,18 @@ sub getDeploy4 {
 	my $deployPayment = $deploy->getPayment();
 	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
-	ok($deploy->getHeader()->getAccount() eq "0203d9f3588e6589f334938f88ce50b2d6e15d90e2979d9cb533bf44772581f06e01","Test deploy header account - Passed");
-	ok($deploy->getHeader()->getBodyHash() eq "73b9bd80c07eddf12dfdf1b2db4cf3ae803728e631030d0405853b471249891c","Test deploy body account - Passed");
+	ok($deploy->getHeader()->getAccount() eq "014caf1ce908f9ef3d427dceac17e5c47950becf15d1def0810c235e0d58a9efad","Test deploy header account - Passed");
+	ok($deploy->getHeader()->getBodyHash() eq "d7ffe9fa44f5958d18923630576302903f12ebee3e7516834d93b44ebf0454f9","Test deploy body account - Passed");
 	ok($deploy->getHeader()->getChainName() eq "casper-test","Test deploy header chain name - Passed");
-	ok($deploy->getHeader()->getTimestamp() eq "2022-01-14T00:20:27.319Z","Test deploy header timestamp - Passed");
-	ok($deploy->getHeader()->getTTL() eq "5h","Test deploy header ttl - Passed");
+	ok($deploy->getHeader()->getTimestamp() eq "2022-01-17T11:11:08.508Z","Test deploy header timestamp - Passed");
+	ok($deploy->getHeader()->getTTL() eq "30m","Test deploy header ttl - Passed");
 	ok($deploy->getHeader()->getGasPrice() == 1,"Test deploy header gas price - Passed");
 	my @d = $deploy->getHeader()->getDependencies();
 	my $dl = @d;
 	ok($dl == 0, "Test deploy header dependencies - Passed");
 	
 	# Test assertion for Deploy hash
-	ok($deploy->getDeployHash() eq "430df377ae04726de907f115bb06c52e40f6cd716b4b475a10e4cd9226d1317e","Test deploy hash - Passed");
+	ok($deploy->getDeployHash() eq "a91d468e2ddc8936f7866bc594794b322f747508c2192fd4eca90ef8a121d45e","Test deploy hash - Passed");
 	
 	# Test assertion for Deploy payment
 	
@@ -378,9 +378,9 @@ sub getDeploy4 {
 	ok($totalArgs - 2 == 1, "Test payment total args = 1 - Passed");
 	ok($oneNA->getItsName() eq "amount", "Test payment first arg name = amount - Passed");
 	my $paymentFirstArgCLValue = $oneNA->getCLValue();
-	ok($paymentFirstArgCLValue->getBytes() eq "0500eaa55a01","Test payment first arg CLValue, bytes value = 0500eaa55a01 - Passed");
-	ok($paymentFirstArgCLValue->getCLType()->getItsTypeStr() eq "U512","Test payment first arg CLValue, cl_type = U512 - Passed");
-	ok($paymentFirstArgCLValue->getParse()->getItsValueStr() eq "5815790080","Test payment first arg CLValue, parse = 5815790080 - Passed");
+	ok($paymentFirstArgCLValue->getBytes() eq "0400ca9a3b","Test payment first arg CLValue - Passed");
+	ok($paymentFirstArgCLValue->getCLType()->getItsTypeStr() eq "U512","Test payment first arg CLValue - Passed");
+	ok($paymentFirstArgCLValue->getParse()->getItsValueStr() eq "1000000000","Test payment first arg CLValue - Passed");
 	
 	#Test assertion for Deploy session
 	
@@ -392,58 +392,42 @@ sub getDeploy4 {
 	my $totalArgsSession = @listArgsSession;
 	# The real args list contains 3 element, but the list in Perl hold 3 + 2 = 5 element with 2 items other hold the other information for the 
 	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
-	ok($totalArgsSession - 2 == 8, "Test session total args = 3 - Passed");
+	ok($totalArgsSession - 2 == 4, "Test session total args - Passed");
 	$counter1 = 0;
 	my $oneNASession;
 	my $oneNASession1;
 	my $oneNASession2;
 	foreach(@listArgsSession) {
-		if($counter1 == 4) {
+		if($counter1 == 3) {
 			$oneNASession = $_;
-		} elsif($counter1 == 6) {
+		} elsif($counter1 == 4) {
 			$oneNASession1 = $_;
-		}  elsif($counter1 == 8) {
+		}  elsif($counter1 == 5) {
 			$oneNASession2 = $_;
 		}
 		$counter1 ++;
 	}
 	# Assertion for first Arg
-	ok($oneNASession->getItsName() eq "path", "Test session 3rd arg name = path - Passed");
+	ok($oneNASession->getItsName() eq "token_ids", "Test session second arg name - Passed");
 	my $sessionArgCLValue = $oneNASession->getCLValue();
-	ok($sessionArgCLValue->getBytes() eq "0200000045000000686173682d3942323837663335623743313136353930343663463537354231333035354464453746394133303963616535464531634533636139383564383766303239623045000000686173682d43383932393034353233333230443962366665343041363135433630653446316363373165333335313531373362466366356536363030304430393736433430","Test session first arg CLValue, bytes value = 0200000045000000686173682d3942323837663335623743313136353930343663463537354231333035354464453746394133303963616535464531634533636139383564383766303239623045000000686173682d43383932393034353233333230443962366665343041363135433630653446316363373165333335313531373362466366356536363030304430393736433430 - Passed");
-	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "List","Test session 3rd arg CLValue, cl_type = List - Passed");
-	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "String","Test session 3rd arg CLValue, cl_type = List(String)- Passed");
+	ok($sessionArgCLValue->getBytes() eq "010100000018000000363165353465636231656366653538376561663963636530","Test session second arg CLValue, bytes value - Passed");
+	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session second arg CLValue, cl_type Option - Passed");
+	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "List","Test session second arg CLValue, cl_type = Option(List)- Passed");
+	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session second arg CLValue, cl_type = Option(List(String)) - Passed");
 	my @listCLParse = $sessionArgCLValue->getParse()->getItsValueList();
 	my $listLength = @listCLParse;
-	# assertion that the parse for clvalue of 3rd arg is a list and the list is of 2 elements
-	ok($listLength == 2,"Test session 3rd arg CLValue, parse is a list of 2 elements- Passed");
+	# assertion that the parse for clvalue Option(List(String)) is a list and the list is of 1 element
+	ok($listLength == 1,"Test session second arg CLValue, parse Option(List(String) is a list of 1 elements- Passed");
 	$counter1 = 0;
 	foreach(@listCLParse) {
 		if($counter1 == 0) {
 			my $parseValue = $_;
-			print "value is --: ".$parseValue->getItsValueStr()."\n";
-			ok($parseValue->getItsValueStr() eq "hash-9B287f35b7C11659046cF575B13055DdE7F9A309cae5FE1cE3ca985d87f029b0","Test session 3rd arg CLValue, parse first element value is hash-9B287f35b7C11659046cF575B13055DdE7F9A309cae5FE1cE3ca985d87f029b0- Passed");
-		} elsif($counter1 == 1) {
-			my $parseValue = $_;
-			print "value is --: ".$parseValue->getItsValueStr()."\n";
-			ok($parseValue->getItsValueStr() eq "hash-C892904523320D9b6fe40A615C60e4F1cc71e33515173bFcf5e66000D0976C40","Test session 3rd arg CLValue, parse second element value is hash-C892904523320D9b6fe40A615C60e4F1cc71e33515173bFcf5e66000D0976C40- Passed");
+			ok($parseValue->getItsValueStr() eq "61e54ecb1ecfe587eaf9cce0","Test session second arg CLValue, parse first element value is 61e54ecb1ecfe587eaf9cce0 - Passed");
 		}
-		$counter1 ++;
 	}
-	#ok($sessionArgCLValue->getParse()->getItsValueStr() eq "account-hash-d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269","Test payment first arg CLValue, parse = account-hash-d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269 - Passed");
-	# Assertion for second Arg
-	ok($oneNASession1->getItsName() eq "deadline", "Test session 5th arg name = deadline - Passed");
-	my $sessionArgCLValue1 = $oneNASession1->getCLValue();
-	ok($sessionArgCLValue1->getBytes() eq "b75107567e010000","Test session 5th arg CLValue, bytes value = b75107567e010000 - Passed");
-	ok($sessionArgCLValue1->getCLType()->getItsTypeStr() eq "U64","Test session 5th arg CLValue, cl_type = U64 - Passed");
-	#ok($sessionArgCLValue->getParse()->getItsValueStr() eq "account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269","Test payment first arg CLValue, parse = account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269 - Passed");
-	# Assertion for third Arg
-	ok($oneNASession2->getItsName() eq "target", "Test session 7th arg name = target - Passed");
-	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
-	ok($sessionArgCLValue2->getBytes() eq "4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f","Test session 7th arg CLValue, bytes value = 4f4da49a080efdf3a66ddc279f050c0700618db675507734a46a8a1bb784575f - Passed");
-	ok($sessionArgCLValue2->getCLType()->getItsTypeStr() eq "ByteArray","Test session 7th arg CLValue, cl_type = ByteArray - Passed");
-	#ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test payment first arg CLValue, parse = hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
 }
 getDeploy1();
 getDeploy2();
 getDeploy3();
+getDeploy4();
+
