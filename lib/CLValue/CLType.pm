@@ -210,7 +210,7 @@ sub getCLTypeCompound {
 		my $innerType1 = CLValue::CLType->getCLType($typeResult->{'ok'});
 		print "Inner type ok for Result is:".$innerType1->getItsTypeStr()."\n";
 		my $innerType2 = CLValue::CLType->getCLType($typeResult->{'err'});
-		print "Inner type err for Map is:".$innerType2->getItsTypeStr()."\n";
+		print "Inner type err for Result is:".$innerType2->getItsTypeStr()."\n";
 		$ret->setInnerCLType1($innerType1);
 		$ret->setInnerCLType2($innerType2);
 	}

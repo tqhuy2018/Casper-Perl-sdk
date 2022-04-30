@@ -152,16 +152,22 @@ sub getCLParsedCompound {
 		print "\nAbout to get parse value for List cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
 		print "\nInner cltype of List is:".$innerCLType->getItsTypeStr()." and Json is:".$json."\n";
+		my @listValue;
 		foreach($json) {
 			my @oneElement = @{$_};
 			print "Element is: ".$_."\n";
 			foreach(@oneElement) {
 				my $oE = $_;
 				print "Inner element is:".$oE."\n";
+				my $oneParse = getCLParsed2($oE,$innerCLType);
+				push(@listValue,$oneParse);
 			}
 		}
+		$ret->setItsValueList(@listValue);
 		#$ret = getCLParsed2($json,$innerCLType);
 	} elsif($clType->getItsTypeStr() eq "Result") {
+		
+	} elsif($clType->getItsTypeStr() eq "Map") {
 		
 	}
 	return $ret;
