@@ -24,9 +24,9 @@ sub new {
     	# Option,  Result,  Tuple1 will take only 1 item:  innerCLType1
     	# Map,  Tuple2 will take 2  item:  innerCLType1, innerCLType2
     	# Tuple3 will take 3 item:  innerCLType1,  innerCLType2,  innerCLType3
-		_innerCLTYpe1 => shift, 
-		_innerCLTYpe2 => shift, 
-		_innerCLTYpe3 => shift, 
+		_innerCLType1 => shift, 
+		_innerCLType2 => shift, 
+		_innerCLType3 => shift, 
 	};
 	bless $self,$class;
 	return $self;

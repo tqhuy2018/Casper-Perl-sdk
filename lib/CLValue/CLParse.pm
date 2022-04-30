@@ -140,17 +140,43 @@ sub getCLParsedCompound {
 	my $json = $list[0];
 	my $clType = $list[1];
 	my $ret = new CLValue::CLParse();
-	$ret->setItsCLType($clType);
-	$ret->setItsValueStr("Compound");
+	#$ret->setItsCLType($clType);
+	#$ret->setItsValueStr("Compound");
+	# with Option value, the cltype will get the inner cltype1
+	if($clType->getItsTypeStr() eq "Option") {
+		print "\nAbout to get parse value for Option cltype\n";
+		my $innerCLType = $clType->getInnerCLType1();
+		print "\nInner cltype is:".$innerCLType->getItsTypeStr()."\n";
+		$ret = getCLParsed2($json,$innerCLType);
+	}
 	return $ret;
 }
 
 # Generate the CLParse object from JsonObject or String with given information of Type 
+# getCLParsed2 for inner class call
+# getCLParsed for outter class call
+sub getCLParsed2 {
+	my @list = @_;
+	my $json = $list[0];
+	my $clType = $list[1];
+	print "In get CLParse, json: ".$json;
+	print "And clType:".$clType->getItsTypeStr()."\n";
+	my $ret = new CLValue::CLParse();
+	if ($clType->isCLTypePrimitive()) {
+		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
+		$ret = getCLParsedPrimitive($json,$clType);
+	} else {
+		print "Get parse for cltype compound";
+		$ret = getCLParsedCompound($json,$clType);
+	}
+	return $ret;
+}
 sub getCLParsed {
 	my @list = @_;
 	my $json = $list[1];
 	my $clType = $list[2];
-	print "in get CLParse, json: ".$json. " and clType:".$clType->getItsTypeStr()."\n";
+	print "In get CLParse, json: ".$json;
+	print "And clType:".$clType->getItsTypeStr()."\n";
 	my $ret = new CLValue::CLParse();
 	if ($clType->isCLTypePrimitive()) {
 		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";

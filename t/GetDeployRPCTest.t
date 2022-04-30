@@ -100,6 +100,7 @@ sub getDeploy {
 	ok($sessionArgCLValue->getBytes() eq "0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test session 9th arg CLValue, bytes value = 0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
 	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 9th arg CLValue, cl_type = Option - Passed");
 	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Key","Test session 9th arg CLValue, cl_type = Option(Key) Passed");
+	ok($sessionArgCLValue->getParse()->getItsValueStr() eq "hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test payment first arg CLValue, parse = hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
 	# Assertion for first Arg
 	ok($oneNASession2->getItsName() eq "token_a", "Test session first arg name = token_a - Passed");
 	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
