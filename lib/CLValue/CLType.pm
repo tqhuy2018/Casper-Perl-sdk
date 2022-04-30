@@ -87,7 +87,6 @@ sub test{
 }
 
 sub isInputPrimitive {
-	print "---------About to check for primitive with the input";
 	my @list = @_;
 	my $input = $list[0];
 	print "------input for checking primitive:".$input."\n";
@@ -132,6 +131,7 @@ sub isInputPrimitive {
 
 sub isCLTypePrimitive {
 	my ($self) = @_;
+	print "CLTYpe to check with its type:".$self->{_itsTypeStr}."\n";
 	my $ret = $self->isInputPrimitive($self->{_itsTypeStr});
 	return $ret;
 }

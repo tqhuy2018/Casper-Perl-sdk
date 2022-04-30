@@ -3,7 +3,7 @@ package GetDeploy::ExecutableDeployItem::NamedArg;
 use JSON;
 
 use CLValue::CLType;
-
+use CLValue::CLParse;
 use CLValue::CLValue;
 
 sub new {
@@ -54,12 +54,12 @@ sub fromJsonArrayToNamedArg {
    			my $clValueJson = $_;
    			my $bytes = $clValueJson->{'bytes'};
    			print "byte is:".$bytes."\n";
-   			my $clTypeStr = $clValueJson->{'cl_type'};
-   			print "From get Arg of Session and Payment, clType is:".$clTypeStr."\n";
-   			my $clType = CLValue::CLType->getCLType($clTypeStr);
+   			my $clType = CLValue::CLType->getCLType($clValueJson->{'cl_type'});
+   			my $clParse = CLValue::CLParse->getCLParsed($clValueJson->{'parsed'},$clType);
    			my $clValue = new CLValue::CLValue();
    			$clValue->setBytes($bytes);
    			$clValue->setCLType($clType);
+   			$clValue->setParse($clParse);
    			print "*******------******After parseing, the cltype is:".$clType->getItsTypeStr()."\n";
    			$ret->setCLValue($clValue);
    		}
