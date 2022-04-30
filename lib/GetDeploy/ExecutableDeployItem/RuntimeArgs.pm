@@ -38,10 +38,13 @@ sub fromJsonListToRuntimeArgs {
     	print "******** GET NAMED ARGS NUMBER ".$counter." ***********\n";
     	$counter ++;
     	my $oneNamedArg = GetDeploy::ExecutableDeployItem::NamedArg->fromJsonArrayToNamedArg($_);
+    	print "NameArgs name:".$oneNamedArg->getItsName();
     	push(@listNamedArg,$oneNamedArg);
     }
     my $ret = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
     $ret->setListNamedArg(@listNamedArg);
+    my $totalNamedArgs = @listNamedArg;
+    print "IN PARSE, TOTAL NamedArgs:".$totalNamedArgs."\n";
     return $ret;
 }
 1;

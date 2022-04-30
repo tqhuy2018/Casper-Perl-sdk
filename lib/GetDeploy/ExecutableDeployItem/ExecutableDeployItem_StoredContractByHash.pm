@@ -67,6 +67,7 @@ sub fromJsonObjectToEDIStoredContractByHash {
     my @argsJson = $json->{'args'};
     print "\nargs for payment:".@argsJson."\n";
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);
+    $ret->setArgs($args);
 	return $ret;
 }
 

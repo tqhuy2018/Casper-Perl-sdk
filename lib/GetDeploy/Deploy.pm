@@ -14,7 +14,7 @@ sub new {
 		_deployHash => shift,
 		_header => shift,
 		_payment => shift,
-		_sesssion => shift,
+		_session => shift,
 		_approvals => [ @_ ],
 	};
 	bless $self, $class;

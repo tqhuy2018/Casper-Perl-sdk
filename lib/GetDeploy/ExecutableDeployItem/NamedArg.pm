@@ -1,7 +1,10 @@
 package GetDeploy::ExecutableDeployItem::NamedArg;
 
 use JSON;
+
 use CLValue::CLType;
+
+use CLValue::CLValue;
 
 sub new {
 	my $class = shift;
@@ -48,13 +51,17 @@ sub fromJsonArrayToNamedArg {
    			print "counter 0, itsName is:".$account."\n";
    			$ret->setItsName($account);
    		} elsif($counter == 1) {
-   			my $clValue = $_;
-   			my $bytes = $clValue->{'bytes'};
+   			my $clValueJson = $_;
+   			my $bytes = $clValueJson->{'bytes'};
    			print "byte is:".$bytes."\n";
-   			my $clTypeStr = $clValue->{'cl_type'};
+   			my $clTypeStr = $clValueJson->{'cl_type'};
    			print "From get Arg of Session and Payment, clType is:".$clTypeStr."\n";
    			my $clType = CLValue::CLType->getCLType($clTypeStr);
+   			my $clValue = new CLValue::CLValue();
+   			$clValue->setBytes($bytes);
+   			$clValue->setCLType($clType);
    			print "*******------******After parseing, the cltype is:".$clType->getItsTypeStr()."\n";
+   			$ret->setCLValue($clValue);
    		}
     	$counter ++;
     }
