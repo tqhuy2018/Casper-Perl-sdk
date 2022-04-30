@@ -36,7 +36,7 @@ sub new {
 
 sub setItsTypeStr {
 	my ($self,$clTypeStr) = @_;
-	$self->{_itsTypeStr} = $clTypeStr if defined ($clTypeStr);
+	$self->{_itsTypeStr} = "".$clTypeStr if defined ($clTypeStr);
 	return $self->{_itsTypeStr};
 }
 sub getItsTypeStr {
@@ -82,8 +82,11 @@ sub getInnerCLType3 {
 }
 # This function does the work of checking if the  input passing to the function is for primitive CLType,  
 # type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
-sub test{
-	print "\nTESTTEST test called\n";
+
+sub isCLTypePrimitive2 {
+	my @list = @_;
+	my $input = $list[1];
+	return isInputPrimitive($input);
 }
 
 sub isInputPrimitive {
@@ -132,7 +135,7 @@ sub isInputPrimitive {
 sub isCLTypePrimitive {
 	my ($self) = @_;
 	print "CLTYpe to check with its type:".$self->{_itsTypeStr}."\n";
-	my $ret = $self->isInputPrimitive($self->{_itsTypeStr});
+	my $ret = isInputPrimitive($self->{_itsTypeStr});
 	return $ret;
 }
 sub getCLType{

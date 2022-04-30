@@ -107,9 +107,10 @@ sub getItsValueList{
 # This function will take 2 arguments, first is the Json object for the CLParse, second is the CLType of the CLParse
 sub getCLParsedPrimitive {
 	my @list = @_;
-	my $json = $list[1];
-	my $clType = $list[2];
-	print "get clparse for cltype primitive";
+	my $json = $list[0];
+	my $clType = $list[1];
+	print "get clparse for cltype primitive, with json:".$json."\n";
+	print "get clparse for cltype primitive, with clType:".$clType->getItsTypeStr()."\n";
 	my $ret = new CLValue::CLParse();
 	$ret->setItsCLType($clType);
 	# Get primitive for key, which is complicated, for other type of primitive , the rule for getting parse is simple
@@ -136,8 +137,8 @@ sub getCLParsedPrimitive {
 # This function will take 2 arguments, first is the Json object for the CLParse, second is the CLType of the CLParse
 sub getCLParsedCompound {
 	my @list = @_;
-	my $json = $list[1];
-	my $clType = $list[2];
+	my $json = $list[0];
+	my $clType = $list[1];
 	my $ret = new CLValue::CLParse();
 	$ret->setItsCLType($clType);
 	$ret->setItsValueStr("Compound");
@@ -152,7 +153,7 @@ sub getCLParsed {
 	print "in get CLParse, json: ".$json. " and clType:".$clType->getItsTypeStr()."\n";
 	my $ret = new CLValue::CLParse();
 	if ($clType->isCLTypePrimitive()) {
-		print "Get parse for cltype primitive";
+		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
 		$ret = getCLParsedPrimitive($json,$clType);
 	} else {
 		print "Get parse for cltype compound";
