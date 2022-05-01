@@ -373,7 +373,7 @@ sub getDeploy3 {
 	my $sessionArgCLValue1 = $oneNASession1->getCLValue();
 	ok($sessionArgCLValue1->getBytes() eq "b75107567e010000","Test session 5th arg CLValue, bytes value = b75107567e010000 - Passed");
 	ok($sessionArgCLValue1->getCLType()->getItsTypeStr() eq "U64","Test session 5th arg CLValue, cl_type = U64 - Passed");
-	#ok($sessionArgCLValue->getParse()->getItsValueStr() eq "account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269","Test payment first arg CLValue, parse = account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269 - Passed");
+	ok($sessionArgCLValue1->getParse()->getItsValueStr() eq "1642120827319","Test payment 5th arg CLValue, parse = 1642120827319 - Passed");
 	# Assertion for third Arg
 	ok($oneNASession2->getItsName() eq "target", "Test session 7th arg name = target - Passed");
 	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
@@ -683,9 +683,90 @@ sub getDeploy5 {
 		$counter1 ++;
 	}
 }
+
+# Test 6: information for deploy at this address: https://testnet.cspr.live/deploy/1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f
+# Test the following CLType: U512, U256, Key, Option(Key)
+sub getDeploy6 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deployPayment = $deploy->getPayment();
+	
+	# Test assertion for Deploy Header
+	ok($deploy->getHeader()->getAccount() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b","Test deploy header account - Passed");
+	ok($deploy->getHeader()->getBodyHash() eq "2b2c41ed3f20b6949572a391655151407b744c0331ef1994f590f15bb19f14bf","Test deploy body account - Passed");
+	ok($deploy->getHeader()->getChainName() eq "casper-test","Test deploy header chain name - Passed");
+	ok($deploy->getHeader()->getTimestamp() eq "2022-01-25T13:03:53.438Z","Test deploy header timestamp - Passed");
+	ok($deploy->getHeader()->getTTL() eq "1h","Test deploy header ttl - Passed");
+	ok($deploy->getHeader()->getGasPrice() == 1,"Test deploy header gas price - Passed");
+	my @d = $deploy->getHeader()->getDependencies();
+	my $dl = @d;
+	ok($dl == 0, "Test deploy header dependencies - Passed");
+	
+	# Test assertion for Deploy hash
+	ok($deploy->getDeployHash() eq "1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f","Test deploy hash - Passed");
+	
+	# Test assertion for Deploy payment
+	
+	my $payment = $deploy->getPayment();
+	ok($payment->getItsType() eq "ModuleBytes","Test deploy payment of type ModuleBytes - Passed");
+	my $paymentValue = $payment->getItsValue();
+	ok($paymentValue->getModuleBytes() eq "","Test deploy payment module_bytes - Passed");
+	my $paymentArgs = $paymentValue->getArgs();
+	my @listArgs = @{$paymentArgs->getListNamedArg()};
+	my $totalArgs = @listArgs;
+	#Test for first args
+	my $counter1 = 0;
+	my $oneNA;
+	foreach(@listArgs) {
+		if($counter1 == 2) {
+			$oneNA = $_;
+		}
+		$counter1 ++;
+	}
+	# The real args list contains 1 element, but the list in Perl hold 1 + 2 = 3 elements with 2 items other hold the other information for the 
+	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
+	ok($totalArgs - 2 == 1, "Test payment total args = 1 - Passed");
+	ok($oneNA->getItsName() eq "amount", "Test payment first arg name = amount - Passed");
+	my $paymentFirstArgCLValue = $oneNA->getCLValue();
+	ok($paymentFirstArgCLValue->getBytes() eq "0500743ba40b","Test payment first arg CLValue, bytes value = 0500743ba40b - Passed");
+	ok($paymentFirstArgCLValue->getCLType()->getItsTypeStr() eq "U512","Test payment first arg CLValue, cl_type = U512 - Passed");
+	ok($paymentFirstArgCLValue->getParse()->getItsValueStr() eq "50000000000","Test payment first arg CLValue, parse = 50000000000 - Passed");
+	
+	#Test assertion for Deploy session
+	
+	my $session = $deploy->getSession();
+	ok($session->getItsType() eq "StoredContractByHash", "Test deploy session of type StoredContractByHash - Passed");
+	my $sessionValue = $session->getItsValue();
+	ok($sessionValue->getItsHash() eq "29710161f8912257718fc2f9a8cf80a55b82f706d22609cb8190c83de01bd690", "Test deploy session of type StoredContractByHash with hash 29710161f8912257718fc2f9a8cf80a55b82f706d22609cb8190c83de01bd690- Passed");
+	ok($sessionValue->getEntryPoint() eq "issueDemoVC", "Test deploy session of type StoredContractByHash with entry_point: issueDemoVC- Passed");
+	my $sessionArgs = $sessionValue->getArgs();
+	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
+	my $totalArgsSession = @listArgsSession;
+	# The real args list contains 5 element, but the list in Perl hold 5 + 2 = 7 element with 2 items other hold the other information for the 
+	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
+	ok($totalArgsSession - 2 == 5, "Test session total args = 5 - Passed");
+	$counter1 = -2;
+	my $oneNASession;
+	foreach(@listArgsSession) {
+		if($counter1 == 4) { # get CLValue of type Option(Bool) with value NULL
+			$oneNASession = $_;
+			# Assertion for 5th Arg - CLType of type Option(Bool)
+			ok($oneNASession->getItsName() eq "revocationFlag", "Test session 5th arg name = revocationFlag - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "01","Test session 5th arg CLValue, bytes value = 00 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Bool","Test session 5th arg CLValue, cl_type = Bool - Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "1","Test session 5th arg CLValue, parse = true - Passed");
+		} 
+		$counter1 ++;
+	}
+}
 #getDeploy1();
 #getDeploy2();
 #getDeploy3();
 #getDeploy4();
-getDeploy5();
+#getDeploy5();
+getDeploy6();
 
