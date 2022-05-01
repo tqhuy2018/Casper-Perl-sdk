@@ -71,10 +71,11 @@ sub getDeploy1 {
 	my $session = $deploy->getSession();
 	ok($session->getItsType() eq "StoredContractByHash", "Test deploy session of type StoredContractByHash - Passed");
 	my $sessionValue = $session->getItsValue();
+	ok($sessionValue->getItsHash() eq "43165487cb23a771ea6690326da0db3b1781aa40ff33b465951cf30333aa2d49", "Test deploy session of type StoredContractByHash with hash 43165487cb23a771ea6690326da0db3b1781aa40ff33b465951cf30333aa2d49- Passed");
+	ok($sessionValue->getEntryPoint() eq "add_liquidity_js_client", "Test deploy session of type StoredContractByHash with entry_point: add_liquidity_js_client- Passed");
 	my $sessionArgs = $sessionValue->getArgs();
 	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
 	my $totalArgsSession = @listArgsSession;
-	print "total session args".$totalArgsSession."\n";
 	# The real args list contains 9 element, but the list in Perl hold 9 + 2 = 11 element with 2 items other hold the other information for the 
 	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
 	ok($totalArgsSession - 2 == 9, "Test session total args = 9 - Passed");
@@ -169,6 +170,8 @@ sub getDeploy2 {
 	my $session = $deploy->getSession();
 	ok($session->getItsType() eq "StoredContractByHash", "Test deploy session of type StoredContractByHash - Passed");
 	my $sessionValue = $session->getItsValue();
+	ok($sessionValue->getItsHash() eq "a977eb2d2e091823fccfc17bea195a55176f03a1f85599368620175d6bad9d04", "Test deploy session of type StoredContractByHash with hash a977EB2D2e091823fCCFC17bea195A55176F03a1f85599368620175d6BAd9d04- Passed");
+	ok($sessionValue->getEntryPoint() eq "mint", "Test deploy session of type StoredContractByHash with entry_point: mint- Passed");
 	my $sessionArgs = $sessionValue->getArgs();
 	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
 	my $totalArgsSession = @listArgsSession;
@@ -224,7 +227,45 @@ sub getDeploy2 {
 	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Map","Test session third arg CLValue, cl_type = List(Map) - Passed");
 	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String) type String for map->key - Passed");
 	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String) type String for map->value - Passed");	
-	#ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test payment first arg CLValue, parse = hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
+
+	my @listCLParse2 = $sessionArgCLValue2->getParse()->getItsValueList();
+	my $listLength2 = @listCLParse2;
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element, then the map is of 4 elements
+	ok($listLength2 == 1,"Test session third arg CLValue, parse List(Map(String,String)) is a list of 1 elements- Passed");
+	$counter1 = 0;
+	my $counter2 = 0;
+	foreach(@listCLParse2) {
+		if($counter1 == 0) {
+			# get first element of the list - is a clparse of type map
+			my $parseValue2 = $_;
+			# get the list of key for the clparse map
+			my $parseKey = $parseValue2->getInnerParse1();
+			print "parseKey value for map:".$parseKey->getItsValueStr()."\n";
+			my $parseValue = $parseValue2->getInnerParse2();
+			print "parseValue value for map:".$parseValue->getItsValueStr()."\n";
+			my @listKey = $parseValue2->getInnerParse1()->getItsValueList();
+			my @listValue = $parseValue2->getInnerParse2()->getItsValueList();
+			my $totalKey = @listKey;
+			# assertion for number of element in the map equal to 1
+			ok($totalKey == 1,"Number of element in the map equals to 1 - Passed");
+			# assertion for map - key values
+			foreach(@listKey) {
+				my $key = $_;
+				print "key number ".$counter2." value is:".$key->getItsValueStr()."\n";
+				if($counter2 == 0) {
+					ok($key->getItsValueStr() eq "token_uri","Test session third arg CLValue of type List(Map(String,String)) with value of key = token_uri - Passed");					
+				}
+			}
+			$counter2 = 0;
+			foreach(@listValue) {
+				my $value = $_;
+				print "key number ".$counter2." value is:".$value->getItsValueStr()."\n";
+				if($counter2 == 0) {
+					ok($value->getItsValueStr() eq "https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk","Test session third arg CLValue of type List(Map(String,String)) with value of value = https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk - Passed");					
+				}
+			}
+		}
+	}
 }
 
 # Test 3: information for deploy at this address: https://testnet.cspr.live/deploy/430df377ae04726de907f115bb06c52e40f6cd716b4b475a10e4cd9226d1317e
@@ -445,9 +486,7 @@ sub getDeploy4 {
 	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) key String - Passed");
 	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) value String - Passed");
 	my @listCLParse1 = $sessionArgCLValue1->getParse()->getItsValueList();
-	print "parse list value:".$sessionArgCLValue1->getParse()->getItsValueStr()."\n";
 	my $listLength1 = @listCLParse1;
-	print "list length:".$listLength1."\n";
 	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element, then the map is of 4 elements
 	ok($listLength1 == 1,"Test session third arg CLValue, parse List(Map(String,String)) is a list of 1 elements- Passed");
 	$counter1 = 0;
@@ -531,8 +570,8 @@ sub getDeploy4 {
 	}
 	
 }
-getDeploy1();
-#getDeploy2();
+#getDeploy1();
+getDeploy2();
 #getDeploy3();
 #getDeploy4();
 
