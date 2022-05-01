@@ -438,7 +438,7 @@ sub getDeploy4 {
 	print "parse list value:".$sessionArgCLValue1->getParse()->getItsValueStr()."\n";
 	my $listLength1 = @listCLParse1;
 	print "list length:".$listLength1."\n";
-	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element, then the map is of 4 elements
 	ok($listLength1 == 1,"Test session third arg CLValue, parse List(Map(String,String)) is a list of 1 elements- Passed");
 	$counter1 = 0;
 	my $counter2 = 0;
@@ -447,14 +447,15 @@ sub getDeploy4 {
 			# get first element of the list - is a clparse of type map
 			my $parseValue2 = $_;
 			# get the list of key for the clparse map
-			
 			my $parseKey = $parseValue2->getInnerParse1();
 			print "parseKey value for map:".$parseKey->getItsValueStr()."\n";
 			my $parseValue = $parseValue2->getInnerParse2();
 			print "parseValue value for map:".$parseValue->getItsValueStr()."\n";
-			
 			my @listKey = $parseValue2->getInnerParse1()->getItsValueList();
 			my @listValue = $parseValue2->getInnerParse2()->getItsValueList();
+			my $totalKey = @listKey;
+			# assertion for number of element in the map equal to 4
+			ok($totalKey == 4,"Number of element in the map equals to 4 - Passed");
 			# assertion for map - key values
 			foreach(@listKey) {
 				my $key = $_;
@@ -495,6 +496,23 @@ sub getDeploy4 {
 		}
 		$counter1 ++;
 	}
+	
+	# Assertion for 4th Arg
+	ok($oneNASession2->getItsName() eq "token_commissions", "Test session 4th arg name - Passed");
+	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
+	ok($sessionArgCLValue2->getBytes() eq "0100000000000000","Test session 4th arg CLValue, bytes value - Passed");
+	ok($sessionArgCLValue2->getCLType()->getItsTypeStr() eq "List","Test session 4th arg CLValue, cl_type List - Passed");
+	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Map","Test session 4th arg CLValue, cl_type = List(Map)- Passed");
+	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session 4th arg CLValue, cl_type = List(Map(String,String)) key String - Passed");
+	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session 4th arg CLValue, cl_type = List(Map(String,String)) value String - Passed");
+	my @listCLParse2 = $sessionArgCLValue2->getParse()->getItsValueList();
+	print "parse list value:".$sessionArgCLValue2->getParse()->getItsValueStr()."\n";
+	my $listLength2 = @listCLParse2;
+	print "list length:".$listLength2."\n";
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element, then the map is of 4 elements
+	ok($listLength2 == 0,"Test session 4th arg CLValue, parse List(Map(String,String)) is a list of 0 elements- Passed");
+
+	
 }
 #getDeploy1();
 #getDeploy2();
