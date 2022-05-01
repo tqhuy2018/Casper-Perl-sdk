@@ -140,15 +140,12 @@ sub getCLParsedCompound {
 	my $json = $list[0];
 	my $clType = $list[1];
 	my $ret = new CLValue::CLParse();
-	#$ret->setItsCLType($clType);
-	#$ret->setItsValueStr("Compound");
-	# with Option value, the cltype will get the inner cltype1
-	if($clType->getItsTypeStr() eq "Option") {
+	if($clType->getItsTypeStr() eq "Option") { # with Option value, the cltype will get the inner cltype1
 		print "\nAbout to get parse value for Option cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
 		print "\nInner cltype is:".$innerCLType->getItsTypeStr()."\n";
 		$ret = getCLParsed2($json,$innerCLType);
-	} elsif($clType->getItsTypeStr() eq "List") {
+	} elsif($clType->getItsTypeStr() eq "List") {  # with List value, the cltype will get the inner cltype1
 		print "\nAbout to get parse value for List cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
 		print "\nInner cltype of List is:".$innerCLType->getItsTypeStr()." and Json is:".$json."\n";
@@ -169,9 +166,20 @@ sub getCLParsedCompound {
 		$ret->setItsValueStr("List assigned");
 		my $listLen = @listValue;
 		print "\n****After parsing list, the length of list is:".$listLen."\n";
-	} elsif($clType->getItsTypeStr() eq "Result") {
-		
-	} elsif($clType->getItsTypeStr() eq "Map") {
+	} elsif($clType->getItsTypeStr() eq "Result") { # with Result value, the cltype will get the inner cltype1 for Ok, inner cltype2 for Err
+		print "\nAbout to get parse value for Result cltype\n";
+		my $valueOK = $json->{'Ok'};
+		my $valueErr = $json->{'Err'};
+		if($valueOK) {
+			my $innerCLType = $clType->getInnerCLType1();
+			print "\nInner cltype is for RESULT OK is:".$innerCLType->getItsTypeStr()."\n";
+			$ret = getCLParsed2($json,$innerCLType);
+		} elsif($valueErr) {
+			my $innerCLType = $clType->getInnerCLType2();
+			print "\nInner cltype is for RESULT ERR is:".$innerCLType->getItsTypeStr()."\n";
+			$ret = getCLParsed2($json,$innerCLType);
+		}
+	} elsif($clType->getItsTypeStr() eq "Map") { # with Map value, the cltype will get the inner cltype1 for key, inner cltype2 for value
 		my $counter = 0;
 		foreach($json) {
 			my @oneElement = @{$_};
@@ -206,6 +214,63 @@ sub getCLParsedCompound {
 			$ret->setInnerParse2($listValueParse);
 			$ret->setItsValueStr("Map parse assigned");
 		}
+	} elsif($clType->getItsTypeStr() eq "Tuple1") { # with Tuple1 value, the cltype will get the inner cltype1
+		my $counter = 0;
+		my $clType1 = $clType->getInnerCLType1();
+		my $tupleParse1;
+		foreach($json) {
+			if($counter == 0) { # get parse for first tuple
+				my $oE = $_;
+				$tupleParse1 = getCLParsed2($oE,$clType1);
+			} 
+			$counter ++;
+		}
+		$ret->setItsValueStr("Tuple 1 value assigned");
+		$ret->setInnerParse1($tupleParse1);
+	} elsif($clType->getItsTypeStr() eq "Tuple2") { # with Tuple2 value, the cltype will get the inner cltype1 and inner cltype2
+		my $counter = 0;
+		my $clType1 = $clType->getInnerCLType1();
+		my $clType2 = $clType->getInnerCLType2();
+		my $tupleParse1;
+		my $tupleParse2;
+		foreach($json) {
+			if($counter == 0) { # get parse for first tuple
+				my $oE = $_;
+				$tupleParse1 = getCLParsed2($oE,$clType1);
+			} elsif($counter == 1) { # get parse for second tuple
+				my $oE = $_;
+				$tupleParse2 = getCLParsed2($oE,$clType2);
+			}
+			$counter ++;
+		}
+		$ret->setItsValueStr("Tuple 2 value assigned");
+		$ret->setInnerParse1($tupleParse1);
+		$ret->setInnerParse2($tupleParse2);
+	} elsif($clType->getItsTypeStr() eq "Tuple3") { # with Tuple2 value, the cltype will get the inner cltype1 and inner cltype2 and inner cltype3
+	my $counter = 0;
+		my $clType1 = $clType->getInnerCLType1();
+		my $clType2 = $clType->getInnerCLType2();
+		my $clType3 = $clType->getInnerCLType3();
+		my $tupleParse1;
+		my $tupleParse2;
+		my $tupleParse3;
+		foreach($json) {
+			if($counter == 0) { # get parse for first tuple
+				my $oE = $_;
+				$tupleParse1 = getCLParsed2($oE,$clType1);
+			} elsif($counter == 1) { # get parse for second tuple
+				my $oE = $_;
+				$tupleParse2 = getCLParsed2($oE,$clType2);
+			} elsif($counter == 2) { # get parse for second tuple
+				my $oE = $_;
+				$tupleParse3 = getCLParsed2($oE,$clType3);
+			}
+			$counter ++;
+		}
+		$ret->setItsValueStr("Tuple 3 value assigned");
+		$ret->setInnerParse1($tupleParse1);
+		$ret->setInnerParse2($tupleParse2);
+		$ret->setInnerParse3($tupleParse3);
 	}
 	return $ret;
 }
