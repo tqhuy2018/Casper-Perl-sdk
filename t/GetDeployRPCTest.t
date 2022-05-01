@@ -15,7 +15,8 @@ use lib "$RealBin/../lib";
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployParams;
 
-#Test 1: information for deploy at this address: https://testnet.cspr.live/deploy/55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa
+# Test 1: information for deploy at this address: https://testnet.cspr.live/deploy/55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa
+# Test the following CLType: U512, U256, Key, Option(Key)
 sub getDeploy1 {
 	my $getDeployParams = new GetDeploy::GetDeployParams();
 	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
@@ -79,28 +80,37 @@ sub getDeploy1 {
 	ok($totalArgsSession - 2 == 9, "Test session total args = 9 - Passed");
 	$counter1 = 0;
 	my $oneNASession;
+	my $oneNASession1;
 	my $oneNASession2;
 	foreach(@listArgsSession) {
-		if($counter1 == 10) {
+		if($counter1 == 10) { # get CLValue of type Option(Key)
 			$oneNASession = $_;
-		} elsif($counter1 == 2) {
+		} elsif($counter1 == 2) { # get CLValue of type Key
 			$oneNASession2 = $_;
+		} elsif($counter1 == 4) { # get CLValue of type U256
+			$oneNASession1 = $_;
 		}
 		$counter1 ++;
 	}
-	# Assertion for 9th Arg
+	# Assertion for 9th Arg - CLType of type Option(Key)
 	ok($oneNASession->getItsName() eq "pair", "Test session 9th arg name = pair - Passed");
 	my $sessionArgCLValue = $oneNASession->getCLValue();
 	ok($sessionArgCLValue->getBytes() eq "0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test session 9th arg CLValue, bytes value = 0101562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
 	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 9th arg CLValue, cl_type = Option - Passed");
 	ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Key","Test session 9th arg CLValue, cl_type = Option(Key) Passed");
-	ok($sessionArgCLValue->getParse()->getItsValueStr() eq "hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test payment first arg CLValue, parse = hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
-	# Assertion for first Arg
+	ok($sessionArgCLValue->getParse()->getItsValueStr() eq "hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b","Test session 9th arg CLValue, parse = hash-562ed7abecc624b8eebb7eb33f542c99b2ce0e0383980e31476507f70267b55b - Passed");
+	# Assertion for first Arg - CLType of type Key
 	ok($oneNASession2->getItsName() eq "token_a", "Test session first arg name = token_a - Passed");
 	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
 	ok($sessionArgCLValue2->getBytes() eq "01beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test session first arg CLValue, bytes value = 01beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
 	ok($sessionArgCLValue2->getCLType()->getItsTypeStr() eq "Key","Test session first arg CLValue, cl_type = Key - Passed");
-	ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test payment first arg CLValue, parse = hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
+	ok($sessionArgCLValue2->getParse()->getItsValueStr() eq "hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9","Test session first arg CLValue, parse = hash-beb48e371fecfb567a7f35535069aa22d31668c459dc9cb30391b4cd628768b9 - Passed");
+# Assertion for 3rd Arg - - CLType of type U256
+	ok($oneNASession1->getItsName() eq "amount_a_desired", "Test session 3rd arg name = token_a - Passed");
+	my $sessionArgCLValue1 = $oneNASession1->getCLValue();
+	ok($sessionArgCLValue1->getBytes() eq "0400ca9a3b","Test session 3rd arg CLValue, bytes value = 0400ca9a3b - Passed");
+	ok($sessionArgCLValue1->getCLType()->getItsTypeStr() eq "U256","Test session 3rd arg CLValue, cl_type = U256 - Passed");
+	ok($sessionArgCLValue1->getParse()->getItsValueStr() eq "1000000000","Test session 3rd arg CLValue, parse = 1000000000 - Passed");
 }
 
 #Test 2: information for deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a37Bc9386020609aa1CabaD895c3E2E104d877B936C6Ffa2302268
@@ -506,16 +516,23 @@ sub getDeploy4 {
 	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session 4th arg CLValue, cl_type = List(Map(String,String)) key String - Passed");
 	ok($sessionArgCLValue2->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session 4th arg CLValue, cl_type = List(Map(String,String)) value String - Passed");
 	my @listCLParse2 = $sessionArgCLValue2->getParse()->getItsValueList();
-	print "parse list value:".$sessionArgCLValue2->getParse()->getItsValueStr()."\n";
-	my $listLength2 = @listCLParse2;
-	print "list length:".$listLength2."\n";
-	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element, then the map is of 4 elements
-	ok($listLength2 == 0,"Test session 4th arg CLValue, parse List(Map(String,String)) is a list of 0 elements- Passed");
-
+	$counter1 = 0;
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 0 element, then the map is of 4 elements
+	foreach(@listCLParse2) {
+		if($counter1 == 0) {
+			# get first element of the list - is a clparse of type map
+			my $parseValue2 = $_;
+			# get the list of key for the clparse map
+			my @listKey2 = $parseValue2->getInnerParse1()->getItsValueList();
+			my $numOfItem = @listKey2;
+			ok($numOfItem == 0,"Test session 4th arg CLValue, parse List(Map(String,String)) is a list of 0 elements- Passed");
+		}
+		$counter1 ++;
+	}
 	
 }
-#getDeploy1();
+getDeploy1();
 #getDeploy2();
 #getDeploy3();
-getDeploy4();
+#getDeploy4();
 
