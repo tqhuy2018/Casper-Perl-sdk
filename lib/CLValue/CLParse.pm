@@ -60,34 +60,34 @@ sub getItsCLType{
 #get-set method for _innerParsed1
 sub setInnerParse1 {
 	my ($self,$innerParse1) = @_;
-	$self->{_innerParse1} = $innerParse1 if defined($innerParse1);
-	return $self->{_innerParse1};
+	$self->{_innerParsed1} = $innerParse1 if defined($innerParse1);
+	return $self->{_innerParsed1};
 }
 sub getInnerParse1 {
 	my ($self) = @_;
-	return $self->{_innnerParse1};
+	return $self->{_innerParsed1};
 }
 
 #get-set method for _innerParsed2
 sub setInnerParse2 {
 	my ($self,$innerParse2) = @_;
-	$self->{_innerParse2} = $innerParse2 if defined($innerParse2);
-	return $self->{_innerParse2};
+	$self->{_innerParsed2} = $innerParse2 if defined($innerParse2);
+	return $self->{_innerParsed2};
 }
 sub getInnerParse2 {
 	my ($self) = @_;
-	return $self->{_innnerParse2};
+	return $self->{_innerParsed2};
 }
 
 #get-set method for _innerParsed3
 sub setInnerParse3 {
 	my ($self,$innerParse3) = @_;
-	$self->{_innerParse3} = $innerParse3 if defined($innerParse3);
-	return $self->{_innerParse3};
+	$self->{_innerParsed3} = $innerParse3 if defined($innerParse3);
+	return $self->{_innerParsed3};
 }
 sub getInnerParse3 {
 	my ($self) = @_;
-	return $self->{_innnerParse3};
+	return $self->{_innerParsed3};
 }
 
 #get-set method for _itsValueList
@@ -152,36 +152,59 @@ sub getCLParsedCompound {
 		print "\nAbout to get parse value for List cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
 		print "\nInner cltype of List is:".$innerCLType->getItsTypeStr()." and Json is:".$json."\n";
-		my @listValue;
+		my @listValue=();
+		my $counterList = 0;
 		foreach($json) {
 			my @oneElement = @{$_};
-			print "Element is: ".$_."\n";
+			print "Get List element number ".$counterList."Element is: ".$_."\n";
+			$counterList ++;
 			foreach(@oneElement) {
 				my $oE = $_;
-				print "Inner element is:".$oE."\n";
+				print "LIST LIST LIST Inner element is:".$oE." and cltype:".$innerCLType->getItsTypeStr()."\n";
 				my $oneParse = getCLParsed2($oE,$innerCLType);
 				push(@listValue,$oneParse);
 			}
 		}
 		$ret->setItsValueList(@listValue);
-		#$ret = getCLParsed2($json,$innerCLType);
+		$ret->setItsValueStr("List assigned");
+		my $listLen = @listValue;
+		print "\n****After parsing list, the length of list is:".$listLen."\n";
 	} elsif($clType->getItsTypeStr() eq "Result") {
 		
 	} elsif($clType->getItsTypeStr() eq "Map") {
+		my $counter = 0;
 		foreach($json) {
 			my @oneElement = @{$_};
 			print "MAP---Element is: ".$_."\n";
+			my $listKeyParse = new CLValue::CLParse();
+			my $listValueParse = new CLValue::CLParse();
+			my @listKey = ();
+			my @listValue = ();
 			foreach(@oneElement) {
 				my $oE = $_;
+				print "\n--------------***GET MAP ELEMENT number ".$counter."***--------------\n";
+				$counter ++;
 				print "Inner element is:".$oE." and key is:".$oE->{'key'}." and value:".$oE->{'value'}."\n";
 				my $clTypeKey = $clType->getInnerCLType1();
 				my $clTypeValue = $clType->getInnerCLType2();
 				print " with cltype for key:".$clTypeKey->getItsTypeStr()."\n";
+				print "\nGet key begins\n";
 				my $keyParse = getCLParsed2($oE->{'key'},$clTypeKey);
+				print "\nGet value begins\n";
 				my $valueParse = getCLParsed2($oE->{'value'},$clTypeValue);
-				$ret->setInnerParse1($keyParse);
-				$ret->setInnerParse2($valueParse);
+				push(@listKey,$keyParse);
+				push(@listValue,$valueParse);
 			}
+			my $listKeyLen = @listKey;
+			my $listValueLen = @listValue;
+			print "\nTotal key get:".$listKeyLen." and total value get:".$listValueLen."\n";
+			$listKeyParse->setItsValueList(@listKey);
+			$listKeyParse->setItsValueStr("MAP KEY ASSIGNED");
+			$listValueParse->setItsValueList(@listValue);
+			$listValueParse->setItsValueStr("MAP VALUE ASSIGNED");
+			$ret->setInnerParse1($listKeyParse);
+			$ret->setInnerParse2($listValueParse);
+			$ret->setItsValueStr("Map parse assigned");
 		}
 	}
 	return $ret;
@@ -201,7 +224,7 @@ sub getCLParsed2 {
 		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
 		$ret = getCLParsedPrimitive($json,$clType);
 	} else {
-		print "Get parse for cltype compound";
+		print "Get parse for cltype compound-------\n";
 		$ret = getCLParsedCompound($json,$clType);
 	}
 	return $ret;

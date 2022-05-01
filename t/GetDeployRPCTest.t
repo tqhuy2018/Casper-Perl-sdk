@@ -435,21 +435,69 @@ sub getDeploy4 {
 	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType1()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) key String - Passed");
 	ok($sessionArgCLValue1->getCLType()->getInnerCLType1()->getInnerCLType2()->getItsTypeStr() eq "String","Test session third arg CLValue, cl_type = List(Map(String,String)) value String - Passed");
 	my @listCLParse1 = $sessionArgCLValue1->getParse()->getItsValueList();
+	print "parse list value:".$sessionArgCLValue1->getParse()->getItsValueStr()."\n";
 	my $listLength1 = @listCLParse1;
-	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 4 element
-	ok($listLength1 == 4,"Test session second arg CLValue, parse List(Map(String,String)) is a list of 4 elements- Passed");
+	print "list length:".$listLength1."\n";
+	# assertion that the parse for clvalue List(Map(String,String)) is a list and the list is of 1 element
+	ok($listLength1 == 1,"Test session third arg CLValue, parse List(Map(String,String)) is a list of 1 elements- Passed");
 	$counter1 = 0;
+	my $counter2 = 0;
 	foreach(@listCLParse1) {
 		if($counter1 == 0) {
-			my $parseValue = $_;
-			# assertion for key value
-			ok($parseValue->getInnerParse1()->getItsValueStr() eq "name","Test session third arg CLValue, parse first list element is a map with key value: name  - Passed");
-			ok($parseValue->getInnerParse2()->getItsValueStr() eq "Test Prod Admin","Test session third arg CLValue, parse first list element is a map with value value: Test Prod Admin  - Passed");
+			# get first element of the list - is a clparse of type map
+			my $parseValue2 = $_;
+			# get the list of key for the clparse map
+			
+			my $parseKey = $parseValue2->getInnerParse1();
+			print "parseKey value for map:".$parseKey->getItsValueStr()."\n";
+			my $parseValue = $parseValue2->getInnerParse2();
+			print "parseValue value for map:".$parseValue->getItsValueStr()."\n";
+			
+			my @listKey = $parseValue2->getInnerParse1()->getItsValueList();
+			my @listValue = $parseValue2->getInnerParse2()->getItsValueList();
+			# assertion for map - key values
+			foreach(@listKey) {
+				my $key = $_;
+				print "key number ".$counter2." value is:".$key->getItsValueStr()."\n";
+				if($counter2 == 0) {
+					ok($key->getItsValueStr() eq "name","Test session third arg CLValue of type List(Map(String,String)) with value of key = name - Passed");					
+				}
+				if($counter2 == 1) {
+					ok($key->getItsValueStr() eq "description","Test session third arg CLValue of type List(Map(String,String)) with value of key = description - Passed");					
+				}
+				if($counter2 == 2) {
+					ok($key->getItsValueStr() eq "ipfs_url","Test session third arg CLValue of type List(Map(String,String)) with value of key = ipfs_url - Passed");					
+				}
+				if($counter2 == 3) {
+					ok($key->getItsValueStr() eq "ipfs_metadata_url","Test session third arg CLValue of type List(Map(String,String)) with value of key = ipfs_metadata_url - Passed");					
+				}
+				$counter2 ++;
+			}
+			# assertion for map - value values
+			$counter2 = 0;
+			foreach(@listValue) {
+				my $value = $_;
+				print "key number ".$counter2." value is:".$value->getItsValueStr()."\n";
+				if($counter2 == 0) {
+					ok($value->getItsValueStr() eq "Test Prod Admin","Test session third arg CLValue of type List(Map(String,String)) with value of value = Test Prod Admin - Passed");					
+				}
+				if($counter2 == 1) {
+					ok($value->getItsValueStr() eq "Testing","Test session third arg CLValue of type List(Map(String,String)) with value of value = Testing - Passed");					
+				}
+				if($counter2 == 2) {
+					ok($value->getItsValueStr() eq "https://gateway.pinata.cloud/ipfs/QmauPU5rc8ghhyZFQxB9R5jCbaafGw2MneQJRMDWLVzjaU","Test session third arg CLValue of type List(Map(String,String)) with value of value = https://gateway.pinata.cloud/ipfs/QmauPU5rc8ghhyZFQxB9R5jCbaafGw2MneQJRMDWLVzjaU - Passed");					
+				}
+				if($counter2 == 3) {
+					ok($value->getItsValueStr() eq "https://gateway.pinata.cloud/ipfs/QmbryyvAyVdBm5Z4nwA3a781mmquc6nGaeuEAPK96a3LPn","Test session third arg CLValue of type List(Map(String,String)) with value of value = https://gateway.pinata.cloud/ipfs/QmbryyvAyVdBm5Z4nwA3a781mmquc6nGaeuEAPK96a3LPn - Passed");					
+				}
+				$counter2 ++;
+			}
 		}
+		$counter1 ++;
 	}
 }
-getDeploy1();
-getDeploy2();
-getDeploy3();
+#getDeploy1();
+#getDeploy2();
+#getDeploy3();
 getDeploy4();
 
