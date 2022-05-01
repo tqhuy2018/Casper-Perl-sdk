@@ -189,13 +189,13 @@ sub getDeploy2 {
 		}
 		$counter1 ++;
 	}
-	# Assertion for first Arg
+	# Assertion for first Arg - CLValue of type Key
 	ok($oneNASession->getItsName() eq "recipient", "Test session first arg name = recipient - Passed");
 	my $sessionArgCLValue = $oneNASession->getCLValue();
 	ok($sessionArgCLValue->getBytes() eq "00d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269","Test session first arg CLValue, bytes value = 00d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269 - Passed");
 	ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Key","Test session first arg CLValue, cl_type = Key - Passed");
 	ok($sessionArgCLValue->getParse()->getItsValueStr() eq "account-hash-d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269","Test payment first arg CLValue, parse = account-hash-d0bc9ca1353597c4004b8f881b397a89c1779004f5e547e04b57c2e7967c6269 - Passed");
-	# Assertion for second Arg
+	# Assertion for second Arg - CLValue of type List(U256)
 	ok($oneNASession1->getItsName() eq "token_ids", "Test session second arg name = recipient - Passed");
 	my $sessionArgCLValue1 = $oneNASession1->getCLValue();
 	ok($sessionArgCLValue1->getBytes() eq "010000000102","Test session second arg CLValue, bytes value = 010000000102 - Passed");
@@ -216,7 +216,7 @@ sub getDeploy2 {
 		$counter1 ++;
 	}
 	
-	# Assertion for third Arg
+	# Assertion for third Arg - CLValue of type List(Map(String,String))
 	ok($oneNASession2->getItsName() eq "token_metas", "Test session third arg name = token_metas - Passed");
 	my $sessionArgCLValue2 = $oneNASession2->getCLValue();
 	ok($sessionArgCLValue2->getBytes() eq "010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b","Test session third arg CLValue, bytes value = 010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b - Passed");
