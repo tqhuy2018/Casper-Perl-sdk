@@ -282,16 +282,21 @@ sub getCLParsed2 {
 	my @list = @_;
 	my $json = $list[0];
 	my $clType = $list[1];
-	print "In get CLParse, json: ".$json;
-	print "And clType:".$clType->getItsTypeStr()."\n";
 	my $ret = new CLValue::CLParse();
-	if ($clType->isCLTypePrimitive()) {
-		print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
-		$ret = getCLParsedPrimitive($json,$clType);
-	} else {
-		print "Get parse for cltype compound-------\n";
-		$ret = getCLParsedCompound($json,$clType);
+	if($json) { # if the parse value not NULL
+		print "In get CLParse, json: ".$json;
+		print "And clType:".$clType->getItsTypeStr()."\n";
+		if ($clType->isCLTypePrimitive()) {
+			print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
+			$ret = getCLParsedPrimitive($json,$clType);
+		} else {
+			print "Get parse for cltype compound-------\n";
+			$ret = getCLParsedCompound($json,$clType);
+		}
+	} else { # if the parse value is NULL
+		$ret->setItsValueStr("NULL_VALUE");
 	}
+	
 	return $ret;
 }
 sub getCLParsed {

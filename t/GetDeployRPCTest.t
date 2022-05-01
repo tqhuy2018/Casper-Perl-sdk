@@ -570,8 +570,122 @@ sub getDeploy4 {
 	}
 	
 }
+
+# Test 5: information for deploy at this address: https://testnet.cspr.live/deploy/9ff98d8027795a002e41a709d5b5846e49c2e9f9c8bfbe74e4c857adc26d5571
+# Test the following CLType: Option(U512), U32, Option(U64) and Option(Bool) with NULL value, U64, String
+sub getDeploy5 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("9ff98d8027795a002e41a709d5b5846e49c2e9f9c8bfbe74e4c857adc26d5571");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deployPayment = $deploy->getPayment();
+	
+	# Test assertion for Deploy Header
+	ok($deploy->getHeader()->getAccount() eq "014caf1ce908f9ef3d427dceac17e5c47950becf15d1def0810c235e0d58a9efad","Test deploy header account - Passed");
+	ok($deploy->getHeader()->getBodyHash() eq "9230c6b1b15cc56a35c52e63141ffe81ae5042395e5b096b7d107b4df3ed0ae5","Test deploy body account - Passed");
+	ok($deploy->getHeader()->getChainName() eq "casper-test","Test deploy header chain name - Passed");
+	ok($deploy->getHeader()->getTimestamp() eq "2022-01-25T13:47:28.227Z","Test deploy header timestamp - Passed");
+	ok($deploy->getHeader()->getTTL() eq "30m","Test deploy header ttl - Passed");
+	ok($deploy->getHeader()->getGasPrice() == 1,"Test deploy header gas price - Passed");
+	my @d = $deploy->getHeader()->getDependencies();
+	my $dl = @d;
+	ok($dl == 0, "Test deploy header dependencies - Passed");
+	
+	# Test assertion for Deploy hash
+	ok($deploy->getDeployHash() eq "9ff98d8027795a002e41a709d5b5846e49c2e9f9c8bfbe74e4c857adc26d5571","Test deploy hash - Passed");
+	
+	# Test assertion for Deploy payment
+	
+	my $payment = $deploy->getPayment();
+	ok($payment->getItsType() eq "ModuleBytes","Test deploy payment of type ModuleBytes - Passed");
+	my $paymentValue = $payment->getItsValue();
+	ok($paymentValue->getModuleBytes() eq "","Test deploy payment module_bytes - Passed");
+	my $paymentArgs = $paymentValue->getArgs();
+	my @listArgs = @{$paymentArgs->getListNamedArg()};
+	my $totalArgs = @listArgs;
+	#Test for first args
+	my $counter1 = 0;
+	my $oneNA;
+	foreach(@listArgs) {
+		if($counter1 == 2) {
+			$oneNA = $_;
+		}
+		$counter1 ++;
+	}
+	# The real args list contains 1 element, but the list in Perl hold 1 + 2 = 3 elements with 2 items other hold the other information for the 
+	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
+	ok($totalArgs - 2 == 1, "Test payment total args = 1 - Passed");
+	ok($oneNA->getItsName() eq "amount", "Test payment first arg name = amount - Passed");
+	my $paymentFirstArgCLValue = $oneNA->getCLValue();
+	ok($paymentFirstArgCLValue->getBytes() eq "0500d0ed902e","Test payment first arg CLValue, bytes value = 0500d0ed902e - Passed");
+	ok($paymentFirstArgCLValue->getCLType()->getItsTypeStr() eq "U512","Test payment first arg CLValue, cl_type = U512 - Passed");
+	ok($paymentFirstArgCLValue->getParse()->getItsValueStr() eq "200000000000","Test payment first arg CLValue, parse = 200000000000 - Passed");
+	
+	#Test assertion for Deploy session
+	
+	my $session = $deploy->getSession();
+	ok($session->getItsType() eq "ModuleBytes", "Test deploy session of type ModuleBytes - Passed");
+	my $sessionValue = $session->getItsValue();
+	my $sessionArgs = $sessionValue->getArgs();
+	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
+	my $totalArgsSession = @listArgsSession;
+	# The real args list contains 17 element, but the list in Perl hold 17 + 2 = 19 element with 2 items other hold the other information for the 
+	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
+	ok($totalArgsSession - 2 == 17, "Test session total args = 17 - Passed");
+	$counter1 = -2;
+	my $oneNASession;
+	foreach(@listArgsSession) {
+		if($counter1 == 4) { # get CLValue of type Option(Bool) with value NULL
+			$oneNASession = $_;
+			# Assertion for 5th Arg - CLType of type Option(Bool)
+			ok($oneNASession->getItsName() eq "starting_price", "Test session 5th arg name = starting_price - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "00","Test session 5th arg CLValue, bytes value = 00 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 5th arg CLValue, cl_type = Option - Passed");
+			ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "Bool","Test session 9th arg CLValue, cl_type = Option(Bool) Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "NULL_VALUE","Test session 9th arg CLValue, parse = NULL - Passed");
+		} elsif($counter1 == 12) { # get CLValue of type Option(U64) with value NULL
+			$oneNASession = $_;
+			ok($oneNASession->getItsName() eq "bidder_count_cap", "Test session 13th arg name = bidder_count_cap - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "00","Test session 13th arg CLValue, bytes value = 00 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 13th arg CLValue, cl_type = Option - Passed");
+			ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "U64","Test session 13th arg CLValue, cl_type = Option(U64) Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "NULL_VALUE","Test session 13th arg CLValue, parse = NULL - Passed");
+		} elsif($counter1 == 14) { 
+			$oneNASession = $_;
+			# Assertion for 15th Arg - CLType of type Option(U512) with value 5
+			ok($oneNASession->getItsName() eq "minimum_bid_step", "Test session 15th arg name = minimum_bid_step - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "010105","Test session 13th arg CLValue, bytes value = 010105 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Option","Test session 15th arg CLValue, cl_type = Option - Passed");
+			ok($sessionArgCLValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq "U512","Test session 15th arg CLValue, cl_type = Option(U512) Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "5","Test session 15th arg CLValue, parse = 5 - Passed");
+		}
+		elsif($counter1 == 16) { # get CLValue of type U32
+			$oneNASession = $_;
+			# Assertion for 17th Arg - CLType of type U32  with value 100
+			ok($oneNASession->getItsName() eq "marketplace_commission", "Test session 17th arg name = marketplace_commission - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "64000000","Test session 17th arg CLValue, bytes value = 64000000 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "U32","Test session 17th arg CLValue, cl_type = U32 - Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "100","Test session 17th arg CLValue, parse = 100 - Passed");
+		} elsif($counter1 == 10) { # get CLValue of type String
+			$oneNASession = $_;
+			# Assertion for 11th Arg - CLType of type String  with value 100
+			ok($oneNASession->getItsName() eq "format", "Test session 11th arg name = format - Passed");
+			my $sessionArgCLValue = $oneNASession->getCLValue();
+			ok($sessionArgCLValue->getBytes() eq "07000000454e474c495348","Test session 11th arg CLValue, bytes value = 07000000454e474c495348 - Passed");
+			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "String","Test session 11th arg CLValue, cl_type = String - Passed");
+			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "ENGLISH","Test session 11th arg CLValue, parse = ENGLISH - Passed");
+		}
+		$counter1 ++;
+	}
+}
 #getDeploy1();
-getDeploy2();
+#getDeploy2();
 #getDeploy3();
 #getDeploy4();
+getDeploy5();
 
