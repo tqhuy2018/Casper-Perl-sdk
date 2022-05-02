@@ -1,8 +1,8 @@
 =comment
-Class built for storing ExecutableDeployItem enum of type StoredContractByHash
+Class built for storing ExecutableDeployItem enum of type StoredContractVersionedByHash
 =cut
 
-package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
+package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
 
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
@@ -10,6 +10,7 @@ sub new {
 	my $class = shift;
 	my $self = {
 		_itsHash => shift,
+		_version => shift, # Optional value
 		_entryPoint => shift, 
 		_args => shift,
 	};
@@ -17,7 +18,7 @@ sub new {
 	return $self;
 }
 
-#get-set method for _itsHash
+# get-set method for _itsHash
 
 sub setItsHash {
 	my ( $self, $itsHash) = @_;
@@ -30,7 +31,11 @@ sub getItsHash {
 	return $self->{_itsHash};
 }
 
-#get-set method for entryPoint
+# get-set method for version
+
+sub 
+
+# get-set method for entryPoint
 
 sub setEntryPoint {
 	my ($self,$entryPoint) = @_;
@@ -42,7 +47,7 @@ sub getEntryPoint {
 	return $self->{_entryPoint};
 }
 
-#get-set method for args
+# get-set method for args
 
 sub setArgs {
 	my ( $self, $args) = @_;
@@ -54,12 +59,12 @@ sub getArgs {
 	my ( $self ) = @_;
 	return $self->{_args};
 }
-#This function turn the JsonObject to a ExecutableDeployItem_StoredContractByHash object
-sub fromJsonObjectToEDIStoredContractByHash {
+# This function turn the JsonObject to a ExecutableDeployItem_StoredVersionedContractByHash object
+sub fromJsonObjectToEDIStoredContractVersionedByHash {
 	my @list = @_;
 	print "\nstr json to get edimb is:".$list[1]."\n";
 	my $json = $list[1];
-	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash();
+	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash();
 	my $hash = $json->{'hash'};
     $ret->setItsHash($hash);
     $ret->setEntryPoint($json->{'entry_point'});

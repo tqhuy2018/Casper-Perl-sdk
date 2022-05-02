@@ -1,15 +1,15 @@
 =comment
-Class built for storing ExecutableDeployItem enum of type StoredContractByHash
+Class built for storing ExecutableDeployItem enum of type StoredContractByName
 =cut
 
-package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
+package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName;
 
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
 sub new {
 	my $class = shift;
 	my $self = {
-		_itsHash => shift,
+		_itsName => shift,
 		_entryPoint => shift, 
 		_args => shift,
 	};
@@ -17,17 +17,17 @@ sub new {
 	return $self;
 }
 
-#get-set method for _itsHash
+#get-set method for _itsName
 
-sub setItsHash {
-	my ( $self, $itsHash) = @_;
-	$self->{_itsHash} = $itsHash if defined($itsHash);
-	return $self->{_itsHash};
+sub setItsName {
+	my ( $self, $itsName) = @_;
+	$self->{_itsName} = $itsName if defined($itsName);
+	return $self->{_itsName};
 }
 
-sub getItsHash {
+sub getItsName {
 	my ( $self ) = @_;
-	return $self->{_itsHash};
+	return $self->{_itsName};
 }
 
 #get-set method for entryPoint
@@ -54,14 +54,14 @@ sub getArgs {
 	my ( $self ) = @_;
 	return $self->{_args};
 }
-#This function turn the JsonObject to a ExecutableDeployItem_StoredContractByHash object
-sub fromJsonObjectToEDIStoredContractByHash {
+#This function turn the JsonObject to a ExecutableDeployItem_StoredContractByName object
+sub fromJsonObjectToEDIStoredContractByName {
 	my @list = @_;
 	print "\nstr json to get edimb is:".$list[1]."\n";
 	my $json = $list[1];
-	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash();
-	my $hash = $json->{'hash'};
-    $ret->setItsHash($hash);
+	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName();
+	my $name = $json->{'name'};
+    $ret->setItsName($name);
     $ret->setEntryPoint($json->{'entry_point'});
     print "Hash is:".$hash." and entryPoint:".$json->{'entry_point'}."\n";
     my @argsJson = $json->{'args'};
