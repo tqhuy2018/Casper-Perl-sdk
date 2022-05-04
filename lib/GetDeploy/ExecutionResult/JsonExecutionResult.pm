@@ -1,7 +1,7 @@
 # Class built for storing JsonExecutionResult information
 
 package GetDeploy::ExecutionResult::JsonExecutionResult;
-
+use GetDeploy::ExecutionResult::ExecutionResult;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -42,7 +42,8 @@ sub fromJsonToJsonExecutionResult{
 	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::JsonExecutionResult();
 	$ret->setBlockHash($json->{'block_hash'});
-	print "ER block hash is:".$json->{'block_hash'}."\n";
+	my $result = GetDeploy::ExecutionResult::ExecutionResult->fromJsonToExecutionResult($json->{'result'});
+	$ret->setResult($result);
 	return $ret;
 }
 1;

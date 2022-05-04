@@ -2,6 +2,8 @@
 
 package GetDeploy::ExecutionResult::ExecutionResult;
 
+use GetDeploy::ExecutionResult::ExecutionEffect;
+
 sub new {
 	my $class = shift;
 	my $self = {
@@ -77,6 +79,24 @@ sub getTransfers {
 }
 # This function parse the JsonObject (taken from server RPC method call) to get the ExecutionResult object
 sub fromJsonToExecutionResult{
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::ExecutionResult();
+	my $successJson = $json->{'Success'};
+	my $failureJson = $json->{'Failure'};
+	if($successJson) {
+		$ret->setItsType("Success");
+		$ret->setCost($successJson->{'cost'});
+		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($successJson->{'effect'});
+		$ret->setEffect($executionEffect);
+	} elsif ($failureJson) {
+		$ret->setItsType("Failure");
+		$ret->setErrorMessage($failureJson->{'error_message'});
+		$ret->setCost($failureJson->{'cost'});
+		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($successJson->{'effect'});
+		$ret->setEffect($executionEffect);
+	}
+	print "Its type of ER is: ".$ret->getItsType();
+	return $ret;
 }
 1;

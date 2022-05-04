@@ -802,8 +802,12 @@ sub getDeploy6 {
 	$counter1 = 0;
 	foreach(@list) {
 		if($counter1 == 0) {
-			my $oneER = $_;
-			ok($oneER->getBlockHash() eq "966b9cbc817b01974847b0ae536902c6dc90af9c4ff47ec4bc43ee9b095a4359", "Test JsonExecutionResult block hash, Passed" )
+			my $oneER = $_; #JsonExecutionResult object
+			ok($oneER->getBlockHash() eq "966b9cbc817b01974847b0ae536902c6dc90af9c4ff47ec4bc43ee9b095a4359", "Test JsonExecutionResult block hash, Passed" );
+			my $result = $oneER->getResult();
+			# assertion for ExecutionResult
+			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
+			ok($result->getCost() eq "721839840", "Test ExecutionResult cost, Passed");
 		}
 	}
 }

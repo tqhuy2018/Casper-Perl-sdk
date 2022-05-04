@@ -5,13 +5,5 @@ The error can be invalid param,
 use strict;
 use warnings;
 package Common::ConstValues;
-sub new {
-	my $class = shift;
-	my $self = {
-		
-	};
-	bless $self,$class;
-	return $self;
-}
-my $BLOCK_HASH = "hash";
-my $BLOCK_HEIGHT = "height";
+use constant TRANSFORM_IDENTITY => "Identity";
+1;
