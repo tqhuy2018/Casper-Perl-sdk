@@ -56,11 +56,12 @@ sub fromJsonObjectToGetDeployResult {
 	my @list = @_;
 	my $json = $list[1];
 	my $ret = new GetDeploy::GetDeployResult();
+    my $deploy = new GetDeploy::Deploy();
+    	
 	 #get deploy header
     my $deployHeaderJson = $json->{'deploy'}{'header'};
     my $deployHeader = GetDeploy::DeployHeader->fromJsonObjectToDeployHeader($deployHeaderJson);
     print "\ndeploy header hash: ".$deployHeader->getBodyHash()."\n";
-    my $deploy = new GetDeploy::Deploy();
     $deploy->setDeployHash($json->{'deploy'}{'hash'});
     $deploy->setHeader($deployHeader);
     
@@ -69,8 +70,6 @@ sub fromJsonObjectToGetDeployResult {
     my $payment = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($paymentJson);
     $deploy->setPayment($payment);
     
-    print "\n----------------------------------------------------------------------\n";
-    print "\n----------------------------------------------------------------------\n";
     #get deploy session
     my $sessionJson = $json->{'deploy'}{'session'};
     my $session = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($sessionJson);
@@ -84,6 +83,7 @@ sub fromJsonObjectToGetDeployResult {
     	print("In parsing Deploy, approval signer:".$oneA->getSigner()."\n");
     }
     #get the execution_results
+    
     $ret->setDeploy($deploy);
     return $ret;
 }
