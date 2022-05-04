@@ -85,16 +85,16 @@ sub getApprovals {
 sub fromJsonArrayToApprovalList {
 	my @list = @_;
 	my @json = @{$list[1]};
-	my @approvals = ();
+	my @approvalList = ();
 	foreach(@json) {
 		my $oneApprovalJson = $_;
 		print("One ApprovalJson:".$oneApprovalJson."\n");
 		print("singer:".$oneApprovalJson->{'signer'}."\n");
 		my $oneApproval = GetDeploy::Approval->fromJsonObjectToApproval($_);
 		print("One Approval in deploy signer:".$oneApproval->getSigner()."\n");
-		push(@approvals,$oneApproval);
+		push(@approvalList,$oneApproval);
 	}
-	return @approvals;
+	return @approvalList;
 }
 
 # This function log information of a deploy

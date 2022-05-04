@@ -682,6 +682,22 @@ sub getDeploy5 {
 		}
 		$counter1 ++;
 	}
+	#Approvals assertion
+	my @listApproval = $deploy->getApprovals();
+	$counter1 = 0;
+	foreach(@listApproval) {
+		if($counter1 == 0) {
+			my @oneApproval = @{$_};
+			my $totalApproval = @oneApproval;
+			ok($totalApproval == 1, "Test total approval = 1, Passed");
+			foreach(@oneApproval) {
+				my $oA = $_;
+				ok($oA->getSigner() eq "014caf1ce908f9ef3d427dceac17e5c47950becf15d1def0810c235e0d58a9efad", "Test approval signer - Passed");
+				ok($oA->getSignature() eq "011f547186d73f9b47de744e2d83294863667153bbc9e17d2d93b81c2a534baea889ccea44ae75c5078ed96930accd795982ed038781f8122c07dafde418117a00", "Test approval signature - Passed");
+			}
+		}
+		$counter1 ++;
+	}
 }
 
 # Test 6: information for deploy at this address: https://testnet.cspr.live/deploy/1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f
@@ -764,14 +780,17 @@ sub getDeploy6 {
 	}
 	#Approvals assertion
 	my @listApproval = $deploy->getApprovals();
-	my $totalApproval = @listApproval;
-	print("Total approval:".$totalApproval."\n");
 	$counter1 = 0;
 	foreach(@listApproval) {
 		if($counter1 == 0) {
-			my $oneApproval = $_;
-			ok($oneApproval->getSigner() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b", "Test approval signer - Passed");
-			ok($oneApproval->getSignature() eq "01e3cf17faf54d7145d64c4cb446f75d82ad673b2d76105116b621f7dc853eb6e169163ec9a360505484ca176b333a3958c02d3b47300a6fded81412736196fa02", "Test approval signature - Passed");
+			my @oneApproval = @{$_};
+			my $totalApproval = @oneApproval;
+			ok($totalApproval == 1, "Test total approval = 1, Passed");
+			foreach(@oneApproval) {
+				my $oA = $_;
+				ok($oA->getSigner() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b", "Test approval signer - Passed");
+				ok($oA->getSignature() eq "01e3cf17faf54d7145d64c4cb446f75d82ad673b2d76105116b621f7dc853eb6e169163ec9a360505484ca176b333a3958c02d3b47300a6fded81412736196fa02", "Test approval signature - Passed");
+			}
 		}
 		$counter1 ++;
 	}
