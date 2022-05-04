@@ -29,7 +29,6 @@ sub fromJsonListToRuntimeArgs {
 	my @list = @_;
     my @argListJson = @{$list[1]};
     my $totalArgs = @argListJson;
-    print "Total args:".$totalArgs."\n";
     my @listNamedArg = @_;
     my $counter = 0;
     foreach(@argListJson) {

@@ -2,14 +2,14 @@
 Class built for storing ExecutableDeployItem enum of type StoredContractVersionedByHash
 =cut
 
-package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
+package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName;
 
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
 sub new {
 	my $class = shift;
 	my $self = {
-		_itsHash => shift,
+		_itsName => shift,
 		_version => shift, # Optional value
 		_entryPoint => shift, 
 		_args => shift,
@@ -20,15 +20,15 @@ sub new {
 
 # get-set method for _itsHash
 
-sub setItsHash {
-	my ( $self, $itsHash) = @_;
-	$self->{_itsHash} = $itsHash if defined($itsHash);
-	return $self->{_itsHash};
+sub setItsName {
+	my ( $self, $itsName) = @_;
+	$self->{_itsName} = $itsName if defined($itsName);
+	return $self->{_itsName};
 }
 
-sub getItsHash {
+sub getItsName {
 	my ( $self ) = @_;
-	return $self->{_itsHash};
+	return $self->{_itsName};
 }
 
 # get-set method for version
@@ -68,12 +68,11 @@ sub getArgs {
 	return $self->{_args};
 }
 # This function turn the JsonObject to a ExecutableDeployItem_StoredVersionedContractByHash object
-sub fromJsonObjectToEDIStoredContractVersionedByHash {
+sub fromJsonObjectToEDIStoredContractVersionedByName {
 	my @list = @_;
 	my $json = $list[1];
-	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash();
-	my $hash = $json->{'hash'};
-    $ret->setItsHash($hash);
+	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName();
+    $ret->setItsName($json->{'name'});
     $ret->setEntryPoint($json->{'entry_point'});
     my @argsJson = $json->{'args'};
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);

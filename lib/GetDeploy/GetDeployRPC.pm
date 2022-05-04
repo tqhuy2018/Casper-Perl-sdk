@@ -49,7 +49,7 @@ sub getDeploy {
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 		    
-		    #get the deploy header
+		    #get deploy header
 		    my $deployHeaderJson = $decoded->{'result'}{'deploy'}{'header'};
 		    print "deployHeaderJson is:".encode_json($deployHeaderJson)."\n";
 		    my $deployHeaderStr = encode_json($deployHeaderJson);
@@ -59,7 +59,7 @@ sub getDeploy {
 		    $deploy->setDeployHash($decoded->{'result'}{'deploy'}{'hash'});
 		    $deploy->setHeader($deployHeader);
 		    
-		    #get the deploy payment
+		    #get deploy payment
 		    my $paymentJson = $decoded->{'result'}{'deploy'}{'payment'};
 		    #my $paymentStr = encode_json($paymentJson);
 		    my $payment = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($paymentJson);
@@ -67,12 +67,20 @@ sub getDeploy {
 		    
 		    print "\n----------------------------------------------------------------------\n";
 		    print "\n----------------------------------------------------------------------\n";
-		    #get the deploy session
+		    #get deploy session
 		    my $sessionJson = $decoded->{'result'}{'deploy'}{'session'};
 		    #my $sessionStr = encode_json($sessionJson);
 		    my $session = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($sessionJson);
 		    $deploy->setSession($session);
 		    
+		    #get deploy approval list
+		    
+		    my @approvalList = GetDeploy::Deploy->fromJsonArrayToApprovalList($decoded->{'result'}{'deploy'}{'approvals'});
+		    $deploy->setApprovals(@approvalList);
+		    foreach(@approvalList) {
+		    	my $oneA = $_;
+		    	print("In parsing Deploy, approval signer:".$oneA->getSigner()."\n");
+		    }
 		    return $deploy;
 	    }
 	}

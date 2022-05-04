@@ -4,7 +4,9 @@ This class is for storing Deploy information
 
 package GetDeploy::Deploy;
 
-#use Common::ConstValues;
+use GetDeploy::Approval;
+
+# use Common::ConstValues;
 
 use JSON qw( decode_json );
 
@@ -44,7 +46,7 @@ sub getHeader {
 	return $self->{_header};
 }
 
-#get-set method for Deploy session
+# get-set method for Deploy session
 sub setSession {
 	my ($self,$session) = @_;
 	$self->{_session} = $session if defined ($session);
@@ -55,7 +57,7 @@ sub getSession {
 	return $self->{_session};
 }
 
-#get-set method for Deploy payment
+# get-set method for Deploy payment
 sub setPayment {
 	my ($self,$payment) = @_;
 	$self->{_payment} = $payment if defined($payment);
@@ -65,7 +67,7 @@ sub getPayment {
 	my ($self) = @_;
 	return $self->{_payment};
 }
-#get-set method for Approvals
+# get-set method for Approvals
 
 sub setApprovals {
 	my ($self, @approvals) = @_;
@@ -78,7 +80,24 @@ sub getApprovals {
 	wantarray ? @approvals : \@approvals;
 }
 
-#This function log information of a deploy
+# This function turn Json Array to a list of Approval objects
+
+sub fromJsonArrayToApprovalList {
+	my @list = @_;
+	my @json = @{$list[1]};
+	my @approvals = ();
+	foreach(@json) {
+		my $oneApprovalJson = $_;
+		print("One ApprovalJson:".$oneApprovalJson."\n");
+		print("singer:".$oneApprovalJson->{'signer'}."\n");
+		my $oneApproval = GetDeploy::Approval->fromJsonObjectToApproval($_);
+		print("One Approval in deploy signer:".$oneApproval->getSigner()."\n");
+		push(@approvals,$oneApproval);
+	}
+	return @approvals;
+}
+
+# This function log information of a deploy
 sub logInfo {
 	my ( $self ) = @_;
 	print "\nDeploy hash:".$self->{_deployHash}."\n";

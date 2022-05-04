@@ -700,7 +700,7 @@ sub getDeploy6 {
 	ok($deploy->getHeader()->getChainName() eq "casper-test","Test deploy header chain name - Passed");
 	ok($deploy->getHeader()->getTimestamp() eq "2022-01-25T13:03:53.438Z","Test deploy header timestamp - Passed");
 	ok($deploy->getHeader()->getTTL() eq "1h","Test deploy header ttl - Passed");
-	ok($deploy->getHeader()->getGasPrice() == 1,"Test deploy header gas price - Passed");
+	ok($deploy->getHeader()->getGasPrice() == 10,"Test deploy header gas price - Passed");
 	my @d = $deploy->getHeader()->getDependencies();
 	my $dl = @d;
 	ok($dl == 0, "Test deploy header dependencies - Passed");
@@ -760,6 +760,19 @@ sub getDeploy6 {
 			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "Bool","Test session 5th arg CLValue, cl_type = Bool - Passed");
 			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "1","Test session 5th arg CLValue, parse = true - Passed");
 		} 
+		$counter1 ++;
+	}
+	#Approvals assertion
+	my @listApproval = $deploy->getApprovals();
+	my $totalApproval = @listApproval;
+	print("Total approval:".$totalApproval."\n");
+	$counter1 = 0;
+	foreach(@listApproval) {
+		if($counter1 == 0) {
+			my $oneApproval = $_;
+			ok($oneApproval->getSigner() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b", "Test approval signer - Passed");
+			ok($oneApproval->getSignature() eq "01e3cf17faf54d7145d64c4cb446f75d82ad673b2d76105116b621f7dc853eb6e169163ec9a360505484ca176b333a3958c02d3b47300a6fded81412736196fa02", "Test approval signature - Passed");
+		}
 		$counter1 ++;
 	}
 }
