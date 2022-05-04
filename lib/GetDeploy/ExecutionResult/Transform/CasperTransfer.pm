@@ -85,9 +85,26 @@ sub getTarget {
 }
 
 # get-set method for _amount
+sub setAmount {
+	my ($self,$amount) = @_;
+	$self->{_amount} = $amount if defined($amount);
+	return $self->{_amount};
+}
+sub getAmount {
+	my ($self)  = @_;
+	return $self->{_amount};
+}
 
 # get-set method for _gas
-
+sub setGas {
+	my ($self,$gas) = @_;
+	$self->{_gas} = $gas if defined($gas);
+	return $self->{_gas};
+}
+sub getGas {
+	my ($self)  = @_;
+	return $self->{_gas};
+}
 
 # This function parse the JsonObject (taken from server RPC method call) to get the CasperTransfer object
 sub fromJsonToTransfer {
