@@ -21,7 +21,7 @@ sub new {
 	return $self;
 }
 
-#get-set methods for account
+# get-set methods for account
 
 sub setAccount {
 	my ( $self, $account) = @_;
@@ -34,7 +34,7 @@ sub getAccount {
 	return $self->{_account};
 }
 
-#get-set methods for body_hash
+# get-set methods for body_hash
 
 sub setBodyHash {
 	my ( $self, $bodyHash) = @_;
@@ -47,7 +47,7 @@ sub getBodyHash {
 	return $self->{_bodyHash};
 }
 
-#get-set methods for chain_name
+# get-set methods for chain_name
 
 sub setChainName {
 	my ( $self, $chainName) = @_;
@@ -60,7 +60,7 @@ sub getChainName {
 	return $self->{_chainName};
 }
 
-#get-set methods for timestamp
+# get-set methods for timestamp
 
 sub setTimestamp {
 	my ( $self, $timeStamp) = @_;
@@ -73,7 +73,7 @@ sub getTimestamp {
 	return $self->{_timeStamp};
 }
 
-#get-set methods for ttl
+# get-set methods for ttl
 
 sub setTTL {
 	my ( $self, $ttl) = @_;
@@ -86,7 +86,7 @@ sub getTTL {
 	return $self->{_ttl};
 }
 
-#get-set methods for gas_price
+# get-set methods for gas_price
 
 sub setGasPrice {
 	my ( $self, $gasPrice) = @_;
@@ -99,8 +99,7 @@ sub getGasPrice {
 	return $self->{_gasPrice};
 }
 
-#get-set methods for dependencies
-
+# get-set methods for dependencies
 sub setDependencies {
 	my ( $self, @dependencies) = @_;
 	$self->{_dependencies} = \@dependencies;

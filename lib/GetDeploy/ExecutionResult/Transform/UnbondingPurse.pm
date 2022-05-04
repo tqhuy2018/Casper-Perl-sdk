@@ -15,6 +15,61 @@ sub new {
 	return $self;
 }
 
+# get-set method for _bondingPurse
+sub setBondingPurse {
+	my ($self,$value) = @_;
+	$self->{_bondingPurse} = $value if defined($value);
+	return $self->{_bondingPurse};
+}
+sub getBondingPurse {
+	my ($self)  = @_;
+	return $self->{_bondingPurse};
+}
+
+# get-set method for _validatorPublicKey
+sub setValidatorPublicKey {
+	my ($self,$value) = @_;
+	$self->{_validatorPublicKey} = $value if defined($value);
+	return $self->{_validatorPublicKey};
+}
+sub getValidatorPublicKey {
+	my ($self)  = @_;
+	return $self->{_validatorPublicKey};
+}
+
+# get-set method for _unbonderPublicKey
+sub setUnbonderPublicKey {
+	my ($self,$value) = @_;
+	$self->{_unbonderPublicKey} = $value if defined($value);
+	return $self->{_unbonderPublicKey};
+}
+sub getUnbonderPublicKey {
+	my ($self)  = @_;
+	return $self->{_unbonderPublicKey};
+}
+
+# get-set method for _eraOfCreation
+sub setEraOfCreation {
+	my ($self,$value) = @_;
+	$self->{_eraOfCreation} = $value if defined($value);
+	return $self->{_eraOfCreation};
+}
+sub getEraOfCreation {
+	my ($self)  = @_;
+	return $self->{_eraOfCreation};
+}
+
+# get-set method for _amount
+sub setAmount {
+	my ($self,$value) = @_;
+	$self->{_amount} = $value if defined($value);
+	return $self->{_amount};
+}
+sub getAmount {
+	my ($self)  = @_;
+	return $self->{_amount};
+}
+
 # This function parse the JsonObject (taken from server RPC method call) to get the UnbondingPurse object
 sub fromJsonToUnbondingPurse {
 	
