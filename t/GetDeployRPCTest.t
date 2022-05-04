@@ -22,7 +22,7 @@ sub getDeploy1 {
 	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	
 	# Test assertion for Deploy Header
@@ -121,7 +121,7 @@ sub getDeploy2 {
 	$getDeployParams->setDeployHash("AaB4aa0C14a37Bc9386020609aa1CabaD895c3E2E104d877B936C6Ffa2302268");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
@@ -275,7 +275,7 @@ sub getDeploy3 {
 	$getDeployParams->setDeployHash("430df377ae04726de907f115bb06c52e40f6cd716b4b475a10e4cd9226d1317e");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
@@ -389,7 +389,7 @@ sub getDeploy4 {
 	$getDeployParams->setDeployHash("a91d468e2ddc8936f7866bc594794b322f747508c2192fd4eca90ef8a121d45e");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
@@ -578,7 +578,7 @@ sub getDeploy5 {
 	$getDeployParams->setDeployHash("9ff98d8027795a002e41a709d5b5846e49c2e9f9c8bfbe74e4c857adc26d5571");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	
 	# Test assertion for Deploy Header
@@ -707,7 +707,7 @@ sub getDeploy6 {
 	$getDeployParams->setDeployHash("1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeploy($paramStr);
+	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	
 	# Test assertion for Deploy Header

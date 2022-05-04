@@ -12,6 +12,7 @@ use LWP::UserAgent;
 use GetDeploy::Deploy;
 use GetDeploy::DeployHeader;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
+use GetDeploy::GetDeployResult;
 
 sub new {
 	print "GetDeployRPC called";
@@ -23,7 +24,7 @@ sub new {
 =comment
 This function does info_get_deploy RPC call
 =cut
-sub getDeploy {
+sub getDeployResult {
 	my @list = @_;
 	print "\nparameter str is:".$list[1]."\n";
 	my $uri = 'https://node-clarity-testnet.make.services/rpc';
@@ -47,41 +48,11 @@ sub getDeploy {
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
 	    	die "\nError exception";
 	    } else {
+	    	my $deployResult = new GetDeploy::GetDeployResult();
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
-		    
-		    #get deploy header
-		    my $deployHeaderJson = $decoded->{'result'}{'deploy'}{'header'};
-		    print "deployHeaderJson is:".encode_json($deployHeaderJson)."\n";
-		    my $deployHeaderStr = encode_json($deployHeaderJson);
-		    my $deployHeader = GetDeploy::DeployHeader->fromJsonObjectToDeployHeader($deployHeaderStr);
-		    print "deploy header hash: ".$deployHeader->getBodyHash()."\n";
-		    my $deploy = new GetDeploy::Deploy();
-		    $deploy->setDeployHash($decoded->{'result'}{'deploy'}{'hash'});
-		    $deploy->setHeader($deployHeader);
-		    
-		    #get deploy payment
-		    my $paymentJson = $decoded->{'result'}{'deploy'}{'payment'};
-		    #my $paymentStr = encode_json($paymentJson);
-		    my $payment = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($paymentJson);
-		    $deploy->setPayment($payment);
-		    
-		    print "\n----------------------------------------------------------------------\n";
-		    print "\n----------------------------------------------------------------------\n";
-		    #get deploy session
-		    my $sessionJson = $decoded->{'result'}{'deploy'}{'session'};
-		    #my $sessionStr = encode_json($sessionJson);
-		    my $session = GetDeploy::ExecutableDeployItem::ExecutableDeployItem->fromJsonToExecutableDeployItem($sessionJson);
-		    $deploy->setSession($session);
-		    
-		    #get deploy approval list
-		    
-		    my @approvalList = GetDeploy::Deploy->fromJsonArrayToApprovalList($decoded->{'result'}{'deploy'}{'approvals'});
-		    $deploy->setApprovals(@approvalList);
-		    foreach(@approvalList) {
-		    	my $oneA = $_;
-		    	print("In parsing Deploy, approval signer:".$oneA->getSigner()."\n");
-		    }
-		    return $deploy;
+	    	$deployResult = GetDeploy::GetDeployResult->fromJsonObjectToGetDeployResult($decoded->{'result'});
+		    #$deployResult->setApiVersion($decoded->{'result'}{'api_version'});
+		    return $deployResult;
 	    }
 	}
 	else {
