@@ -97,6 +97,13 @@ sub fromJsonToCasperTransform {
    			$clValue->setParse($clParse);
 			$transform->setItsValue($clValue);
 			print "\nTransformEntry Of type WriteCLValue\n";
+	} elsif ($transformJson->{'AddKeys'}) {
+			$transform->setItsType("AddKeys");
+			
+			
+			
+			
+			print "\nTransformEntry Of type AddKeys\n";
 	}
 	print "\nKey of TransformEntry is:".$json->{'key'}."\n";
 	return $ret;
