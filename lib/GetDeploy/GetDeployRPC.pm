@@ -51,7 +51,6 @@ sub getDeployResult {
 	    	my $deployResult = new GetDeploy::GetDeployResult();
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 	    	$deployResult = GetDeploy::GetDeployResult->fromJsonObjectToGetDeployResult($decoded->{'result'});
-		    #$deployResult->setApiVersion($decoded->{'result'}{'api_version'});
 		    return $deployResult;
 	    }
 	}

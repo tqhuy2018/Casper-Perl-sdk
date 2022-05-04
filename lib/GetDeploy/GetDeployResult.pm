@@ -4,6 +4,8 @@ in the class GetDeployResult
 =cut
 package GetDeploy::GetDeployResult;
 
+use GetDeploy::ExecutionResult::JsonExecutionResult;
+
 use JSON qw( decode_json );
 use JSON qw( encode_json );
 
@@ -12,7 +14,7 @@ sub new {
 	my $self = {
 		_apiVersion => shift,
 		_deploy => shift,
-		_executionResults => shift,
+		_executionResults => [ @_ ],
 	};
 	bless $self, $class;
 	return $self;
@@ -42,13 +44,14 @@ sub getDeploy {
 
 # get-set method for _executionResults
 sub setExecutionResults {
-	my ($self,$value) = @_;
-	$self->{_executionResults} = $value if defined($value);
+	my ($self,@list) = @_;
+	$self->{_executionResults} = \@list;
 	return $self->{_executionResults};
 }
 sub getExecutionResults {
 	my ($self)  = @_;
-	return $self->{_executionResults};
+	my @list = @{$self->{_executionResults}};
+	wantarray ? @list : \@list;
 }
 
 # This function turn a json object to a GetDeployResult object
@@ -83,8 +86,15 @@ sub fromJsonObjectToGetDeployResult {
     	print("In parsing Deploy, approval signer:".$oneA->getSigner()."\n");
     }
     #get the execution_results
-    
-    $ret->setDeploy($deploy);
+    my @jsonList = @{$json->{'execution_results'}};
+    my @listER = ();
+    foreach(@jsonList) {
+    	my $er = GetDeploy::ExecutionResult::JsonExecutionResult->fromJsonToJsonExecutionResult($_);
+    	print "\nAdd 1 ER to THE LIST\n";
+    	push(@listER,$er);
+    }
+    $ret->setExecutionResults(@listER);
+  	$ret->setDeploy($deploy);
     return $ret;
 }
 1;

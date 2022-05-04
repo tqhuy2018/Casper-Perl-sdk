@@ -38,5 +38,11 @@ sub getResult {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the JsonExecutionResult object
 sub fromJsonToJsonExecutionResult{
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::JsonExecutionResult();
+	$ret->setBlockHash($json->{'block_hash'});
+	print "ER block hash is:".$json->{'block_hash'}."\n";
+	return $ret;
 }
+1;

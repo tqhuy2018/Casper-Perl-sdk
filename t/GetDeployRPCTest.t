@@ -707,7 +707,8 @@ sub getDeploy6 {
 	$getDeployParams->setDeployHash("1d113022631c587444166e4d1efbc3d475e49b28b90f1414d9cadee6dcddf65f");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+	my $deploy = $getDeployResult->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	
 	# Test assertion for Deploy Header
@@ -793,6 +794,17 @@ sub getDeploy6 {
 			}
 		}
 		$counter1 ++;
+	}
+	# JsonExecutionResult list assertion
+	my @list =  $getDeployResult->getExecutionResults();
+	my $totalER = @list;
+	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
+	$counter1 = 0;
+	foreach(@list) {
+		if($counter1 == 0) {
+			my $oneER = $_;
+			ok($oneER->getBlockHash() eq "966b9cbc817b01974847b0ae536902c6dc90af9c4ff47ec4bc43ee9b095a4359", "Test JsonExecutionResult block hash, Passed" )
+		}
 	}
 }
 #getDeploy1();
