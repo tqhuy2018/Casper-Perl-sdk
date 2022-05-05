@@ -73,5 +73,23 @@ sub getTransfers {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the DeployInfo object
 sub fromJsonToDeployInfo {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new  GetDeploy::ExecutionResult::Transform::DeployInfo();
+	$ret->setDeployHash($json->{'deploy_hash'});
+	$ret->setFrom($json->{'from'});
+	$ret->setSource($json->{'source'});
+	$ret->setGas($json->{'gas'});
+	my @listTransferJson = @{$json->{'transfers'}};
+	my $totalTransfer = @listTransferJson;
+	print "\ntotal transfer in DeployInfo is:".$totalTransfer."\n";
+	if($totalTransfer > 0) {
+		my @list = ();
+		foreach(@listTransferJson)  {
+			push(@list,$_);
+		}
+		$ret->setTransfers(@list);
+	}
+	return $ret;
 }
+1;

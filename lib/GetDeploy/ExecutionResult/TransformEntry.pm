@@ -2,6 +2,8 @@
 
 package GetDeploy::ExecutionResult::TransformEntry;
 use GetDeploy::ExecutionResult::CasperTransform;
+use GetDeploy::ExecutionResult::Transform::NamedKey;
+use GetDeploy::ExecutionResult::Transform::DeployInfo;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -47,63 +49,69 @@ sub fromJsonToCasperTransform {
 	if ($transformJson eq "Identity") {
 		print "Transform Entry of type Identity";
 		$transform->setItsType("Identity");
-		$ret->setTransform($transform);
 	} elsif ($transformJson eq "WriteContractWasm") {
 		print "Transform Entry of type WriteContractWasm";
 		$transform->setItsType("WriteContractWasm");
-		$ret->setTransform($transform);
 	} elsif ($transformJson eq "WriteContract") {
 		print "Transform Entry of type WriteContract";
 		$transform->setItsType("WriteContract");
-		$ret->setTransform($transform);
 	} elsif ($transformJson eq "WriteContractPackage") {
 		print "Transform Entry of type WriteContractPackage";
 		$transform->setItsType("WriteContractPackage");
-		$ret->setTransform($transform);
 	} elsif ($transformJson->{'AddInt32'}) {
-			$transform->setItsType("AddInt32");
-			$transform->setItsValue($transformJson->{'AddInt32'});
-			print "\nTransformEntry Of type AddInt32\n";
+		$transform->setItsType("AddInt32");
+		$transform->setItsValue($transformJson->{'AddInt32'});
+		print "\nTransformEntry Of type AddInt32\n";
 	} elsif ($transformJson->{'AddUInt64'}) {
-			$transform->setItsType("AddUInt64");
-			$transform->setItsValue($transformJson->{'AddUInt64'});
-			print "\nTransformEntry Of type AddUInt64\n";
+		$transform->setItsType("AddUInt64");
+		$transform->setItsValue($transformJson->{'AddUInt64'});
+		print "\nTransformEntry Of type AddUInt64\n";
 	} elsif ($transformJson->{'AddUInt128'}) {
-			$transform->setItsType("AddUInt128");
-			$transform->setItsValue($transformJson->{'AddUInt128'});
-			print "\nTransformEntry Of type AddUInt128\n";
+		$transform->setItsType("AddUInt128");
+		$transform->setItsValue($transformJson->{'AddUInt128'});
+		print "\nTransformEntry Of type AddUInt128\n";
 	} elsif ($transformJson->{'AddUInt256'}) {
-			$transform->setItsType("AddUInt256");
-			$transform->setItsValue($transformJson->{'AddUInt256'});
-			print "\nTransformEntry Of type AddUInt256\n";
+		$transform->setItsType("AddUInt256");
+		$transform->setItsValue($transformJson->{'AddUInt256'});
+		print "\nTransformEntry Of type AddUInt256\n";
 	} elsif ($transformJson->{'AddUInt512'}) {
-			$transform->setItsType("AddUInt512");
-			$transform->setItsValue($transformJson->{'AddUInt512'});
-			print "\nTransformEntry Of type AddUInt512\n";
+		$transform->setItsType("AddUInt512");
+		$transform->setItsValue($transformJson->{'AddUInt512'});
+		print "\nTransformEntry Of type AddUInt512\n";
 	} elsif ($transformJson->{'Failure'}) {
-			$transform->setItsType("Failure");
-			$transform->setItsValue($transformJson->{'Failure'});
-			print "\nTransformEntry Of type Failure\n";
+		$transform->setItsType("Failure");
+		$transform->setItsValue($transformJson->{'Failure'});
+		print "\nTransformEntry Of type Failure\n";
 	} elsif ($transformJson->{'WriteCLValue'}) {
-			$transform->setItsType("WriteCLValue");
-			#my $clValue = CLValue::CLValue->fromJsonObjToCLValue($transformJson->{'WriteCLValue'});
-			my $clValueJson = $transformJson->{'WriteCLValue'};
-			$transform->setItsValue($transformJson->{'WriteCLValue'});
-			my $clType = CLValue::CLType->getCLType($clValueJson->{'cl_type'});
-   			my $clParse = CLValue::CLParse->getCLParsed($clValueJson->{'parsed'},$clType);
-   			my $clValue = new CLValue::CLValue();
-   			$clValue->setBytes($bytes);
-   			$clValue->setCLType($clType);
-   			$clValue->setParse($clParse);
-			$transform->setItsValue($clValue);
-			print "\nTransformEntry Of type WriteCLValue\n";
+		$transform->setItsType("WriteCLValue");
+		my $clValueJson = $transformJson->{'WriteCLValue'};
+		$transform->setItsValue($transformJson->{'WriteCLValue'});
+		my $clType = CLValue::CLType->getCLType($clValueJson->{'cl_type'});
+   		my $clParse = CLValue::CLParse->getCLParsed($clValueJson->{'parsed'},$clType);
+   		my $clValue = new CLValue::CLValue();
+   		$clValue->setBytes($bytes);
+   		$clValue->setCLType($clType);
+   		$clValue->setParse($clParse);
+		$transform->setItsValue($clValue);
+		print "\nTransformEntry Of type WriteCLValue\n";
 	} elsif ($transformJson->{'AddKeys'}) {
-			$transform->setItsType("AddKeys");
-			
-			
-			
-			print "\nTransformEntry Of type AddKeys\n";
+		$transform->setItsType("AddKeys");
+		my @listNamedKeyJson = @{$transformJson->{'AddKeys'}};
+		my @list = ();
+		foreach(@listNamedKeyJson) {
+			my $oneNameKeyJson = $_;
+			my $namedKey = GetDeploy::ExecutionResult::Transform::NamedKey->fromJsonObjectToNamedKey($oneNameKeyJson);
+			push(@list,$nameKey);
+		}
+		$transform->setItsListValue(@list);
+		print "\nTransformEntry Of type AddKeys\n";
+	} elsif($transformJson->{'WriteDeployInfo'}) {
+		$transform->setItsType("WriteDeployInfo");
+		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($transformJson->{'WriteDeployInfo'});
+		print "\nTransformEntry Of type WriteDeployInfo\n";
+		$transform->setItsValue($deployInfo);
 	}
+	$ret->setTransform($transform);
 	print "\nKey of TransformEntry is:".$json->{'key'}."\n";
 	return $ret;
 }

@@ -36,5 +36,12 @@ sub getKey {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the NamedKey object
 sub fromJsonObjectToNamedKey {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::Transform::NamedKey();
+	$ret->setName($json->{'name'});
+	$ret->setKey($json->{'key'});
+	print "Name is:".$json->{'name'}." and key is:".$json->{'key'};
+	return $ret;
 }
+1;

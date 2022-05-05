@@ -7,6 +7,7 @@ sub new {
 	my $self = {
 		_itsType => shift,
 		_itsValue => shift,
+		_itsListValue => [ @_ ], # used for WriteWithdraw and AddKeys
 	};
 	bless $self, $class;
 	return $self;
@@ -34,5 +35,18 @@ sub setItsValue {
 sub getItsValue {
 	my ($self) = @_;
 	return $self->{_itsValue};
+}
+
+# get-set method for _itsListValue
+sub setItsListValue {
+	my ($self,@itsListValue) = @_;
+	$self->{_itsListValue} = \@itsListValue;
+	return $self->{_itsListValue};
+}
+
+sub getItsListValue {
+	my ($self) = @_;
+	my @list = @ {$self->{_itsListValue}};
+	wantarray ? @list : \@list;
 }
 1;

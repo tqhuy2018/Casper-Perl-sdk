@@ -796,6 +796,8 @@ sub getDeploy6 {
 		$counter1 ++;
 	}
 	# JsonExecutionResult list assertion
+	# Test Transform of the following type:
+	# Identity, WriteCLValue, AddUInt512, AddKeys, WriteDeployInfo
 	my @list =  $getDeployResult->getExecutionResults();
 	my $totalER = @list;
 	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
@@ -808,6 +810,30 @@ sub getDeploy6 {
 			# assertion for ExecutionResult
 			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
 			ok($result->getCost() eq "721839840", "Test ExecutionResult cost, Passed");
+			my $effect = $result->getEffect();
+			my @transform = $effect->getTransforms();
+			my @operations = $effect->getOperations();
+			my $totalOperations = @operations;
+			my $totalTransform = @transform;
+			ok($totalTransform == 32, "Test total Transform = 32, Passed");
+			ok($totalOperations == 0, "Test total Operations = 0, Passed");
+			my $counter2 = 0;
+			foreach(@transform) {
+				# assertion for Transform of type Identify
+				if($counter2 == 0) {
+					my $oneTE = $_; # One TransformEntry
+					ok($oneTE->getKey() eq "hash-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401","Test first TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # One CasperTransform of type Identity
+					ok($oneT->getItsType() eq "Identity","Test first transform of type Identity, Passed");
+				} elsif($counter2 == 6) {
+					my $oneTE = $_; # One TransformEntry
+					ok($oneTE->getKey() eq "balance-fbd34b977fb27d90e25d3ac48ec27450c91bf499e785f7b4278de8dd08299ed5","Test 7th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # One CasperTransform of type WriteCLValue
+					ok($oneT->getItsType() eq "WriteCLValue","Test 7th transform of type WriteCLValue, Passed");
+					my $clValue = $oneT->getItsValue();
+				}
+				$counter2 ++;
+			}
 		}
 	}
 }
