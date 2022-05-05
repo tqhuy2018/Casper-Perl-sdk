@@ -26,6 +26,7 @@ our $CLTYPE_STRING 		= "String";
 our $CLTYPE_KEY 		= "Key";
 our $CLTYPE_UREF 		= "URef";
 our $CLTYPE_PUBLICKEY 	= "PublicKey";
+our $CLTYPE_OPTION	 	= "Option";
 our $CLTYPE_LIST	 	= "List";
 our $CLTYPE_BYTEARRAY 	= "ByteArray";
 our $CLTYPE_RESULT	 	= "Result";

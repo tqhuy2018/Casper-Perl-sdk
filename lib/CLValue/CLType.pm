@@ -231,7 +231,7 @@ sub getCLTypeCompound {
 		my $counter = 0;
 		foreach(@listTuple1) {
 			if($counter == 0) {
-				my $cl1 = @_;
+				my $cl1 = $_;
 				my $innerType1 = CLValue::CLType->getCLType($cl1);
 				$ret->setInnerCLType1($innerType1);
 				print "Inner type for Tuple1 item 1 is:".$innerType1->getItsTypeStr()."\n";
@@ -249,12 +249,12 @@ sub getCLTypeCompound {
 		my $counter = 0;
 		foreach(@listTuple2) {
 			if($counter == 0) {
-				my $cl1 = @_;
+				my $cl1 = $_;
 				my $innerType1 = CLValue::CLType->getCLType($cl1);
 				$ret->setInnerCLType1($innerType1);
 				print "Inner type for Tuple2 item 1 is:".$innerType1->getItsTypeStr()."\n";
 			} elsif($counter == 1) {
-				my $cl2 = @_;
+				my $cl2 = $_;
 				my $innerType2 = CLValue::CLType->getCLType($cl2);	
 				$ret->setInnerCLType2($innerType2);			
 				print "Inner type for Tuple2 item 2 is:".$innerType2->getItsTypeStr()."\n";
@@ -272,17 +272,17 @@ sub getCLTypeCompound {
 		my $counter = 0;
 		foreach(@listTuple3) {
 			if($counter == 0) {
-				my $cl1 = @_;
+				my $cl1 = $_;
 				my $innerType1 = CLValue::CLType->getCLType($cl1);
 				$ret->setInnerCLType1($innerType1);
 				print "Inner type for Tuple2 item 1 is:".$innerType1->getItsTypeStr()."\n";
 			} elsif($counter == 1) {
-				my $cl2 = @_;
+				my $cl2 = $_;
 				my $innerType2 = CLValue::CLType->getCLType($cl2);	
 				$ret->setInnerCLType2($innerType2);			
 				print "Inner type for Tuple2 item 2 is:".$innerType2->getItsTypeStr()."\n";
 			} elsif($counter == 2) {
-				my $cl3 = @_;
+				my $cl3 = $_;
 				my $innerType3 = CLValue::CLType->getCLType($cl3);	
 				$ret->setInnerCLType3($innerType3);			
 				print "Inner type for Tuple2 item 3 is:".$innerType3->getItsTypeStr()."\n";

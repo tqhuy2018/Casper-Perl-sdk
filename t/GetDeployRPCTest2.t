@@ -250,12 +250,12 @@ sub getDeploy11 {
 			ok($totalOperations == 0, "Test total Operations = 0, Passed");
 			my $counter2 = 0;
 			foreach(@transform) {
-				# assertion for Transform of type WriteCLValue
+				# assertion for Transform of type WriteCLValue - Result(Ok)
 				if($counter2 == 16) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "uref-9eae5968006607cc910450d191dd2b83e93311a2200c4385cd9f47c2a0ff09f7-000","Test 17th TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
-					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 17th transform of type WriteAccount, Passed");
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 17th transform of type WriteCLValue, Passed");
 					my $clValue = $oneT->getItsValue();
 					ok($clValue->getBytes() eq "010a000000676f6f64726573756c74","Test 17th transform of type WriteCLValue and CLValue bytes, Passed");
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 17th transform of type WriteCLValue and CLValue clType of Result, Passed");
@@ -263,11 +263,12 @@ sub getDeploy11 {
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 17th transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
 					ok($clValue->getParse()->getItsValueStr() eq "Ok","Test 17th transform of type WriteCLValue and CLValue clParsed of type Result Ok, Passed");
 					ok($clValue->getParse()->getInnerParse1()->getItsValueStr() eq "goodresult","Test 17th transform of type WriteCLValue and CLValue clParsed, Passed");
-				} elsif($counter2 == 21) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
+				} # assertion for Transform of type WriteCLValue - Result(Err) 
+				elsif($counter2 == 21) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "uref-74a03aae2f907430a6f6654718b6c4bbdacc260c3bf1537f72a392f210ddf5e2-000","Test 22th TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
-					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 22nd transform of type WriteAccount, Passed");
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 22nd transform of type WriteCLValue, Passed");
 					my $clValue = $oneT->getItsValue();
 					ok($clValue->getBytes() eq "0009000000626164726573756c74","Test 22nd transform of type WriteCLValue and CLValue bytes, Passed");
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 22nd transform of type WriteCLValue and CLValue clType of Result, Passed");
@@ -275,6 +276,37 @@ sub getDeploy11 {
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 22nd transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
 					ok($clValue->getParse()->getItsValueStr() eq "Err","Test 22nd transform of type WriteCLValue and CLValue clParsed of type Result Err, Passed");
 					ok($clValue->getParse()->getInnerParse1()->getItsValueStr() eq "badresult","Test 22nd transform of type WriteCLValue and CLValue clParsed, Passed");
+				} # assertion for Transform of type WriteCLValue - Tuple2 (String, U512)
+				elsif($counter2 == 31) { # Test CasperTransform of type WriteCLValue with cltype of type Tuple2(String,U512)
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "uref-75789066d17abd5a2629c3f5b82af2827c2098edde6868356ea5114d7d6fa86d-000","Test 32th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue - Tuple2 (String, U512)
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 32nd transform of type WriteCLValue, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "030000006162630101","Test 32nd transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE2,"Test 32nd transform of type WriteCLValue and CLValue clType of Tuple2, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 32nd transform of type WriteCLValue and CLValue clType of Tuple2(String,U512) - String, Passed");
+					ok($clValue->getCLType()->getInnerCLType2()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_U512,"Test 32nd transform of type WriteCLValue and CLValue clType of Result(String,U512) - U512, Passed");
+					my $parse = $clValue->getParse();
+					ok($parse->getInnerParse1()->getItsValueStr() eq "abc","Test 32nd transform of type WriteCLValue and CLValue clParsed String value = abc, Passed");
+					ok($parse->getInnerParse2()->getItsValueStr() eq "1","Test 32nd transform of type WriteCLValue and CLValue clParsed U512 value = 1, Passed");
+				} # assertion for Transform of type WriteCLValue - Tuple3 (PublicKey, Option(String),U512)
+				elsif($counter2 == 36) { # Test CasperTransform of type WriteCLValue with cltype of type - Tuple3 (PublicKey, Option(String),U512)
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "uref-e8c07b8ebbd0e7af43283a767975d5d82a334cd92b339eba5c1a1a7ba0137a27-000","Test 37th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue - Tuple3 (PublicKey, Option(String),U512)
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 37th transform of type WriteCLValue, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa901030000006162630102","Test 32nd transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE3,"Test 37th transform of type WriteCLValue and CLValue clType of Tuple2, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLICKEY,"Test 37th transform of type WriteCLValue and CLValue clType of PublicKey, Passed");
+					ok($clValue->getCLType()->getInnerCLType2()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_OPTION,"Test 37th transform of type WriteCLValue and CLValue clType of Option, Passed");
+					ok($clValue->getCLType()->getInnerCLType2()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 37th transform of type WriteCLValue and CLValue clType of Option(String), Passed");
+					ok($clValue->getCLType()->getInnerCLType3()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_U512,"Test 37th transform of type WriteCLValue and CLValue clType of U512, Passed");
+					my $parse = $clValue->getParse();
+					ok($parse->getInnerParse1()->getItsValueStr() eq "01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9","Test 37th transform of type WriteCLValue and CLValue clParsed PublicKey value = 01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9, Passed");
+					ok($parse->getInnerParse2()->getItsValueStr() eq "abc","Test 37th transform of type WriteCLValue and CLValue clParsed Option(String) value = abc, Passed");
+					ok($parse->getInnerParse3()->getItsValueStr() eq "2","Test 37th transform of type WriteCLValue and CLValue clParsed Option(String) value = 2, Passed");
 				} 
 				$counter2 ++;
 			}
