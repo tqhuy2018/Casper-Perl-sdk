@@ -108,5 +108,23 @@ sub getGas {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the CasperTransfer object
 sub fromJsonToTransfer {
-	
+	my @list = @_;
+	my $json = $list[1];
+	print "\nJson of CasperTransfer is:".$json."\n";
+	my $ret = new GetDeploy::ExecutionResult::Transform::CasperTransfer();
+	$ret->setDeployHash($json->{'deploy_hash'});
+	$ret->setFrom($json->{'from'});
+	print "\nCasperTransfer deploy_hash is:".$json->{'deploy_hash'}."\n";
+	if($json->{'to'}) {
+		$ret->setTo($json->{'to'});
+	}
+	$ret->setSource($json->{'source'});
+	$ret->setTarget($json->{'target'});
+	$ret->setAmount($json->{'amount'});
+	$ret->setGas($json->{'gas'});
+	if($json->{'id'}) {
+		$ret->setId($json->{'id'});
+	}
+	return $ret;
 }
+1;

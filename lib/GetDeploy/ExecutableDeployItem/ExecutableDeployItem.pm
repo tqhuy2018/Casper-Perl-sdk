@@ -19,6 +19,9 @@ use JSON;
 
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName;
 
 sub new {
 	my $class = shift;

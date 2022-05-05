@@ -2,6 +2,7 @@
 
 package GetDeploy::ExecutionResult::TransformEntry;
 use GetDeploy::ExecutionResult::CasperTransform;
+use GetDeploy::ExecutionResult::Transform::CasperTransfer;
 use GetDeploy::ExecutionResult::Transform::NamedKey;
 use GetDeploy::ExecutionResult::Transform::DeployInfo;
 sub new {
@@ -115,6 +116,11 @@ sub fromJsonToCasperTransform {
 		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($transformJson->{'WriteDeployInfo'});
 		print "\nTransformEntry Of type WriteDeployInfo\n";
 		$transform->setItsValue($deployInfo);
+	} elsif($transformJson->{'WriteTransfer'}) {
+		$transform->setItsType("WriteTransfer");
+		my $casperTransfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($transformJson->{'WriteTransfer'});
+		print "\nTransformEntry Of type WriteTransfer\n";
+		$transform->setItsValue($casperTransfer);
 	}
 	$ret->setTransform($transform);
 	print "\nKey of TransformEntry is:".$json->{'key'}."\n";

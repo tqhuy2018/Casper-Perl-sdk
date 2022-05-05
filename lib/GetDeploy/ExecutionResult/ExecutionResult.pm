@@ -86,17 +86,41 @@ sub fromJsonToExecutionResult{
 	my $failureJson = $json->{'Failure'};
 	if($successJson) {
 		$ret->setItsType("Success");
+		# get cost
 		$ret->setCost($successJson->{'cost'});
+		# get ExecutionEffect
 		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($successJson->{'effect'});
 		$ret->setEffect($executionEffect);
+		# get Transfers
+		my @listTransferJson = @ {$successJson->{'transfers'}};
+		my $totalTransfer = @listTransferJson;
+		if($totalTransfer > 0) {
+			my @list = ();
+			foreach(@listTransferJson) {
+				push(@list,$_);
+			}
+			$ret->setTransfers(@list);
+		}
 	} elsif ($failureJson) {
 		$ret->setItsType("Failure");
+		# get ErrorMessage
 		$ret->setErrorMessage($failureJson->{'error_message'});
+		# get cost
 		$ret->setCost($failureJson->{'cost'});
+		# get ExecutionEffect
 		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($successJson->{'effect'});
 		$ret->setEffect($executionEffect);
+		# get Transfers
+		my @listTransferJson = @ {$successJson->{'transfers'}};
+		my $totalTransfer = @listTransferJson;
+		if($totalTransfer > 0) {
+			my @list = ();
+			foreach(@listTransferJson) {
+				push(@list,$_);
+			}
+			$ret->setTransfers(@list);
+		}
 	}
-	print "Its type of ER is: ".$ret->getItsType();
 	return $ret;
 }
 1;

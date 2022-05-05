@@ -38,5 +38,4 @@ sub fromJsonObjectToEDITransfer {
     $ret->setArgs($args);
 	return $ret;
 }
-
 1;
