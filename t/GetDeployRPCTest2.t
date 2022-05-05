@@ -15,8 +15,7 @@ use lib "$RealBin/../lib";
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployParams;
 use Common::ConstValues;
-
-# Test 7: information for deploy at this address: https://testnet.cspr.live/deploy/0fe0adccf645e99b9b58493c843516cd354b189e1c3efe62c4f2768716a41932
+# Test 10: information for deploy at this address: https://testnet.cspr.live/deploy/0fe0adccf645e99b9b58493c843516cd354b189e1c3efe62c4f2768716a41932
 # Test the following CLType: Any with Null value, Map(String,String), URef
 # Test Transform of the following type:
 # WriteAccount
@@ -148,8 +147,8 @@ sub getDeploy10 {
 			ok($totalOperations == 0, "Test total Operations = 0, Passed");
 			my $counter2 = 0;
 			foreach(@transform) {
-				# assertion for Transform of type WriteAccount
-				if($counter2 == 39) { # Test CasperTransform of type WriteAccount
+				# assertion for Transform of type WriteCLValue
+				if($counter2 == 39) { # Test CasperTransform of type WriteCLValue
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "dictionary-49fc1c12a746ae792396b3b9d55db62719748b46ddda991e5907dbbb44d83a9a","Test 40th TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
@@ -158,10 +157,10 @@ sub getDeploy10 {
 					ok($clValue->getBytes() eq "060000000500e876481707200000002d1c7c43f92c48be88edf2bfa0f561f0f694f4a8d760b27cbc950140f12225932c0000004164336e527959354259635870433469307066577a7a34486b47753165384b4f2f4f72445a332b4b50636737","Test 40th transform of type WriteCLValue and CLValue bytes, Passed");
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_ANY,"Test 40th transform of type WriteCLValue and CLValue clType of Any, Passed");
 					ok($clValue->getParse()->getItsValueStr() eq $Common::ConstValues::NULL_VALUE,"Test 40th transform of type WriteCLValue and CLValue clParsed of Null, Passed");
-				} elsif($counter2 == 41) { # Test CasperTransform of type WriteAccount
+				} elsif($counter2 == 41) { # Test CasperTransform of type WriteCLValue of cltype Map(String,String)
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "uref-a65f5728945bfcd619b286391d50b09873ce160c83914444b0467f6ceff729b8-000","Test 42th TransformEntry key value, Passed");
-					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteAccount
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
 					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 42th transform of type WriteAccount, Passed");
 					my $clValue = $oneT->getItsValue();
 					ok($clValue->getBytes() eq "0500000015000000636f6e74726163745f7061636b6167655f6861736840000000316543443066663331334431343044453766623743433743354632326339443736373435334463373037373732373264333645363530353362324665643837420a0000006576656e745f74797065070000006465706f736974090000007372635f7075727365560000005552656628643230343833353534453837623646324635394533314431624231383034413642653866364345624132623133646431363036333164366539633665393743352c20524541445f4144445f57524954452902000000746f4b0000004b65793a3a486173682864444537343732363339303538373137413432653232443239374436436633453037393036624235374263323845666345616333363737663841334463383362290500000076616c75650c000000313030303030303030303030","Test 42th transform of type WriteCLValue and CLValue bytes, Passed");
@@ -212,4 +211,73 @@ sub getDeploy10 {
 		}
 	}
 }
-getDeploy10();
+# Test 11: information for deploy at this address: https://testnet.cspr.live/deploy/2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61
+# Test the following CLType: Tuple2, Tuple3, Result
+sub getDeploy11 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+	my $deploy = $getDeployResult->getDeploy();
+	# JsonExecutionResult list assertion
+	# Test Transform of the following type:
+	# Identity, WriteCLValue, AddUInt512, AddKeys, WriteDeployInfo
+	my @list =  $getDeployResult->getExecutionResults();
+	my $totalER = @list;
+	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
+	my $counter1 = 0;
+	my $counter2 = 0;
+	foreach(@list) {
+		if($counter1 == 0) {
+			my $oneER = $_; #JsonExecutionResult object
+			ok($oneER->getBlockHash() eq "a9f164ace58159786a060d5c14f70d8a6a5a7164e6b3650eff55f80c0ad59e9f", "Test JsonExecutionResult block hash, Passed" );
+			my $result = $oneER->getResult();
+			# assertion for ExecutionResult
+			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
+			ok($result->getCost() eq "851555700", "Test ExecutionResult cost, Passed");
+			# assertion for Transfers
+			my @listTransfer = $result->getTransfers();
+			my $totalTransfer = @listTransfer;
+			ok($totalTransfer == 0, "Test ExecutionResult transfer list of 0 element, Passed");
+			
+			my $effect = $result->getEffect();
+			my @transform = $effect->getTransforms();
+			my @operations = $effect->getOperations();
+			my $totalOperations = @operations;
+			my $totalTransform = @transform;
+			ok($totalTransform == 47, "Test total Transform = 47, Passed");
+			ok($totalOperations == 0, "Test total Operations = 0, Passed");
+			my $counter2 = 0;
+			foreach(@transform) {
+				# assertion for Transform of type WriteCLValue
+				if($counter2 == 16) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "uref-9eae5968006607cc910450d191dd2b83e93311a2200c4385cd9f47c2a0ff09f7-000","Test 17th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 17th transform of type WriteAccount, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "010a000000676f6f64726573756c74","Test 17th transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 17th transform of type WriteCLValue and CLValue clType of Result, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 17th transform of type WriteCLValue and CLValue clType of Result(String,String) - ok, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 17th transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
+					ok($clValue->getParse()->getItsValueStr() eq "goodresult","Test 17th transform of type WriteCLValue and CLValue clParsed, Passed");
+				} elsif($counter2 == 21) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "uref-74a03aae2f907430a6f6654718b6c4bbdacc260c3bf1537f72a392f210ddf5e2-000","Test 22th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 22nd transform of type WriteAccount, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "0009000000626164726573756c74","Test 22nd transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 22nd transform of type WriteCLValue and CLValue clType of Result, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 22nd transform of type WriteCLValue and CLValue clType of Result(String,String) - ok, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 22nd transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
+					ok($clValue->getParse()->getItsValueStr() eq "badresult","Test 22nd transform of type WriteCLValue and CLValue clParsed, Passed");
+				} 
+				$counter2 ++;
+			}
+		}
+	}
+}
+#getDeploy10();
+getDeploy11();

@@ -35,6 +35,9 @@ our $CLTYPE_TUPLE2		= "Tuple2";
 our $CLTYPE_TUPLE3		= "Tuple3";
 our $CLTYPE_ANY		 	= "Any";
 
+our $CLTYPE_RESULT_OK	 	= "Result_Ok";
+our $CLTYPE_RESULT_ERR	 	= "Result_Err";
+
 # Transform
 our $TRANSFORM_IDENTITY 				=  "Identity";
 our $TRANSFORM_WRITE_CLVALUE 			=  "WriteCLValue";

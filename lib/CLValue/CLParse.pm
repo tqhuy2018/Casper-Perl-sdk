@@ -174,11 +174,16 @@ sub getCLParsedCompound {
 		if($valueOK) {
 			my $innerCLType = $clType->getInnerCLType1();
 			print "\nInner cltype is for RESULT OK is:".$innerCLType->getItsTypeStr()."\n";
-			$ret = getCLParsed2($json,$innerCLType);
+			$ret->setItsValueStr("Ok");
+			my $value = getCLParsed2($valueOK,$innerCLType);
+			$ret->setInnerParse1($value);
+			print "\nAfter parsing the result of CLTYPE RESULT is:".$ret->getItsValueStr()."\n";
 		} elsif($valueErr) {
+			$ret->setItsValueStr("Err");
 			my $innerCLType = $clType->getInnerCLType2();
 			print "\nInner cltype is for RESULT ERR is:".$innerCLType->getItsTypeStr()."\n";
-			$ret = getCLParsed2($json,$innerCLType);
+			my $value = getCLParsed2($valueErr,$innerCLType);
+			$ret->setInnerParse1($value);
 		}
 	} elsif($clType->getItsTypeStr() eq "Map") { # with Map value, the cltype will get the inner cltype1 for key, inner cltype2 for value
 		my $counter = 0;
