@@ -82,10 +82,15 @@ sub fromJsonToCasperTransform {
 		$transform->setItsType("Failure");
 		$transform->setItsValue($transformJson->{'Failure'});
 		print "\nTransformEntry Of type Failure\n";
+	}  elsif ($transformJson->{'WriteAccount'}) {
+		$transform->setItsType("WriteAccount");
+		$transform->setItsValue($transformJson->{'WriteAccount'});
+		print "\nTransformEntry Of type WriteAccount\n";
 	} elsif ($transformJson->{'WriteCLValue'}) {
 		$transform->setItsType("WriteCLValue");
 		my $clValueJson = $transformJson->{'WriteCLValue'};
 		$transform->setItsValue($transformJson->{'WriteCLValue'});
+		my $bytes = $clValueJson->{'bytes'};
 		my $clType = CLValue::CLType->getCLType($clValueJson->{'cl_type'});
    		my $clParse = CLValue::CLParse->getCLParsed($clValueJson->{'parsed'},$clType);
    		my $clValue = new CLValue::CLValue();

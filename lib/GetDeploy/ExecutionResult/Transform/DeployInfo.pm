@@ -82,7 +82,6 @@ sub fromJsonToDeployInfo {
 	$ret->setGas($json->{'gas'});
 	my @listTransferJson = @{$json->{'transfers'}};
 	my $totalTransfer = @listTransferJson;
-	print "\ntotal transfer in DeployInfo is:".$totalTransfer."\n";
 	if($totalTransfer > 0) {
 		my @list = ();
 		foreach(@listTransferJson)  {
