@@ -3,13 +3,13 @@ This class handles info_get_deploy RPC call
 =cut
 
 package GetDeploy::GetDeployRPC;
-
 use JSON qw( decode_json );
 use JSON qw( encode_json );
 
 use HTTP::Request;
 use LWP::UserAgent;
 use GetDeploy::Deploy;
+use Common::ConstValues;
 use GetDeploy::DeployHeader;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use GetDeploy::GetDeployResult;
@@ -25,6 +25,7 @@ sub new {
 This function does info_get_deploy RPC call
 =cut
 sub getDeployResult {
+	print "\nGLOBAL VARIABLE IS:".$Common::ConstValues::TEST_NET."\n";
 	my @list = @_;
 	print "\nparameter str is:".$list[1]."\n";
 	my $uri = 'https://node-clarity-testnet.make.services/rpc';

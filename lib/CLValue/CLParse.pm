@@ -13,6 +13,7 @@ its value in String for later handle in serialization or show the information, a
 
 package CLValue::CLParse;
 
+use Common::ConstValues;
 #constructor
 sub new {
 	my $class = shift;
@@ -294,9 +295,10 @@ sub getCLParsed2 {
 			$ret = getCLParsedCompound($json,$clType);
 		}
 	} else { # if the parse value is NULL
-		$ret->setItsValueStr("NULL_VALUE");
+		#$ret->setItsValueStr("NULL_VALUE");
+		print "\nParse is null and get this value:".$Common::ConstValues::NULL_VALUE."\n";
+		$ret->setItsValueStr($Common::ConstValues::NULL_VALUE);
 	}
-	
 	return $ret;
 }
 sub getCLParsed {

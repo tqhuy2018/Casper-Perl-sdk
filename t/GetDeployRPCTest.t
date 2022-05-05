@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 500;
+use Test::Simple tests => 363;
 
 #use CLValue::CLType;
 #use  GetPeers::GetPeerRPC;
@@ -14,6 +14,7 @@ use lib "$RealBin/../lib";
 
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployParams;
+use Common::ConstValues;
 
 # Test 1: information for deploy at this address: https://testnet.cspr.live/deploy/55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa
 # Test the following CLType: U512, U256, Key, Option(Key)
@@ -1065,7 +1066,7 @@ sub getDeploy8 {
 	
 	#Test assertion for Deploy session
 	my $session = $deploy->getSession();
-	ok($session->getItsType() eq "Transfer", "Test deploy session of type StoredContractByHash - Passed");
+	ok($session->getItsType() eq "Transfer", "Test deploy session of type Transfer - Passed");
 	my $sessionValue = $session->getItsValue();
 	my $sessionArgs = $sessionValue->getArgs();
 	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
@@ -1186,101 +1187,77 @@ sub getDeploy9 {
 	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
 	my $deploy = $getDeployResult->getDeploy();
 	
-	#Test assertion for Deploy session
-	my $session = $deploy->getSession();
-	ok($session->getItsType() eq "Transfer", "Test deploy session of type StoredContractByHash - Passed");
-	my $sessionValue = $session->getItsValue();
-	my $sessionArgs = $sessionValue->getArgs();
-	my @listArgsSession = @{$sessionArgs->getListNamedArg()};
-	my $totalArgsSession = @listArgsSession;
-	# The real args list contains 3 element, but the list in Perl hold 3 + 2 = 5 element with 2 items other hold the other information for the 
-	# main value of NamedArg, then in the assertion, we have to minus 2 to the total size of the list Args.
-	ok($totalArgsSession - 2 == 3, "Test session total args = 3 - Passed");
-	my $counter1 = -2;
-	my $oneNASession;
-	foreach(@listArgsSession) {
-		if($counter1 == 1) { # get CLValue of type Option(Bool) with value NULL
-			$oneNASession = $_;
-			# Assertion for 5th Arg - CLType of type Option(Bool)
-			ok($oneNASession->getItsName() eq "target", "Test session 2nd arg name - Passed");
-			my $sessionArgCLValue = $oneNASession->getCLValue();
-			ok($sessionArgCLValue->getBytes() eq "01394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b","Test session 5th arg CLValue, bytes value - Passed");
-			ok($sessionArgCLValue->getCLType()->getItsTypeStr() eq "PublicKey","Test session 2nd arg CLValue, cl_type - Passed");
-			ok($sessionArgCLValue->getParse()->getItsValueStr() eq "01394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b","Test session 2nd arg CLValue, parse - Passed");
-		} 
-		$counter1 ++;
-	}
-	#Approvals assertion
-	my @listApproval = $deploy->getApprovals();
-	$counter1 = 0;
-	foreach(@listApproval) {
-		if($counter1 == 0) {
-			my @oneApproval = @{$_};
-			my $totalApproval = @oneApproval;
-			ok($totalApproval == 1, "Test total approval = 1, Passed");
-			foreach(@oneApproval) {
-				my $oA = $_;
-				ok($oA->getSigner() eq "0203e15e061bbf79491df84130192a711e541ce078b1c7deb46bf42194cc1cc7900f", "Test approval signer - Passed");
-				ok($oA->getSignature() eq "0215fe5e8fc7f5a63ad08bbe84409cfc67ca2360c01db99c9964ae023496f00157033d28dee9949b1ccd508fe22f741ab6c4a77921d735b2e026e5c52932a3b6e0", "Test approval signature - Passed");
-			}
-		}
-		$counter1 ++;
-	}
+	
 	# JsonExecutionResult list assertion
 	# Test Transform of the following type:
 	# Identity, WriteCLValue, AddUInt512, AddKeys, WriteDeployInfo
 	my @list =  $getDeployResult->getExecutionResults();
 	my $totalER = @list;
 	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
-	$counter1 = 0;
+	my $counter1 = 0;
 	foreach(@list) {
 		if($counter1 == 0) {
 			my $oneER = $_; #JsonExecutionResult object
-			ok($oneER->getBlockHash() eq "cce6e59744490b3d28b1c92d6526f280a787586ae1e73efa22f7093e4e8b7dfc", "Test JsonExecutionResult block hash, Passed" );
+			ok($oneER->getBlockHash() eq "1847e60fdec3f55880de0ccd12df901f5824f4bdd47347f78038dccd16d06516", "Test JsonExecutionResult block hash, Passed" );
 			my $result = $oneER->getResult();
 			# assertion for ExecutionResult
 			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
-			ok($result->getCost() eq "100000000", "Test ExecutionResult cost, Passed");
+			ok($result->getCost() eq "2668483540", "Test ExecutionResult cost, Passed");
+			# assertion for Transfers
+			my @listTransfer = $result->getTransfers();
+			my $totalTransfer = @listTransfer;
+			ok($totalTransfer == 1, "Test ExecutionResult transfer list of 1 element, Passed");
+			foreach(@listTransfer) {
+				ok($_ eq "transfer-92dad51dd060c87b1631bbfa503f7753d621b298663382580ee753c02c0531de","Test ExecutionResult transfer list first element value, Passed");
+			}
 			my $effect = $result->getEffect();
 			my @transform = $effect->getTransforms();
 			my @operations = $effect->getOperations();
 			my $totalOperations = @operations;
 			my $totalTransform = @transform;
-			ok($totalTransform == 26, "Test total Transform = 26, Passed");
+			ok($totalTransform == 32, "Test total Transform = 32, Passed");
 			ok($totalOperations == 0, "Test total Operations = 0, Passed");
 			my $counter2 = 0;
 			foreach(@transform) {
-				# assertion for Transform of type WriteTransfer
-				if($counter2 == 16) { # Test CasperTransform of type WriteTransfer
+				# assertion for Transform of type WriteCLValue Unit - null value
+				if ($counter2 == 11) {
 					my $oneTE = $_; # TransformEntry
-					ok($oneTE->getKey() eq "transfer-38c24e8f3871fa3d3a30db11a0a41681f030ff3dccc252da4e4ac585bb878324","Test 17th TransformEntry key value, Passed");
+					ok($oneTE->getKey() eq "uref-d68c0c2551b44290b70ab231a3521730585adb7d567e9e604747d64f6ada7dc6-000","Test 12th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteCLValue
+					ok($oneT->getItsType() eq "WriteCLValue","Test 12th transform of type WriteCLValue, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "","Test 12th transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq "Unit","Test 12th transform of type WriteCLValue and CLValue clType of Unit, Passed");
+					ok($clValue->getParse()->getItsValueStr() eq $Common::ConstValues::NULL_VALUE,"Test 12th transform of type WriteCLValue and CLValue clParsed Unit with NULL value, Passed");
+				}
+				if($counter2 == 19) { # Test CasperTransform of type WriteTransfer
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "transfer-92dad51dd060c87b1631bbfa503f7753d621b298663382580ee753c02c0531de","Test 17th TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteTransfer
 					ok($oneT->getItsType() eq "WriteTransfer","Test 17th transform of type WriteTransfer, Passed");
 					my $casperTransfer = $oneT->getItsValue();
-					ok($casperTransfer->getDeployHash() eq "fa02357bffd204b34d3a3495f393fc5651541e1be4376072d6d94297daa688d6","Test 17th transform of type WriteTransfer - deploy_hash, Passed");
-					ok($casperTransfer->getId() eq "1642167289561","Test 17th transform of type WriteTransfer - id, Passed");
-					ok($casperTransfer->getTo() eq "account-hash-7842eb5731da8182773633e6a9aef0a42d031eb259add2b235d617514461d753","Test 17th transform of type WriteTransfer - to, Passed");
+					ok($casperTransfer->getDeployHash() eq "f19c1b8de8f5165df43c61ac4ee00a975e0d86154d55333254d30ea5f59fab8d","Test 17th transform of type WriteTransfer - deploy_hash, Passed");
+					ok($casperTransfer->getTo() eq "account-hash-9c45726dd9eb1510feeebf0f569b05fd5b8792c7afead521f1adf4d59ed85c81","Test 17th transform of type WriteTransfer - to, Passed");
 					ok($casperTransfer->getGas() eq "0","Test 17th transform of type WriteTransfer - gas, Passed");
-					ok($casperTransfer->getFrom() eq "account-hash-ab56d6da16d47a23fc07db7abc569f1be6b420683fafcbf654d71a4518cf0579","Test 17th transform of type WriteTransfer - from, Passed");
-					ok($casperTransfer->getAmount() eq "999900000000","Test 17th transform of type WriteTransfer - amount, Passed");
-					ok($casperTransfer->getSource() eq "uref-2f72a310a1443d615f56f829bfe6147b72a5874fd28ccf8af17abd4c65d35b86-007","Test 17th transform of type WriteTransfer - source, Passed");
-					ok($casperTransfer->getTarget() eq "uref-f06b78af308d9b5e17d9494587a05c9e736ed82b9e033ea94c592eab8f00f702-004","Test 17th transform of type WriteTransfer - target, Passed");
-					
-				} elsif($counter2 == 17) { # Test CasperTransform of type WriteDeployInfo
+					ok($casperTransfer->getFrom() eq "account-hash-b383c7cc23d18bc1b42406a1b2d29fc8dba86425197b6f553d7fd61375b5e446","Test 17th transform of type WriteTransfer - from, Passed");
+					ok($casperTransfer->getAmount() eq "1000000000000","Test 17th transform of type WriteTransfer - amount, Passed");
+					ok($casperTransfer->getSource() eq "uref-b06a1ab0cfb52b5d4f9a08b68a5dbe78e999de0b0484c03e64f5c03897cf637b-007","Test 17th transform of type WriteTransfer - source, Passed");
+					ok($casperTransfer->getTarget() eq "uref-d68c0c2551b44290b70ab231a3521730585adb7d567e9e604747d64f6ada7dc6-004","Test 17th transform of type WriteTransfer - target, Passed");
+				} elsif($counter2 == 23) { # Test CasperTransform of type WriteDeployInfo
 					my $oneTE = $_; # TransformEntry
-					ok($oneTE->getKey() eq "deploy-fa02357bffd204b34d3a3495f393fc5651541e1be4376072d6d94297daa688d6","Test 24th TransformEntry key value, Passed");
+					ok($oneTE->getKey() eq "deploy-f19c1b8de8f5165df43c61ac4ee00a975e0d86154d55333254d30ea5f59fab8d","Test 24th TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteDeployInfo
 					ok($oneT->getItsType() eq "WriteDeployInfo","Test 24th transform of type WriteDeployInfo, Passed");
 					my $deployInfo = $oneT->getItsValue();
-					ok($deployInfo->getDeployHash() eq "fa02357bffd204b34d3a3495f393fc5651541e1be4376072d6d94297daa688d6", "Test WriteDeployInfo, deploy_hash, Passed ");
-					ok($deployInfo->getFrom() eq "account-hash-ab56d6da16d47a23fc07db7abc569f1be6b420683fafcbf654d71a4518cf0579", "Test WriteDeployInfo, from, Passed ");
-					ok($deployInfo->getSource() eq "uref-2f72a310a1443d615f56f829bfe6147b72a5874fd28ccf8af17abd4c65d35b86-007", "Test WriteDeployInfo, source, Passed ");
-					ok($deployInfo->getGas() eq "100000000", "Test WriteDeployInfo gas, Passed ");
+					ok($deployInfo->getDeployHash() eq "f19c1b8de8f5165df43c61ac4ee00a975e0d86154d55333254d30ea5f59fab8d", "Test WriteDeployInfo, deploy_hash, Passed ");
+					ok($deployInfo->getFrom() eq "account-hash-b383c7cc23d18bc1b42406a1b2d29fc8dba86425197b6f553d7fd61375b5e446", "Test WriteDeployInfo, from, Passed ");
+					ok($deployInfo->getSource() eq "uref-b06a1ab0cfb52b5d4f9a08b68a5dbe78e999de0b0484c03e64f5c03897cf637b-007", "Test WriteDeployInfo, source, Passed ");
+					ok($deployInfo->getGas() eq "2668483540", "Test WriteDeployInfo gas, Passed ");
 					my @transfer = $deployInfo->getTransfers();
 					my $totalTransfer = @transfer;
 					ok($totalTransfer == 1, "Test WriteDeployInfo total transfer = 1, Passed ");
 					foreach(@transfer) {
-						ok($_ eq "transfer-38c24e8f3871fa3d3a30db11a0a41681f030ff3dccc252da4e4ac585bb878324", "Test WriteDeployInfo first Transfer value, Passed ");
+						ok($_ eq "transfer-92dad51dd060c87b1631bbfa503f7753d621b298663382580ee753c02c0531de", "Test WriteDeployInfo first Transfer value, Passed ");
 					}
 				}
 				$counter2 ++;
@@ -1295,5 +1272,6 @@ sub getDeploy9 {
 #getDeploy5();
 #getDeploy6();
 #getDeploy7();
-getDeploy8();
+#getDeploy8();
+getDeploy9();
 

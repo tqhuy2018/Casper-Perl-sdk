@@ -5,5 +5,8 @@ The error can be invalid param,
 use strict;
 use warnings;
 package Common::ConstValues;
-use constant TRANSFORM_IDENTITY => "Identity";
+sub new { bless {}, shift };
+our $TEST_NET = "https://node-clarity-testnet.make.services/rpc";
+our $MAIN_NET = "https://node-clarity-testnet.make.services/rpc";
+our $NULL_VALUE = "NULL_VALUE";
 1;
