@@ -261,7 +261,8 @@ sub getDeploy11 {
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 17th transform of type WriteCLValue and CLValue clType of Result, Passed");
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 17th transform of type WriteCLValue and CLValue clType of Result(String,String) - ok, Passed");
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 17th transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
-					ok($clValue->getParse()->getItsValueStr() eq "goodresult","Test 17th transform of type WriteCLValue and CLValue clParsed, Passed");
+					ok($clValue->getParse()->getItsValueStr() eq "Ok","Test 17th transform of type WriteCLValue and CLValue clParsed of type Result Ok, Passed");
+					ok($clValue->getParse()->getInnerParse1()->getItsValueStr() eq "goodresult","Test 17th transform of type WriteCLValue and CLValue clParsed, Passed");
 				} elsif($counter2 == 21) { # Test CasperTransform of type WriteCLValue with cltype of type Result(String,String)
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "uref-74a03aae2f907430a6f6654718b6c4bbdacc260c3bf1537f72a392f210ddf5e2-000","Test 22th TransformEntry key value, Passed");
@@ -272,7 +273,8 @@ sub getDeploy11 {
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT,"Test 22nd transform of type WriteCLValue and CLValue clType of Result, Passed");
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 22nd transform of type WriteCLValue and CLValue clType of Result(String,String) - ok, Passed");
 					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 22nd transform of type WriteCLValue and CLValue clType of Result(String,String) - err, Passed");
-					ok($clValue->getParse()->getItsValueStr() eq "badresult","Test 22nd transform of type WriteCLValue and CLValue clParsed, Passed");
+					ok($clValue->getParse()->getItsValueStr() eq "Err","Test 22nd transform of type WriteCLValue and CLValue clParsed of type Result Err, Passed");
+					ok($clValue->getParse()->getInnerParse1()->getItsValueStr() eq "badresult","Test 22nd transform of type WriteCLValue and CLValue clParsed, Passed");
 				} 
 				$counter2 ++;
 			}
