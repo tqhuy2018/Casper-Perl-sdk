@@ -152,13 +152,61 @@ sub getDeploy10 {
 				if($counter2 == 39) { # Test CasperTransform of type WriteAccount
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "dictionary-49fc1c12a746ae792396b3b9d55db62719748b46ddda991e5907dbbb44d83a9a","Test 40th TransformEntry key value, Passed");
-					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteAccount
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteCLValue
 					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 40th transform of type WriteAccount, Passed");
 					my $clValue = $oneT->getItsValue();
 					ok($clValue->getBytes() eq "060000000500e876481707200000002d1c7c43f92c48be88edf2bfa0f561f0f694f4a8d760b27cbc950140f12225932c0000004164336e527959354259635870433469307066577a7a34486b47753165384b4f2f4f72445a332b4b50636737","Test 40th transform of type WriteCLValue and CLValue bytes, Passed");
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_ANY,"Test 40th transform of type WriteCLValue and CLValue clType of Any, Passed");
 					ok($clValue->getParse()->getItsValueStr() eq $Common::ConstValues::NULL_VALUE,"Test 40th transform of type WriteCLValue and CLValue clParsed of Null, Passed");
-		}
+				} elsif($counter2 == 41) { # Test CasperTransform of type WriteAccount
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "uref-a65f5728945bfcd619b286391d50b09873ce160c83914444b0467f6ceff729b8-000","Test 42th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type  WriteAccount
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test 42th transform of type WriteAccount, Passed");
+					my $clValue = $oneT->getItsValue();
+					ok($clValue->getBytes() eq "0500000015000000636f6e74726163745f7061636b6167655f6861736840000000316543443066663331334431343044453766623743433743354632326339443736373435334463373037373732373264333645363530353362324665643837420a0000006576656e745f74797065070000006465706f736974090000007372635f7075727365560000005552656628643230343833353534453837623646324635394533314431624231383034413642653866364345624132623133646431363036333164366539633665393743352c20524541445f4144445f57524954452902000000746f4b0000004b65793a3a486173682864444537343732363339303538373137413432653232443239374436436633453037393036624235374263323845666345616333363737663841334463383362290500000076616c75650c000000313030303030303030303030","Test 42th transform of type WriteCLValue and CLValue bytes, Passed");
+					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP,"Test 42th transform of type WriteCLValue and CLValue clType of Any, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 42th transform of type WriteCLValue and CLValue clType of Any, Passed");
+					ok($clValue->getCLType()->getInnerCLType2()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 42th transform of type WriteCLValue and CLValue clType of Any, Passed");
+					my $parse = $clValue->getParse();
+					my @listKey = $parse->getInnerParse1()->getItsValueList();
+					my $totalKey = @listKey;
+					ok($totalKey == 5, "Test total element of the Map parse = 5, Passed");
+					my $counter3 = 0;
+					foreach(@listKey) {
+						print "\nList key number ".$counter3." is:".$_."\n";
+						my $oneParse = $_;
+						if($counter3 == 0) {
+							ok($oneParse->getItsValueStr() eq "contract_package_hash", "Test 1st Map element key, Passed");
+						} elsif($counter3 == 1) {
+							ok($oneParse->getItsValueStr() eq "event_type", "Test 2nd Map element key, Passed");
+						} elsif($counter3 == 2) {
+							ok($oneParse->getItsValueStr() eq "src_purse", "Test 3rd Map element key, Passed");
+						} elsif($counter3 == 3) {
+							ok($oneParse->getItsValueStr() eq "to", "Test 4th Map element key, Passed");
+						} elsif($counter3 == 4) {
+							ok($oneParse->getItsValueStr() eq "value", "Test 5th Map element key, Passed");
+						} 
+						$counter3 ++;
+					}
+					$counter3 = 0;
+					my @listValue = $parse->getInnerParse2()->getItsValueList();
+					foreach(@listValue) {
+						my $oneParse = $_;
+						if($counter3 == 0) {
+							ok($oneParse->getItsValueStr() eq "1eCD0ff313D140DE7fb7CC7C5F22c9D767453Dc70777272d36E65053b2Fed87B", "Test 1st Map element value, Passed");
+						} elsif($counter3 == 1) {
+							ok($oneParse->getItsValueStr() eq "deposit", "Test 2nd Map element value, Passed");
+						} elsif($counter3 == 2) {
+							ok($oneParse->getItsValueStr() eq "URef(d20483554E87b6F2F59E31D1bB1804A6Be8f6CEbA2b13dd160631d6e9c6e97C5, READ_ADD_WRITE)", "Test 3rd Map element value, Passed");
+						} elsif($counter3 == 3) {
+							ok($oneParse->getItsValueStr() eq "Key::Hash(dDE7472639058717A42e22D297D6Cf3E07906bB57Bc28EfcEac3677f8A3Dc83b)", "Test 4th Map element value, Passed");
+						} elsif($counter3 == 4) {
+							ok($oneParse->getItsValueStr() eq "100000000000", "Test 5th Map element value, Passed");
+						} 
+						$counter3 ++;
+					}
+				}
 				$counter2 ++;
 			}
 		}

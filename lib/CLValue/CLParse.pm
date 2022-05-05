@@ -184,7 +184,6 @@ sub getCLParsedCompound {
 		my $counter = 0;
 		foreach($json) {
 			my @oneElement = @{$_};
-			print "MAP---Element is: ".$_."\n";
 			my $listKeyParse = new CLValue::CLParse();
 			my $listValueParse = new CLValue::CLParse();
 			my @listKey = ();
@@ -196,17 +195,12 @@ sub getCLParsedCompound {
 				print "Inner element is:".$oE." and key is:".$oE->{'key'}." and value:".$oE->{'value'}."\n";
 				my $clTypeKey = $clType->getInnerCLType1();
 				my $clTypeValue = $clType->getInnerCLType2();
-				print " with cltype for key:".$clTypeKey->getItsTypeStr()."\n";
-				print "\nGet key begins\n";
 				my $keyParse = getCLParsed2($oE->{'key'},$clTypeKey);
-				print "\nGet value begins\n";
+				print "\nKEY AFTER PARSING is:".$keyParse->getItsValueStr()."\n";
 				my $valueParse = getCLParsed2($oE->{'value'},$clTypeValue);
 				push(@listKey,$keyParse);
 				push(@listValue,$valueParse);
 			}
-			my $listKeyLen = @listKey;
-			my $listValueLen = @listValue;
-			print "\nTotal key get:".$listKeyLen." and total value get:".$listValueLen."\n";
 			$listKeyParse->setItsValueList(@listKey);
 			$listKeyParse->setItsValueStr("MAP KEY ASSIGNED");
 			$listValueParse->setItsValueList(@listValue);
