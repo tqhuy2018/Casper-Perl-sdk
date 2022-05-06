@@ -7,8 +7,13 @@ use warnings;
 package Common::ConstValues;
 sub new { bless {}, shift };
 
+# method name
+our $RPC_GET_STATE_ROOT_HASH = "chain_get_state_root_hash";
+# method URL
 our $TEST_NET = "https://node-clarity-testnet.make.services/rpc";
 our $MAIN_NET = "https://node-clarity-mainnet.make.services/rpc";
+
+# NULL value
 our $NULL_VALUE = "NULL_VALUE";
 
 # CLType

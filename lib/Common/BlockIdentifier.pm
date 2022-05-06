@@ -55,16 +55,15 @@ sub getBlockHeight {
 sub generatePostParam {
 	my $retStr = "";
 	my ( $self ) = @_;
+	my @list = @_;
+	my $methodName = $list[1];
 	my $blockType = $self->{_blockType};
 	if ($self->{_blockType} eq "hash") {
-		print "\nGet state root hash by Block Hash\n";
-		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Hash" : "'.$self->{_blockHash}.'"}}, "jsonrpc" :  "2.0"}';
+		$retStr = '{"method" :  "'.$methodName.'", "id" :  1, "params" :  {"block_identifier" :  {"Hash" : "'.$self->{_blockHash}.'"}}, "jsonrpc" :  "2.0"}';
 	} elsif ($self->{_blockType} eq "height") {
-		print "\nGet state root hash by Block Height\n";
-		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" :  {"block_identifier" :  {"Height" : '.$self->{_blockHeight}.'}}, "jsonrpc" :  "2.0"}';		
+		$retStr = '{"method" :  "'.$methodName.'", "id" :  1, "params" :  {"block_identifier" :  {"Height" : '.$self->{_blockHeight}.'}}, "jsonrpc" :  "2.0"}';		
 	} elsif ($self->{_blockType} eq "none") {
-		print "\nGet state root hash by Block none\n";
-		$retStr = '{"method" :  "chain_get_state_root_hash", "id" :  1, "params" : [], "jsonrpc" :  "2.0"}';
+		$retStr = '{"method" :  "'.$methodName.'", "id" :  1, "params" : [], "jsonrpc" :  "2.0"}';
 	} else {
 		print "No thing match the Post Param";
 	}
