@@ -1,12 +1,9 @@
-
-
-=comment
-This class handles info_get_peers RPC call
-=cut
+# This class handles info_get_peers RPC call
 package GetPeers::GetPeerRPC;
 use LWP::UserAgent;
 use Data::Dumper;
 use JSON qw( decode_json );
+use GetPeers::GetPeersResult;
 
 sub new {
 	print "getPeerRPC called";
@@ -20,9 +17,6 @@ This function does info_get_peers RPC call
 =cut
 sub getPeers {
 	 my( $self ) = @_;
-	# Prints the message using two different delimeters.
-	# https://node-clarity-testnet.make.services/rpc
-	# https://node-clarity-mainnet.make.services/rpc
 	my $uri = 'https://node-clarity-testnet.make.services/rpc';
 	my $json = '{"params" :  [], "id" :  1, "method": "info_get_peers", "jsonrpc" :  "2.0"}';
 	my $req = HTTP::Request->new( 'POST', $uri );
@@ -42,17 +36,11 @@ sub getPeers {
 	    my $firstPeer = $peers[0];
 	    print "First peer node_id is:".$firstPeer->{'node_id'}."\n";
 	    print "First peer address is:".$firstPeer->{'address'};
+	    my $ret = GetPeers::GetPeersResult->fromJsonObjectToGetPeersResult($decoded->{'result'});
+	    return $ret;
 	}
 	else {
 	    die $response->status_line;
 	}
 }
-=comment
-q^{ foreach my $peer(@peers) {
-		    	print "Get peer number ".$counter."\n";
-		    	$counter += 1;
-		    	print "peer node_id:".$peer->{'node_id'}."\n";
-		    	print "peer address:".$peer->{'address'}."\n";
-		    }^ if 0;
-=cut 
 1;
