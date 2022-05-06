@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 363;
+use Test::Simple tests => 151;
 
 #use CLValue::CLType;
 #use  GetPeers::GetPeerRPC;
@@ -521,9 +521,9 @@ sub getDeploy15 {
 	ok($error->getErrorCode() eq "-32602", "Test error when send wrong deploy hash, error is thrown, error code checked, Passed");
 	ok($error->getErrorMessage() eq "Invalid params", "Test error when send wrong deploy hash, error is thrown, error message checked, Passed");
 }
-#getDeploy10();
-#getDeploy11();
-#getDeploy12();
-#getDeploy13();
+getDeploy10();
+getDeploy11();
+getDeploy12();
+getDeploy13();
 getDeploy14();
 getDeploy15();

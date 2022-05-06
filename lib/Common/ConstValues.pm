@@ -8,7 +8,19 @@ package Common::ConstValues;
 sub new { bless {}, shift };
 
 # method name
-our $RPC_GET_STATE_ROOT_HASH = "chain_get_state_root_hash";
+our $RPC_GET_STATE_ROOT_HASH 	= "chain_get_state_root_hash";
+our $RPC_GET_PEERS 				= "info_get_peers";
+our $RPC_GET_DEPLOY 			= "info_get_deploy";
+our $RPC_GET_STATUS 			= "info_get_status";
+our $RPC_GET_BLOCK_TRANSFERS 	= "chain_get_block_transfers";
+our $RPC_GET_BLOCK	 			= "chain_get_block";
+our $RPC_GET_ERA	 			= "chain_get_era_info_by_switch_block";
+our $RPC_GET_ITEM	 			= "state_get_item";
+our $RPC_GET_DICTIONARY_ITEM 	= "state_get_dictionary_item";
+our $RPC_GET_BALANCE 			= "state_get_balance";
+our $RPC_GET_AUCTION 			= "state_get_auction_info";
+our $RPC_PUT_DEPLOY 			= "account_put_deploy";
+
 # method URL
 our $TEST_NET = "https://node-clarity-testnet.make.services/rpc";
 our $MAIN_NET = "https://node-clarity-mainnet.make.services/rpc";

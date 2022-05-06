@@ -1265,13 +1265,13 @@ sub getDeploy9 {
 		}
 	}
 }
-#getDeploy1();
-#getDeploy2();
-#getDeploy3();
-#getDeploy4();
-#getDeploy5();
-#getDeploy6();
-#getDeploy7();
-#getDeploy8();
+getDeploy1();
+getDeploy2();
+getDeploy3();
+getDeploy4();
+getDeploy5();
+getDeploy6();
+getDeploy7();
+getDeploy8();
 getDeploy9();
 
