@@ -313,5 +313,157 @@ sub getDeploy11 {
 		}
 	}
 }
+
+# Test 12: information for deploy at this address: https://testnet.cspr.live/deploy/091bd25de1769c0df180fed8c67a396c7e4373639b4a8469e26a605f92e72df0
+# Test the following Transform type: WriteContractWasm, WriteContract, WriteContractPackage
+sub getDeploy12 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("091bd25de1769c0df180fed8c67a396c7e4373639b4a8469e26a605f92e72df0");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	$getDeployRPC->setUrl($Common::ConstValues::TEST_NET);
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+	my $deploy = $getDeployResult->getDeploy();
+	# JsonExecutionResult list assertion
+	# Test Transform of the following type:
+	# Identity, WriteCLValue, AddUInt512, AddKeys, WriteDeployInfo
+	my @list =  $getDeployResult->getExecutionResults();
+	my $totalER = @list;
+	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
+	my $counter1 = 0;
+	my $counter2 = 0;
+	foreach(@list) {
+		if($counter1 == 0) {
+			my $oneER = $_; #JsonExecutionResult object
+			ok($oneER->getBlockHash() eq "598bd01dff7abaebd1f60c9d8c8fc66de6bdd9a44db4570701de4939fade1991", "Test JsonExecutionResult block hash, Passed" );
+			my $result = $oneER->getResult();
+			# assertion for ExecutionResult
+			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
+			ok($result->getCost() eq "113320088290", "Test ExecutionResult cost, Passed");
+			# assertion for Transfers
+			my @listTransfer = $result->getTransfers();
+			my $totalTransfer = @listTransfer;
+			ok($totalTransfer == 0, "Test ExecutionResult transfer list of 0 element, Passed");
+			
+			my $effect = $result->getEffect();
+			my @transform = $effect->getTransforms();
+			my @operations = $effect->getOperations();
+			my $totalOperations = @operations;
+			my $totalTransform = @transform;
+			ok($totalTransform == 24, "Test total Transform = 24, Passed");
+			ok($totalOperations == 0, "Test total Operations = 0, Passed");
+			my $counter2 = 0;
+			foreach(@transform) {
+				# assertion for Transform of type WriteContractPackage 
+				if($counter2 == 9) { # Test CasperTransform of type WriteContractPackage 
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "hash-996d8ef48d767a83b8098acbfbbd25cc56a6194807af6e94f190d672c0b1ee23","Test 10th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteContractPackage
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CONTRACT_PACKAGE,"Test 10th transform of type WriteContractPackage, Passed");
+				} # assertion for Transform of type WriteContractWasm  
+				elsif($counter2 == 11) { # Test CasperTransform of type WriteContractWasm 
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "hash-98c2fd452242526d4c53366705f169812a4cc5b2ee89bf63c6fb28f3c5a3f503","Test 12th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteContractWasm
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CONTRACT_WASM,"Test 12th transform of type WriteContractWasm, Passed");
+				} elsif($counter2 == 12) { # Test CasperTransform of type WriteContract 
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "hash-5bfb3233216d08490ab74ddd04b0ff7df3450a63d15976efcf57facd2ebaf5bf","Test 13th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteContractWasm
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CONTRACT,"Test 13th transform of type WriteContractWasm, Passed");
+				}
+				$counter2 ++;
+			}
+		}
+	}
+}
+
+# Test 13: information for deploy at this address: https://testnet.cspr.live/deploy/091bd25de1769c0df180fed8c67a396c7e4373639b4a8469e26a605f92e72df0
+# Test the following Transform type: WriteBid, WriteWithdraw
+sub getDeploy13 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("acb4d78cbb900fe91a896ea8a427374c5d600cd9206efae2051863316265f1b1");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	$getDeployRPC->setUrl($Common::ConstValues::MAIN_NET);
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+	my $deploy = $getDeployResult->getDeploy();
+	# JsonExecutionResult list assertion
+	# Test Transform of the following type:
+	# Identity, WriteCLValue, AddUInt512, AddKeys, WriteDeployInfo
+	my @list =  $getDeployResult->getExecutionResults();
+	my $totalER = @list;
+	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
+	my $counter1 = 0;
+	my $counter2 = 0;
+	foreach(@list) {
+		if($counter1 == 0) {
+			my $oneER = $_; #JsonExecutionResult object
+			ok($oneER->getBlockHash() eq "2172e2f922e05186c5f21eabbbf32206afd263c3fcaf490a95d81c706f4a8a92", "Test JsonExecutionResult block hash, Passed" );
+			my $result = $oneER->getResult();
+			# assertion for ExecutionResult
+			ok($result->getItsType() eq "Success", "Test ExecutionResult of type Success, Passed");
+			ok($result->getCost() eq "10000", "Test ExecutionResult cost, Passed");
+			# assertion for Transfers
+			my @listTransfer = $result->getTransfers();
+			my $totalTransfer = @listTransfer;
+			ok($totalTransfer == 0, "Test ExecutionResult transfer list of 0 element, Passed");
+			
+			my $effect = $result->getEffect();
+			my @transform = $effect->getTransforms();
+			my @operations = $effect->getOperations();
+			my $totalOperations = @operations;
+			my $totalTransform = @transform;
+			ok($totalTransform == 24, "Test total Transform = 24, Passed");
+			ok($totalOperations == 0, "Test total Operations = 0, Passed");
+			my $counter2 = 0;
+			foreach(@transform) {
+				# assertion for Transform of type WriteWithdraw 
+				if($counter2 == 12) { # Test CasperTransform of type WriteWithdraw 
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "withdraw-24b6d5aabb8f0ac17d272763a405e9ceca9166b75b745cf200695e172857c2dd","Test 13th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteContractPackage
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_WITHDRAW,"Test 13th transform of type WriteWithdraw, Passed");
+					my $withdraw = $oneT->getItsValue();
+					my @listUP = $withdraw->getListUnbondingPurse();
+					my $totalUP = @listUP;
+					ok($totalUP == 7, "Test total UnbondingPurse, Passed");
+					my $counter3 = 0;
+					foreach(@listUP) {
+						# assertion for the first UnbondingPurse
+						if($counter3 == 0) {
+							my $oneUP = $_;
+							ok($oneUP->getBondingPurse() eq "uref-fd78a335a6b3e86b0a0161ac7640a69ec858c32f0d549dc5c3ba820a5bd13616-007", "Test first UnbondingPurse bonding_purse, Passed ");
+							ok($oneUP->getValidatorPublicKey() eq "012bac1d0ff9240ff0b7b06d555815640497861619ca12583ddef434885416e69b", "Test first UnbondingPurse validator_public_key, Passed ");
+							ok($oneUP->getUnbonderPublicKey() eq "02033444b5a5584d8bb3427fc8fdbd306e8a9a7cf66570acb461a80a186fe1566fdd", "Test first UnbondingPurse unbonder_public_key, Passed ");
+							ok($oneUP->getEraOfCreation() eq "3475", "Test first UnbondingPurse era_of_creation, Passed ");
+							ok($oneUP->getAmount() eq "100131800754797", "Test first UnbondingPurse amount, Passed ");
+						}
+						# assertion for the second UnbondingPurse
+						if($counter3 == 1) {
+							my $oneUP = $_;
+							ok($oneUP->getBondingPurse() eq "uref-ddb8c8e6503deba1b3f3558b23978c9bcabc8f06eead4246c9cedbe9dc8634ca-007", "Test first UnbondingPurse bonding_purse, Passed ");
+							ok($oneUP->getValidatorPublicKey() eq "012bac1d0ff9240ff0b7b06d555815640497861619ca12583ddef434885416e69b", "Test first UnbondingPurse validator_public_key, Passed ");
+							ok($oneUP->getUnbonderPublicKey() eq "020232529838de2d2036618c9da058ca5955fe9ac2702a3d09ea9084670196462198", "Test first UnbondingPurse unbonder_public_key, Passed ");
+							ok($oneUP->getEraOfCreation() eq "3476", "Test first UnbondingPurse era_of_creation, Passed ");
+							ok($oneUP->getAmount() eq "319709717548988", "Test first UnbondingPurse amount, Passed ");
+						}
+						$counter3 ++;
+					}
+				} # assertion for Transform of type WriteWithdraw  
+				elsif($counter2 == 14) { # Test CasperTransform of type WriteBid 
+					my $oneTE = $_; # TransformEntry
+					ok($oneTE->getKey() eq "bid-24b6d5aabb8f0ac17d272763a405e9ceca9166b75b745cf200695e172857c2dd","Test 15th TransformEntry key value, Passed");
+					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteBid
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_BID,"Test 15th transform of type WriteBid, Passed");
+					my $bid = $oneT->getItsValue();
+				} 
+				$counter2 ++;
+			}
+		}
+	}
+}
 #getDeploy10();
-getDeploy11();
+#getDeploy11();
+#getDeploy12();
+getDeploy13();

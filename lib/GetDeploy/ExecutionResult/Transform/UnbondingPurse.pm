@@ -72,5 +72,15 @@ sub getAmount {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the UnbondingPurse object
 sub fromJsonToUnbondingPurse {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::Transform::UnbondingPurse();
+	$ret->setBondingPurse($json->{'bonding_purse'});
+	$ret->setAmount($json->{'amount'});
+	$ret->setEraOfCreation($json->{'era_of_creation'});
+	$ret->setUnbonderPublicKey($json->{'unbonder_public_key'});
+	$ret->setValidatorPublicKey($json->{'validator_public_key'});
+	return $ret;
 }
+1;
+1;

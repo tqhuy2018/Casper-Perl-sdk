@@ -8,7 +8,7 @@ package Common::ConstValues;
 sub new { bless {}, shift };
 
 our $TEST_NET = "https://node-clarity-testnet.make.services/rpc";
-our $MAIN_NET = "https://node-clarity-testnet.make.services/rpc";
+our $MAIN_NET = "https://node-clarity-mainnet.make.services/rpc";
 our $NULL_VALUE = "NULL_VALUE";
 
 # CLType

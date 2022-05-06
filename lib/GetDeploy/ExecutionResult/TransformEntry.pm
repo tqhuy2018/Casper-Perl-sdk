@@ -1,10 +1,14 @@
 # Class built for storing TransformEntry information
 
 package GetDeploy::ExecutionResult::TransformEntry;
+
 use GetDeploy::ExecutionResult::CasperTransform;
 use GetDeploy::ExecutionResult::Transform::CasperTransfer;
 use GetDeploy::ExecutionResult::Transform::NamedKey;
 use GetDeploy::ExecutionResult::Transform::DeployInfo;
+use GetDeploy::ExecutionResult::Transform::Withdraw;
+use GetDeploy::ExecutionResult::Transform::Bid;
+use Common::ConstValues;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -121,6 +125,16 @@ sub fromJsonToCasperTransform {
 		my $casperTransfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($transformJson->{'WriteTransfer'});
 		print "\nTransformEntry Of type WriteTransfer\n";
 		$transform->setItsValue($casperTransfer);
+	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_WITHDRAW}) {
+		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_WITHDRAW);
+		my $withdraw = GetDeploy::ExecutionResult::Transform::Withdraw->fromJsonArrayToWithdraw($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_WITHDRAW});
+		print "\nTransformEntry Of type WriteWithdraw\n";
+		$transform->setItsValue($withdraw);
+	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_BID}) {
+		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_BID);
+		my $bid = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_BID});
+		print "\nTransformEntry Of type WriteBid\n";
+		$transform->setItsValue($bid);
 	}
 	$ret->setTransform($transform);
 	print "\nKey of TransformEntry is:".$json->{'key'}."\n";

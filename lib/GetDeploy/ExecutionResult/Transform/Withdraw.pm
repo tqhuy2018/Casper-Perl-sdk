@@ -1,7 +1,7 @@
 # Class built for storing Withdraw information
 
 package GetDeploy::ExecutionResult::Transform::Withdraw;
-
+use GetDeploy::ExecutionResult::Transform::UnbondingPurse;
 sub new {
 	my $class = shift,
 	my $self = {
@@ -25,5 +25,17 @@ sub getListUnbondingPurse {
 }
 # This function parse the JsonArray (taken from server RPC method call) to get the Withdraw object with UnbondingPurse list
 sub fromJsonArrayToWithdraw {
-	
+	my @list = @_;
+	my @json = @{$list[1]};
+	my $totalWithdraw = @json;
+	print "\nTotal withdraw is:".$totalWithdraw."\n";
+	my @listUP = ();
+	foreach(@json) {
+		my $oneUP = GetDeploy::ExecutionResult::Transform::UnbondingPurse->fromJsonToUnbondingPurse($_);
+		push(@listUP,$oneUP);
+	}
+	my $ret = new GetDeploy::ExecutionResult::Transform::Withdraw();
+	$ret->setListUnbondingPurse(@listUP);
+	return $ret;
 }
+1;

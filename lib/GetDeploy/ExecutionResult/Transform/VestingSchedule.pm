@@ -38,5 +38,7 @@ sub getLockedAmounts {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the VestingSchedule object
 sub fromJsonToVestingSchedule {
-	
+	my $ret = new GetDeploy::ExecutionResult::Transform::VestingSchedule();
+	return $ret;
 }
+1;

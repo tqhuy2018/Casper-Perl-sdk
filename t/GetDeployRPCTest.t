@@ -827,7 +827,7 @@ sub getDeploy6 {
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "hash-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401","Test first TransformEntry key value, Passed");
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type Identity
-					ok($oneT->getItsType() eq "Identity","Test first transform of type Identity, Passed");
+					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_IDENTITY,"Test first transform of type Identity, Passed");
 				} elsif($counter2 == 6) { # Test CasperTransform of type WriteCLValue
 					my $oneTE = $_; # TransformEntry
 					ok($oneTE->getKey() eq "balance-fbd34b977fb27d90e25d3ac48ec27450c91bf499e785f7b4278de8dd08299ed5","Test 7th TransformEntry key value, Passed");

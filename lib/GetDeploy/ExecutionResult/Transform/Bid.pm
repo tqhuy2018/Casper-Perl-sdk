@@ -1,7 +1,7 @@
 # Class built for storing Bid information
 
 package GetDeploy::ExecutionResult::Transform::Bid;
-
+use GetDeploy::ExecutionResult::Transform::VestingSchedule;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -98,5 +98,25 @@ sub getVestingSchedule {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the Bid object
 sub fromJsonToBid {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::Transform::Bid();
+	$ret->setBondingPurse($json->{'bonding_purse'});
+	$ret->setDelegationRate($json->{'delegation_rate'});
+	$ret->setInactive($json->{'inactive'});
+	$ret->setStakedAmount($json->{'staked_amount'});
+	$ret->setValidatorPublicKey($json->{'validator_public_key'});
+	my $vsJson = $json->{'vesting_schedule'};
+	if($vsJson) {
+		my $vs = GetDeploy::ExecutionResult::Transform::VestingSchedule->fromJsonToVestingSchedule($vsJson);
+		$ret->setVestingSchedule($json->{'vesting_schedule'});	
+	}
+	my $listDelegatorJson = $json->{'delegators'};
+	print "\nlistDelegatorJson:".$listDelegatorJson."\n";
+	$totalD = @listDelegatorJson;
+	print "\nTotal delegator is:".$totalD."\n";
+	my @delegatorList = ();
+	$ret->setDelegators(@delegatorList);
+	return $ret;
 }
+1;

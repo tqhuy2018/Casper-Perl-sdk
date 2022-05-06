@@ -17,19 +17,36 @@ use GetDeploy::GetDeployResult;
 sub new {
 	print "GetDeployRPC called";
 	my $class = shift;
-	my $self = {};
+	my $self = {_url=>shift};
 	bless $self, $class;
 	return $self;
+}
+
+# get-set method for _url
+sub setUrl {
+	my ($self,$value) = @_;
+	$self->{_url} = $value if defined ($value);
+	return $self->{_url};
+}
+sub getUrl {
+	my ($self) = @_;
+	return $self->{_url};
 }
 =comment
 This function does info_get_deploy RPC call
 =cut
 sub getDeployResult {
-	print "\nGLOBAL VARIABLE IS:".$Common::ConstValues::TEST_NET."\n";
+	my ($self) = @_;
 	my @list = @_;
-	print "\nparameter str is:".$list[1]."\n";
-	my $uri = 'https://node-clarity-testnet.make.services/rpc';
+	#print "\nparameter str is:".$list[1]."\n";
+	#my $uri = 'https://node-clarity-testnet.make.services/rpc';
+	my $uri = $self->{_url};
+	if($uri) {
+	} else {
+		$uri = $Common::ConstValues::TEST_NET;
+	}
 	my $json = $list[1];
+	print "url is:".$self->{_url};
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
@@ -38,8 +55,6 @@ sub getDeployResult {
 	if ($response->is_success) {
 	    my $d = $response->decoded_content;
 	    my $decoded = decode_json($d);
-	    print "\njsonRPC = ".$decoded->{'jsonrpc'}."\n";
-	    print "\nid=".$decoded->{'id'}."\n";
 	    my $errorCode = $decoded->{'error'}{'code'};
 	    if($errorCode) {
 	    	my $errorException = new ErrorException();
@@ -50,7 +65,6 @@ sub getDeployResult {
 	    	die "\nError exception";
 	    } else {
 	    	my $deployResult = new GetDeploy::GetDeployResult();
-		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 	    	$deployResult = GetDeploy::GetDeployResult->fromJsonObjectToGetDeployResult($decoded->{'result'});
 		    return $deployResult;
 	    }
