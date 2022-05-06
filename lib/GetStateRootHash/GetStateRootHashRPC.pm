@@ -39,7 +39,7 @@ sub getStateRootHash {
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 		    my $stateRootHash = $decoded->{'result'}{'state_root_hash'};
-		   	print "state root hash:".$stateRootHash."\n";
+		   	return $stateRootHash;
 	    }
 	}
 	else {
