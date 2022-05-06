@@ -114,13 +114,16 @@ sub fromJsonToBid {
 	}
 	# get delegators
 	my @delegatorList = ();
-	my $listDelegatorJson = $json->{'delegators'};
+	my %listDelegatorJson = %{$json->{'delegators'}};
 	print "\nlistDelegatorJson:".$listDelegatorJson."\n";
-	while(($k,$v) = each %$listDelegatorJson) {
-		print "\nDelegator key is:".$k."\n";
-		my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($v);
+	my $counter = 0;
+	
+	
+	foreach my $k (sort keys %listDelegatorJson) {
+    	my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($listDelegatorJson{$k});
 		$oneDelegator->setPublicKey($k);
 		push(@delegatorList,$oneDelegator);
+		$counter ++;
 	}
 	my $totalDelegator = @delegatorList;
 	print "\nTotal delegator in Bid is:".$totalDelegator."\n";

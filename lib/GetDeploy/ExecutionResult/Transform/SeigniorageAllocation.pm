@@ -62,5 +62,21 @@ sub getDelegatorPublicKey {
 
 #This function parse the JsonObject (taken from server RPC method call) to get the SeigniorageAllocation object
 sub fromJsonToSeigniorageAllocation {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = GetDeploy::ExecutionResult::Transform::SeigniorageAllocation();
+	my $validatorJson = $json->{'Validator'};
+	my $delegatorJson = $json->{'Delegator'};
+	if($validatorJson) {
+		$ret->setIsValidator(1);
+		$ret->setValidatorPublicKey($validatorJson->{'validator_public_key'});
+		$ret->setAmount($validatorJson->{'amount'});
+	} else {
+		$ret->setIsValidator(0);
+		$ret->setValidatorPublicKey($delegatorJson->{'validator_public_key'});
+		$ret->setAmount($delegatorJson->{'amount'});
+		$ret->setDelegatorPublicKey($delegatorJson->{'delegator_public_key'});
+	}
+	return $ret;
 }
+1;

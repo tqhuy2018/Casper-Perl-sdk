@@ -84,6 +84,8 @@ sub getVestingSchedule {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the Delegator object
 sub fromJsonToDelegator {
+	my @list = @_;
+	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::Transform::Delegator();
 	$ret->setBondingPurse($json->{'bonding_purse'});
 	$ret->setStakedAmount($json->{'staked_amount'});

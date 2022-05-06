@@ -458,7 +458,42 @@ sub getDeploy13 {
 					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_BID,"Test 15th transform of type WriteBid, Passed");
 					my $bid = $oneT->getItsValue();
 					ok($bid->getInactive() == 0, "Test bid inactive = false, Passed");
-					ok($bid->getBondingPurse() eq "uref-9ef6b11bd095c1733956e3b7e5bb47630f5fa59ad9a89c87fa671a1177e0c025-007", "Test bid inactive = false, Passed");
+					ok($bid->getBondingPurse() eq "uref-9ef6b11bd095c1733956e3b7e5bb47630f5fa59ad9a89c87fa671a1177e0c025-007", "Test bid bonding_purse, Passed");
+					ok($bid->getDelegationRate() eq "10", "Test bid delegation_rate, Passed");
+					ok($bid->getStakedAmount() eq "369103604862659", "Test bid staked_amount, Passed");
+					ok($bid->getValidatorPublicKey() eq "012bac1d0ff9240ff0b7b06d555815640497861619ca12583ddef434885416e69b", "Test bid validator_publickey, Passed");
+					my @delegatorList = $bid->getDelegators();
+					my $totalDelegator = @delegatorList;
+					ok($totalDelegator == 3181, "Test total delegator = 3181, Passed");
+					my $counter3 = 0;
+					foreach(@delegatorList) {
+						if($counter3 == 95) {
+							my $oneD = $_;
+							ok($oneD->getPublicKey() eq "010a6eb8216afcaa59f9202d8bb12e30caf0c46f6c0da08ced34471d80cdfde650", "Test 95th delegator public key value, Passed");
+							ok($oneD->getBondingPurse() eq "uref-bac31707e7a39743d653c93a1b664b0be3546a336387cee282183be50239ec42-007", "Test 95th delegator bonding_purse value, Passed");
+							ok($oneD->getStakedAmount() eq "9000875653986624", "Test 95th delegator staked_amount value, Passed");
+							ok($oneD->getValidatorPublicKey() eq "012bac1d0ff9240ff0b7b06d555815640497861619ca12583ddef434885416e69b", "Test 95th validator public key value, Passed");
+							ok($oneD->getDelegatorPublicKey() eq "010a6eb8216afcaa59f9202d8bb12e30caf0c46f6c0da08ced34471d80cdfde650", "Test 95th delegator public key value, Passed");
+							my $vs = $oneD->getVestingSchedule();
+							ok($vs->getInitialReleaseTimestampMillis() eq "1624978800000", "Test vesting schedule initialReleaseTimestampMillis value, Passed");
+							my @listLA = $vs->getLockedAmounts();
+							my $totalLA = @listLA;
+							ok($totalLA == 14, "Test total LockedAmount in VestingSchedule of Delegator = 14, Passed");
+							my $counter4 = 0;
+							foreach(@listLA) {
+								if($counter4 == 0) {
+									print("\nFirst locked amount:".$_."\n");
+									ok($_ eq "7895222924551040", "Test first LockedAmount value, Passed");
+								}
+								elsif($counter4 == 1) {
+									print("\nSecond locked amount:".$_."\n");
+									ok($_ eq "7287898084200960", "Test second LockedAmount value, Passed");
+								}
+								$counter4 ++;
+							}
+						}
+						$counter3 ++;
+					}
 				} 
 				$counter2 ++;
 			}

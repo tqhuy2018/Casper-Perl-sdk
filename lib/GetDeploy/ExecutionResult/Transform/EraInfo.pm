@@ -2,6 +2,8 @@
 
 package GetDeploy::ExecutionResult::Transform::EraInfo;
 
+use GetDeploy::ExecutionResult::Transform::SeigniorageAllocation;
+
 sub new {
 	my $class = shift,
 	my $self = {
@@ -27,5 +29,18 @@ sub getSeigniorageAllocations {
 # This function parse the JsonObject (taken from server RPC method call) to get the EraInfo object
 
 sub fromJsonArrayToEraInfo {
-	
+	my @list = @_;
+	my @json = @{$list[1]};
+	my $ret = GetDeploy::ExecutionResult::Transform::EraInfo();
+	my $totalSA = $json;
+	if($totalSA > 0) {
+		my @retList = ();
+		foreach(@json) {
+			my $oneSA = GetDeploy::ExecutionResult::Transform::SeigniorageAllocation->fromJsonToSeigniorageAllocation($_);
+			push(@retList,$oneSA);
+		}
+		$ret->setSeigniorageAllocations(@retList);
+	}
+	return $ret;
 }
+1;

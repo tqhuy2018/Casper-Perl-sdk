@@ -115,14 +115,14 @@ sub fromJsonToCasperTransform {
 		}
 		$transform->setItsListValue(@list);
 		print "\nTransformEntry Of type AddKeys\n";
-	} elsif($transformJson->{'WriteDeployInfo'}) {
-		$transform->setItsType("WriteDeployInfo");
-		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($transformJson->{'WriteDeployInfo'});
+	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO}) {
+		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO);
+		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO});
 		print "\nTransformEntry Of type WriteDeployInfo\n";
 		$transform->setItsValue($deployInfo);
-	} elsif($transformJson->{'WriteTransfer'}) {
-		$transform->setItsType("WriteTransfer");
-		my $casperTransfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($transformJson->{'WriteTransfer'});
+	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_TRANSFER}) {
+		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_TRANSFER);
+		my $casperTransfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_TRANSFER});
 		print "\nTransformEntry Of type WriteTransfer\n";
 		$transform->setItsValue($casperTransfer);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_WITHDRAW}) {
@@ -135,6 +135,11 @@ sub fromJsonToCasperTransform {
 		my $bid = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_BID});
 		print "\nTransformEntry Of type WriteBid\n";
 		$transform->setItsValue($bid);
+	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO}) {
+		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_ERA_INFO);
+		my $eraInfo = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO});
+		print "\nTransformEntry Of type WriteEraInfo\n";
+		$transform->setItsValue($eraInfo);
 	}
 	$ret->setTransform($transform);
 	print "\nKey of TransformEntry is:".$json->{'key'}."\n";
