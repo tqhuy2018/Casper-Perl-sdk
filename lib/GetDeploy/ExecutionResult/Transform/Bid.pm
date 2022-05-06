@@ -2,6 +2,7 @@
 
 package GetDeploy::ExecutionResult::Transform::Bid;
 use GetDeploy::ExecutionResult::Transform::VestingSchedule;
+use GetDeploy::ExecutionResult::Transform::Delegator;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -111,11 +112,18 @@ sub fromJsonToBid {
 		my $vs = GetDeploy::ExecutionResult::Transform::VestingSchedule->fromJsonToVestingSchedule($vsJson);
 		$ret->setVestingSchedule($json->{'vesting_schedule'});	
 	}
+	# get delegators
+	my @delegatorList = ();
 	my $listDelegatorJson = $json->{'delegators'};
 	print "\nlistDelegatorJson:".$listDelegatorJson."\n";
-	$totalD = @listDelegatorJson;
-	print "\nTotal delegator is:".$totalD."\n";
-	my @delegatorList = ();
+	while(($k,$v) = each %$listDelegatorJson) {
+		print "\nDelegator key is:".$k."\n";
+		my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($v);
+		$oneDelegator->setPublicKey($k);
+		push(@delegatorList,$oneDelegator);
+	}
+	my $totalDelegator = @delegatorList;
+	print "\nTotal delegator in Bid is:".$totalDelegator."\n";
 	$ret->setDelegators(@delegatorList);
 	return $ret;
 }

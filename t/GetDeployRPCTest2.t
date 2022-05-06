@@ -457,6 +457,8 @@ sub getDeploy13 {
 					my $oneT = $oneTE->getTransform(); # CasperTransform of type WriteBid
 					ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_BID,"Test 15th transform of type WriteBid, Passed");
 					my $bid = $oneT->getItsValue();
+					ok($bid->getInactive() == 0, "Test bid inactive = false, Passed");
+					ok($bid->getBondingPurse() eq "uref-9ef6b11bd095c1733956e3b7e5bb47630f5fa59ad9a89c87fa671a1177e0c025-007", "Test bid inactive = false, Passed");
 				} 
 				$counter2 ++;
 			}

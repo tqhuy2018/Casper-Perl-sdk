@@ -38,7 +38,19 @@ sub getLockedAmounts {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the VestingSchedule object
 sub fromJsonToVestingSchedule {
+	my @list = @_;
+	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::Transform::VestingSchedule();
+	$ret->setInitialReleaseTimestampMillis($json->{'initial_release_timestamp_millis'});
+	my @listLAJson = @{$json->{'locked_amounts'}};
+	my $totalLA = @listLAJson;
+	if($totalLA > 0 ) {
+		my @listLA = ();
+		foreach(@listLAJson) {
+			push(@listLA,$_);
+		}
+		$ret->setLockedAmounts(@listLA);
+	}
 	return $ret;
 }
 1;

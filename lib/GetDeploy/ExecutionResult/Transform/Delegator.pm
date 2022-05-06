@@ -1,7 +1,7 @@
 # Class built for storing Delegator information
 
 package GetDeploy::ExecutionResult::Transform::Delegator;
-
+use GetDeploy::ExecutionResult::Transform::VestingSchedule;
 sub new {
 	my $class = shift,
 	my $self = {
@@ -84,5 +84,17 @@ sub getVestingSchedule {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the Delegator object
 sub fromJsonToDelegator {
-	
+	my $ret = new GetDeploy::ExecutionResult::Transform::Delegator();
+	$ret->setBondingPurse($json->{'bonding_purse'});
+	$ret->setStakedAmount($json->{'staked_amount'});
+	$ret->setValidatorPublicKey($json->{'validator_public_key'});
+	$ret->setDelegatorPublicKey($json->{'delegator_public_key'});
+	my $vsJson = $json->{'vesting_schedule'};
+	# get VestingSchedule
+	if($vsJson) {
+		my $vs = GetDeploy::ExecutionResult::Transform::VestingSchedule->fromJsonToVestingSchedule($vsJson);
+		$ret->setVestingSchedule($vs);
+	}
+	return $ret;
 }
+1;
