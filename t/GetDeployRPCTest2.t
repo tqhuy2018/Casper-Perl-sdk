@@ -500,7 +500,30 @@ sub getDeploy13 {
 		}
 	}
 }
+
+# Negative path, get Deploy with wrong Deploy hash
+sub getDeploy14 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("AAA");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $error = $getDeployRPC->getDeployResult($paramStr);
+	ok($error->getErrorCode() eq "-32602", "Test error when send wrong deploy hash, error is thrown, error code checked, Passed");
+	ok($error->getErrorMessage() eq "Invalid params", "Test error when send wrong deploy hash, error is thrown, error message checked, Passed");
+}
+# Negative path, get Deploy with no Deploy hash
+sub getDeploy15 {
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $error = $getDeployRPC->getDeployResult($paramStr);
+	ok($error->getErrorCode() eq "-32602", "Test error when send wrong deploy hash, error is thrown, error code checked, Passed");
+	ok($error->getErrorMessage() eq "Invalid params", "Test error when send wrong deploy hash, error is thrown, error message checked, Passed");
+}
 #getDeploy10();
 #getDeploy11();
 #getDeploy12();
-getDeploy13();
+#getDeploy13();
+getDeploy14();
+getDeploy15();

@@ -35,7 +35,7 @@ sub getStateRootHash {
 	    	print "error message:".$decoded->{'error'}{'message'}."\n";
 	    	$errorException->setErrorCode($errorCode);
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
-	    	die "\nError exception";
+	    	return $errorException;
 	    } else {
 		    print "\napi_version:" . $decoded->{'result'}{'api_version'}."\n";
 		    my $stateRootHash = $decoded->{'result'}{'state_root_hash'};

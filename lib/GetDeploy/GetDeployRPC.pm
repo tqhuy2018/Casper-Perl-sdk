@@ -8,6 +8,7 @@ use JSON qw( encode_json );
 
 use HTTP::Request;
 use LWP::UserAgent;
+use Common::ErrorException;
 use GetDeploy::Deploy;
 use Common::ConstValues;
 use GetDeploy::DeployHeader;
@@ -46,7 +47,6 @@ sub getDeployResult {
 		$uri = $Common::ConstValues::TEST_NET;
 	}
 	my $json = $list[1];
-	print "url is:".$self->{_url};
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
@@ -57,12 +57,10 @@ sub getDeployResult {
 	    my $decoded = decode_json($d);
 	    my $errorCode = $decoded->{'error'}{'code'};
 	    if($errorCode) {
-	    	my $errorException = new ErrorException();
-	    	print "error code:".$errorCode."\n";
-	    	print "error message:".$decoded->{'error'}{'message'}."\n";
+	    	my $errorException = new Common::ErrorException();
 	    	$errorException->setErrorCode($errorCode);
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
-	    	die "\nError exception";
+	    	return $errorException;
 	    } else {
 	    	my $deployResult = new GetDeploy::GetDeployResult();
 	    	$deployResult = GetDeploy::GetDeployResult->fromJsonObjectToGetDeployResult($decoded->{'result'});

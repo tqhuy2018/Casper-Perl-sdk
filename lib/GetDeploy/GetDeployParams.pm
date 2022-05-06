@@ -29,7 +29,6 @@ This function generate the parameter string for info_get_deploy RPC call
 =cut
 sub generateParameterStr {
 	my ( $self ) = @_;
-	print "\ngenerate deploy parameter with deploy hash:".$self->{_deployHash}."\n";
 	return '{"id" :  1, "method" :  "info_get_deploy", "params" :  {"deploy_hash" :  "'.$self->{_deployHash}.'"}, "jsonrpc" :  "2.0"}';
 }
 1;
