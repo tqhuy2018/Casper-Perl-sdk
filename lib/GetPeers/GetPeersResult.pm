@@ -53,3 +53,4 @@ sub fromJsonObjectToGetPeersResult {
 	$ret->setPeers(@peers);
 	return $ret;
 }
+1;

@@ -1,10 +1,10 @@
-# This class handles info_get_peers RPC call
-package GetPeers::GetPeerRPC;
+# This class handles info_get_status RPC call
+package GetStatus::GetStatusRPC;
 use LWP::UserAgent;
 use Data::Dumper;
 use JSON qw( decode_json );
-use GetPeers::GetPeersResult;
 
+use GetStatus::GetStatusResult;
 sub new {
 	my $class = shift;
 	my $self = {};
@@ -12,12 +12,12 @@ sub new {
 	return $self;
 }
 =comment
-This function does info_get_peers RPC call
+This function does info_get_status RPC call
 =cut
-sub getPeers {
+sub getStatus {
 	 my( $self ) = @_;
 	my $uri = 'https://node-clarity-testnet.make.services/rpc';
-	my $json = '{"params" :  [], "id" :  1, "method": "info_get_peers", "jsonrpc" :  "2.0"}';
+	my $json = '{"params" :  [], "id" :  1, "method": "info_get_status", "jsonrpc" :  "2.0"}';
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
@@ -26,7 +26,7 @@ sub getPeers {
 	if ($response->is_success) {
 	    my $d = $response->decoded_content;
 	    my $decoded = decode_json($d);
-	    my $ret = GetPeers::GetPeersResult->fromJsonObjectToGetPeersResult($decoded->{'result'});
+	    my $ret = GetStatus::GetStatusResult->fromJsonObjectToGetStatusResult($decoded->{'result'});
 	    return $ret;
 	}
 	else {
