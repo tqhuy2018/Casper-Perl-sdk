@@ -4,10 +4,6 @@ use strict;
 use warnings;
 
 use Test::Simple tests => 18;
-
-
-
-
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 

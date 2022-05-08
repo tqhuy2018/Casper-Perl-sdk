@@ -1,5 +1,6 @@
 package GetBlockTransfers::GetBlockTransfersRPC;
-
+use LWP::UserAgent;
+use Data::Dumper;
 use Common::ErrorException;
 use JSON qw( decode_json );
 sub new {
@@ -28,8 +29,8 @@ sub getBlockTransfers {
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
 	    	return $errorException;
 	    } else {
-		    my $stateRootHash = GetBlockTransfers::GetBlockTransfersResult->fromJsonObjectToGetBlockTransfersResult($decoded->{'result'});
-		   	return $stateRootHash;
+		    my $ret = GetBlockTransfers::GetBlockTransfersResult->fromJsonObjectToGetBlockTransfersResult($decoded->{'result'});
+		   	return $ret;
 	    }
 	}
 	else {
