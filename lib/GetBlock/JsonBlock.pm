@@ -1,6 +1,8 @@
 # Class built for storing JsonBlock information
 package GetBlock::JsonBlock;
 use GetBlock::JsonBlockBody;
+use GetBlock::JsonBlockHeader;
+use GetBlock::JsonProof;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -61,11 +63,25 @@ sub getProofs {
 	my @list = @{$self->{_proofs}};
 	wantarray ? @list : \@list;
 }
+
 sub fromJsonObjectToJsonBlock {
 	my @list = @_;
 	my $json = $list[1];
 	my $ret = new GetBlock::JsonBlock();
 	$ret->setBlockHash($json->{'hash'});
+	my $header = GetBlock::JsonBlockHeader->fromJsonObjectToJsonBlockHeader($json->{'header'});
+	$ret->setHeader($header);
+	my $body = GetBlock::JsonBlockBody->fromJsonObjectToJsonBlockBody($json->{'body'});
+	my @listProofJson = @{$json->{'proofs'}};
+	my $totalProof = @listProofJson;
+	if($totalProof > 0) {
+		my @listProof = ();
+		foreach(@listProofJson) {
+			my $oneProof = GetBlock::JsonProof->fromJsonToJsonProof($_);
+			push(@listProof,$oneProof);
+		}
+		$ret->setProofs($listProof);
+	}
 	return $ret;
 }
 1;

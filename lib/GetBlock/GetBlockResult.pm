@@ -40,8 +40,8 @@ sub fromJsonObjectToGetBlockResult {
 	my $json = $list[1];
 	my $ret = new GetBlock::GetBlockResult();
 	$ret->setApiVersion($json->{'api_version'});
-	my $block = 
-	$ret->setBlock($json->{'block'});
+	my $jsonBlock = GetBlock::JsonBlock->fromJsonObjectToJsonBlock($json->{'block'});
+	$ret->setBlock($jsonBlock);
 	return $ret;
 }
 1;
