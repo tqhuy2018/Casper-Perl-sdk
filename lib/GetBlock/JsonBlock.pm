@@ -81,7 +81,7 @@ sub fromJsonObjectToJsonBlock {
 			my $oneProof = GetBlock::JsonProof->fromJsonToJsonProof($_);
 			push(@listProof,$oneProof);
 		}
-		$ret->setProofs($listProof);
+		$ret->setProofs(@listProof);
 	}
 	return $ret;
 }
