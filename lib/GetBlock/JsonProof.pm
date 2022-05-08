@@ -44,3 +44,4 @@ sub fromJsonToJsonProof {
 	$ret->setSignature($json->{'signature'});
 	return $ret;
 }
+1;

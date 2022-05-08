@@ -9,7 +9,7 @@ sub new {
 		_blockHash => shift,
 		_header => shift, # JsonBlockHeader object
 		_body => shift, # JsonBlockBody object
-		_proofs = [ @_ ], # list of JsonProof
+		_proofs => [ @_ ], # list of JsonProof
 	};
 	bless $self, $class;
 	return $self;
@@ -72,6 +72,7 @@ sub fromJsonObjectToJsonBlock {
 	my $header = GetBlock::JsonBlockHeader->fromJsonObjectToJsonBlockHeader($json->{'header'});
 	$ret->setHeader($header);
 	my $body = GetBlock::JsonBlockBody->fromJsonObjectToJsonBlockBody($json->{'body'});
+	$ret->setBody($body);
 	my @listProofJson = @{$json->{'proofs'}};
 	my $totalProof = @listProofJson;
 	if($totalProof > 0) {

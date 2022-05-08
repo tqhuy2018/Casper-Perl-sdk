@@ -4,8 +4,8 @@ sub new {
 	my $class = shift;
 	my $self = {
 		_proposer => shift,
-		_deployHashes = [ @_ ], # list of deploy hash, in String
-		_transferHashes = [ @_ ], # list of transfer hash, in String
+		_deployHashes => [ @_ ], # list of deploy hash, in String
+		_transferHashes => [ @_ ], # list of transfer hash, in String
 	};
 	bless $self, $class;
 	return $self;
@@ -53,6 +53,27 @@ sub fromJsonObjectToJsonBlockBody {
 	my $json = $list[1];
 	my $ret = new GetBlock::JsonBlockBody();
 	$ret->setProposer($json->{'proposer'});
+	# get Deploy Hashes list 
+	my @listDHJson = @{$json->{'deploy_hashes'}};
+	my $totalDH = @listDHJson;
+	if ($totalDH > 0) {
+		my @listDH = ();
+		foreach(@listDHJson) {
+			push(@listDH, $_);
+		}
+		$ret->setDeployHashes(@listDH);
+	}
+	
+	# get Transfer Hashes list 
+	my @listTHJson = @{$json->{'transfer_hashes'}};
+	my $totalTH = @listTHJson;
+	if ($totalTH > 0) {
+		my @listTH = ();
+		foreach(@listTHJson) {
+			push(@listTH, $_);
+		}
+		$ret->setTransferHashes(@listTH);
+	}
 	return $ret;
 }
 1;
