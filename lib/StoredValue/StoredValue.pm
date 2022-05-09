@@ -122,8 +122,7 @@ sub fromJsonObjectToStoredValue {
 	# 8. Get StoredValue of type EraInfo
 	my $storedValueEraInfo = $json->{$Common::ConstValues::STORED_VALUE_ERA_INFO};
 	if($storedValueEraInfo) {
-		my @listEraJson = @{$storedValueEraInfo};
-		my $eraInfo = GetDeploy::ExecutionResult::Transform::EraInfo->fromJsonArrayToEraInfo(@listEraJson);
+		my $eraInfo = GetDeploy::ExecutionResult::Transform::EraInfo->fromJsonObjectToEraInfo($storedValueEraInfo);
 		$ret->setItsValue($eraInfo);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_ERA_INFO);
 		return $ret;

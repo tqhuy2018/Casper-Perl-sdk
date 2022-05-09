@@ -28,14 +28,16 @@ sub getSeigniorageAllocations {
 
 # This function parse the JsonObject (taken from server RPC method call) to get the EraInfo object
 
-sub fromJsonArrayToEraInfo {
+sub fromJsonObjectToEraInfo {
 	my @list = @_;
-	my @json = @{$list[1]};
-	my $ret = GetDeploy::ExecutionResult::Transform::EraInfo();
-	my $totalSA = $json;
+	my $json = $list[1];
+	my $ret = new GetDeploy::ExecutionResult::Transform::EraInfo();
+	my @listSAJson = @{$json->{'seigniorage_allocations'}};
+	my $totalSA = @listSAJson;
+	print "\ntotal SA is:".$totalSA."\n";
 	if($totalSA > 0) {
 		my @retList = ();
-		foreach(@json) {
+		foreach(@listSAJson) {
 			my $oneSA = GetDeploy::ExecutionResult::Transform::SeigniorageAllocation->fromJsonToSeigniorageAllocation($_);
 			push(@retList,$oneSA);
 		}

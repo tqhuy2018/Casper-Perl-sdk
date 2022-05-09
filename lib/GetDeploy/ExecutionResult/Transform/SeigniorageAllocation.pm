@@ -64,7 +64,7 @@ sub getDelegatorPublicKey {
 sub fromJsonToSeigniorageAllocation {
 	my @list = @_;
 	my $json = $list[1];
-	my $ret = GetDeploy::ExecutionResult::Transform::SeigniorageAllocation();
+	my $ret = new GetDeploy::ExecutionResult::Transform::SeigniorageAllocation();
 	my $validatorJson = $json->{'Validator'};
 	my $delegatorJson = $json->{'Delegator'};
 	if($validatorJson) {

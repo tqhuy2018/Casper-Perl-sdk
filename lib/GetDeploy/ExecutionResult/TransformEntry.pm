@@ -137,12 +137,11 @@ sub fromJsonToCasperTransform {
 		$transform->setItsValue($bid);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_ERA_INFO);
-		my $eraInfo = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO});
+		my $eraInfo = GetDeploy::ExecutionResult::Transform::EraInfo->fromJsonObjectToEraInfo($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO});
 		print "\nTransformEntry Of type WriteEraInfo\n";
 		$transform->setItsValue($eraInfo);
 	}
 	$ret->setTransform($transform);
-	print "\nKey of TransformEntry is:".$json->{'key'}."\n";
 	return $ret;
 }
 1;
