@@ -1,7 +1,6 @@
 # Class built for storing NamedKey information
 
 package GetDeploy::ExecutionResult::Transform::NamedKey;
-
 sub new {
 	my $class = shift,
 	my $self = {

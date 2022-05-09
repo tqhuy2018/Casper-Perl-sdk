@@ -43,3 +43,4 @@ sub fromJsonObjectToActionThresholds {
 	$ret->setKeyManagement($json->{'key_management'});
 	return $ret;
 }
+1;

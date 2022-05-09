@@ -1,6 +1,7 @@
 # Class built for storing Account information
 package StoredValue::Account;
 use StoredValue::ActionThresholds;
+use StoredValue::AssociatedKey;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -85,5 +86,28 @@ sub fromJsonObjectToAccount {
 	$ret->setMainPurse($json->{'main_purse'});
 	my $at = StoredValue::ActionThresholds->fromJsonObjectToActionThresholds($json->{'action_thresholds'});
 	$ret->setActionThresholds($at);
+	# get NameKeys
+	my @listNKJson = @{$json->{'named_keys'}};
+	my $totalNK = @listNKJson;
+	if($totalNK > 0) {
+		my @listNK = ();
+		foreach(@listNKJson) {
+			my $oneNK = GetDeploy::ExecutionResult::Transform::NamedKey->fromJsonObjectToNamedKey($_);
+			push(@listNK, $oneNK);
+		}
+		$ret->setNamedKeys(@listNK);
+	}
+	# get AssociatedKey
+	my @listAKJson = @{$json->{'associated_keys'}};
+	my $totalAK = @listAKJson;
+	if($totalAK > 0) {
+		my @listAK = ();
+		foreach(@listAKJson) {
+			my $oneAK = StoredValue::AssociatedKey->fromJsonObjectToAssociatedKey($_);
+			push(@listAK,$oneAK);
+		}
+		$ret->setAssociatedKeys(@listAK);
+	}
 	return $ret;
 }
+1;

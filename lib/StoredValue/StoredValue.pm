@@ -62,13 +62,26 @@ sub fromJsonObjectToStoredValue {
 	my $ret = new StoredValue::StoredValue();
 	my $clValueJson = $json->{'CLValue'};
 	if($clValueJson) {
-		my $clValue = new CLValue::CLValue->fromJsonObjToCLValue($clValueJson);
+		my $clValue = CLValue::CLValue->fromJsonObjToCLValue($clValueJson);
 		$ret->setItsValue($clValue);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_CLVALUE);
 		return $ret;
 	}
-	my $account = $json->{'Account'};
-	if($account) {
+	my $accountJson = $json->{'Account'};
+	if($accountJson) {
+		my $account =  StoredValue::Account->fromJsonObjectToAccount($accountJson);
+		$ret->setItsValue($account);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_ACCOUNT);
+		return $ret;
+	}
+	my $contractWasmJson = $json->{'ContractWasm'};
+	if($contractWasmJson) {
+		$ret->setItsValue($contractWasmJson);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_CONTRACT_WASM);
+		return $ret;
+	}
+	my $storeValueContractJson = $json->{'Contract'};
+	if($storeValueContractJson) {
 		
 	}
 	return $ret;
