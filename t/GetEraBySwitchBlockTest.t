@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 59;
+use Test::Simple tests => 36;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
@@ -46,6 +46,7 @@ sub getEraInfo {
 	ok($saValidator->getIsValidator() == 1, "Test 1 first seigniorage_allocation of type Validator, Passed");
 	ok($saValidator->getValidatorPublicKey() eq "01026ca707c348ed8012ac6a1f28db031fadd6eb67203501a353b867a08c8b9a80", "Test 1 first seigniorage_allocation validator_public_key value of Validator, Passed");
 	ok($saValidator->getAmount() eq "749985612238", "Test 1 first seigniorage_allocation amount value of Validator, Passed");
+	
 	# Test 2: Call with block height
 	$bi->setBlockType("height");
 	$bi->setBlockHeight("208");
@@ -53,22 +54,41 @@ sub getEraInfo {
 	$getEraResult = $getEra->getEraInfo($postParamHeightStr);
 	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 2 api_version, Passed");
 	$eraSummary = $getEraResult->getEraSummary();
-	ok($eraSummary->getBlockHash() eq "623199fd62ce81e9870db8b301afcdd2491eae4555396c58825d699c4d58dd62","Test 1 block hash value, Passed");
+	ok($eraSummary->getBlockHash() eq "623199fd62ce81e9870db8b301afcdd2491eae4555396c58825d699c4d58dd62","Test 2 block hash value, Passed");
+	ok($eraSummary->getEraId() == 1,"Test 2 era id value, Passed");
+	ok($eraSummary->getStateRootHash() eq "464275406d3e76110dc064e4cb22700b9babadd66eb45f5c3ebb5439a16beba9","Test 2 state root hash value, Passed");
+	ok(length($eraSummary->getMerkleProof()) == 28236, "Test 2 Merkle proof value, Passed");
+	$storedValue = $eraSummary->getStoredValue();
+	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_ERA_INFO, "Test 2 stored value of type EraInfo, Passed");
+	$eraInfo = $storedValue->getItsValue();
+	@listSA = $eraInfo->getSeigniorageAllocations();
+	$totalSA = @listSA;
+	ok($totalSA == 216, "Test 2 total seigniorage_allocation = 216, Passed");
+	$saDelegator = $listSA[0]; 
+	ok($saDelegator->getIsValidator() == 0, "Test 2 first seigniorage_allocation of type Delegator, Passed");
+	ok($saDelegator->getValidatorPublicKey() eq "01026ca707c348ed8012ac6a1f28db031fadd6eb67203501a353b867a08c8b9a80", "Test 2 first seigniorage_allocation validator_public_key value of Delegator, Passed");
+	ok($saDelegator->getDelegatorPublicKey() eq "01128ddb51119f1df535cf3a763996344ab0cc79038faaee0aaaf098a078031ce6", "Test 2 first seigniorage_allocation delegator_public_key value of Delegator, Passed");
+	ok($saDelegator->getAmount() eq "59487099151", "Test 2 first seigniorage_allocation amount value of Delegator, Passed");
+
+	$saValidator = $listSA[6]; 
+	ok($saValidator->getIsValidator() == 1, "Test 2 first seigniorage_allocation of type Validator, Passed");
+	ok($saValidator->getValidatorPublicKey() eq "01026ca707c348ed8012ac6a1f28db031fadd6eb67203501a353b867a08c8b9a80", "Test 1 first seigniorage_allocation validator_public_key value of Validator, Passed");
+	ok($saValidator->getAmount() eq "508508682040", "Test 2 first seigniorage_allocation amount value of Validator, Passed");
 		
 	# Test 3: Call with no parameter, latest block transfer is retrieved;
 	$bi->setBlockType("none");
 	my $postParamNoneStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	$getEraResult = $getEra->getEraInfo($postParamNoneStr);
 	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
-	$eraSummary = $getEraResult->getEraSummary();
-		
+	ok($getEraResult->getIsEraExists() == 0, "Test 3 era summary Null, Passed");
+	
 	# Negative test: Test 4: Call with wrong block hash, latest block transfer is retrieved;
 	$bi->setBlockType("hash");
 	$bi->setBlockHash("aaa");
 	my $postParamStr4 = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	$getEraResult = $getEra->getEraInfo($postParamStr4);
 	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 4 api_version, Passed");
-	$eraSummary = $getEraResult->getEraSummary();
+	ok($getEraResult->getIsEraExists() == 0, "Test 3 era summary Null, Passed");
 	
 	# Negative test: Test 5: Call with too big block height with the height > U64.Max , error is thrown;
 	$bi->setBlockType("height");

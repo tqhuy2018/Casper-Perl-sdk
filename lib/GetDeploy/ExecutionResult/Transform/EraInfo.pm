@@ -34,7 +34,6 @@ sub fromJsonObjectToEraInfo {
 	my $ret = new GetDeploy::ExecutionResult::Transform::EraInfo();
 	my @listSAJson = @{$json->{'seigniorage_allocations'}};
 	my $totalSA = @listSAJson;
-	print "\ntotal SA is:".$totalSA."\n";
 	if($totalSA > 0) {
 		my @retList = ();
 		foreach(@listSAJson) {
