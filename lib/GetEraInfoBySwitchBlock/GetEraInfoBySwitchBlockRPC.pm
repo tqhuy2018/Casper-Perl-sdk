@@ -1,0 +1,1 @@
+package GetEraInfoBySwitchBlock::GetEraInfoBySwitchBlockRPC;
