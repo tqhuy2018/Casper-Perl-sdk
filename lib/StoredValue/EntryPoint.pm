@@ -1,11 +1,13 @@
+# Class built for storing EntryPoint information
 package StoredValue::EntryPoint;
 use CLValue::CLType;
 use StoredValue::Parameter;
+use StoredValue::EntryPointAccess;
 sub new {
 	my $class = shift;
 	my $self = {
-		_access => shift,
-		_args => [ @_ ], # list of Parameter
+		_access => shift, # EntryPointAccess object
+		_args => [ @_ ], # list of Parameter object
 		_name => shift,
 		_ret => shift, # of type CLType
 		_entryPointType => shift, # String of either Session or Contract - an enum type
@@ -96,7 +98,10 @@ sub fromJsonObjectToEntryPoint {
 	my $clType = CLValue::CLType->getCLType($json->{'ret'});
 	$ret->setRet($clType);
 	$ret->setEntryPointType($json->{'entry_point_type'});
-	
+	# get access - of type EntryPointAccess
+	my $accessJson = $json->{'access'};
+	my $access = StoredValue::EntryPointAccess->fromJsonObjectToEntryPointAccess($json->{'access'});
+	$ret->setAccess($access);
 	return $ret;
 }
 1;

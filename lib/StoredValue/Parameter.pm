@@ -34,8 +34,14 @@ sub getClType {
 	return $self->{_clType};
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the Account object
+# This function parse the JsonObject (taken from server RPC method call) to get the Parameter object
 sub fromJsonObjectToParameter {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new StoredValue::Parameter();
+	$ret->setName($json->{'name'});
+	my $clType = CLValue::CLType->getCLType($json->{'cl_type'});
+	$ret->setClType($clType);
+	return $ret;
 }
 1;

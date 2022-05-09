@@ -82,7 +82,7 @@ sub fromJsonObjectToStoredValue {
 	}
 	my $storeValueContractJson = $json->{'Contract'};
 	if($storeValueContractJson) {
-		
+		my $contract = 
 	}
 	return $ret;
 }
