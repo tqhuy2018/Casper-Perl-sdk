@@ -58,7 +58,7 @@ sub setEntryPoints {
 	return $self->{_entryPoints};
 }
 
-sub setEntryPoints {
+sub getEntryPoints {
 	my ( $self ) = @_;
 	my @list = @{$self->{_entryPoints}};
 	wantarray ? @list : \@list;

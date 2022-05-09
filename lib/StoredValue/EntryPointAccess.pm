@@ -35,7 +35,7 @@ sub getGroups {
 	wantarray ? @list : \@list;
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the EntryPointAccess object */
+# This function parse the JsonObject (taken from server RPC method call) to get the EntryPointAccess object 
 sub fromJsonObjectToEntryPointAccess {
 	my @list = @_;
 	my $json = $list[1];
@@ -55,3 +55,4 @@ sub fromJsonObjectToEntryPointAccess {
 	}
 	return $ret;
 }
+1;

@@ -21,6 +21,10 @@ The attribute _itsValue in this StoredValue::StoredValue class hold the value of
 package StoredValue::StoredValue;
 use CLValue::CLValue;
 use Common::ConstValues;
+use GetDeploy::ExecutionResult::Transform::CasperTransfer;
+use StoredValue::CasperContract;
+use GetDeploy::ExecutionResult::Transform::DeployInfo;
+use GetDeploy::ExecutionResult::Transform::EraInfo;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -60,29 +64,86 @@ sub fromJsonObjectToStoredValue {
 	my @list = @_;
 	my $json = $list[1];
 	my $ret = new StoredValue::StoredValue();
-	my $clValueJson = $json->{'CLValue'};
+	# 1. Get StoredValue of type CLValue
+	my $clValueJson = $json->{$Common::ConstValues::STORED_VALUE_CLVALUE};
 	if($clValueJson) {
 		my $clValue = CLValue::CLValue->fromJsonObjToCLValue($clValueJson);
 		$ret->setItsValue($clValue);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_CLVALUE);
 		return $ret;
 	}
-	my $accountJson = $json->{'Account'};
+	# 2. Get StoredValue of type Account
+	my $accountJson = $json->{$Common::ConstValues::STORED_VALUE_ACCOUNT};
 	if($accountJson) {
 		my $account =  StoredValue::Account->fromJsonObjectToAccount($accountJson);
 		$ret->setItsValue($account);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_ACCOUNT);
 		return $ret;
 	}
-	my $contractWasmJson = $json->{'ContractWasm'};
+	# 3. Get StoredValue of type ContractWasm
+	my $contractWasmJson = $json->{$Common::ConstValues::STORED_VALUE_CONTRACT_WASM};
 	if($contractWasmJson) {
 		$ret->setItsValue($contractWasmJson);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_CONTRACT_WASM);
 		return $ret;
 	}
-	my $storeValueContractJson = $json->{'Contract'};
+	# 4. Get StoredValue of type Contract
+	my $storeValueContractJson = $json->{$Common::ConstValues::STORED_VALUE_CONTRACT};
 	if($storeValueContractJson) {
-		my $contract = 
+		my $contract = StoredValue::CasperContract->fromJsonObjectToCasperContract($storeValueContractJson);
+		$ret->setItsValue($contract);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_CONTRACT);
+		return $ret;
+	}
+	# 5. Get StoredValue of type ContractPackage
+	my $storeValueContractPackage = $json->{$Common::ConstValues::STORED_VALUE_CONTRACT_PACKAGE};
+	if($storeValueContractPackage) {
+		my $contractPackage = StoredValue::ContractPackage->fromJsonObjectToContractPackage($storeValueContractPackage);
+		$ret->setItsValue($contractPackage);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_CONTRACT_PACKAGE);
+		return $ret;
+	}
+	# 6. Get StoredValue of type Transfer
+	my $storedValueTransfer = $json->{$Common::ConstValues::STORED_VALUE_TRANSFER};
+	if($storedValueTransfer) {
+		my $transfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($storedValueTransfer);
+		$ret->setItsValue($transfer);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_TRANSFER);
+		return $ret;
+	}
+	# 7. Get StoredValue of type DeployInfo
+	my $storedValueDeployInfo = $json->{$Common::ConstValues::STORED_VALUE_DEPLOY_INFO};
+	if($storedValueDeployInfo) {
+		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($storedValueDeployInfo);
+		$ret->setItsValue($deployInfo);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_DEPLOY_INFO);
+		return $ret;
+	}
+	# 8. Get StoredValue of type EraInfo
+	my $storedValueEraInfo = $json->{$Common::ConstValues::STORED_VALUE_ERA_INFO};
+	if($storedValueEraInfo) {
+		my @listEraJson = @{$storedValueEraInfo};
+		my $eraInfo = GetDeploy::ExecutionResult::Transform::EraInfo->fromJsonArrayToEraInfo(@listEraJson);
+		$ret->setItsValue($eraInfo);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_ERA_INFO);
+		return $ret;
+	}
+	# 9. Get StoredValue of type Bid
+	my $storedValueBid = $json->{$Common::ConstValues::STORED_VALUE_BID};
+	if($storedValueBid) {
+		my $bid = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($storedValueBid);
+		$ret->setItsValue($bid);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_BID);
+		return $ret;
+	}
+	# 10. Get StoredValue of type Withdraw
+	my $storedValueWithdraw = $json->{$Common::ConstValues::STORED_VALUE_WITHDRAW};
+	if($storedValueWithdraw) {
+		my $withdraw = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($storedValueWithdraw);
+		$ret->setItsValue($withdraw);
+		$ret->setItsType($Common::ConstValues::STORED_VALUE_WITHDRAW);
+		return $ret;
 	}
 	return $ret;
 }
+1;

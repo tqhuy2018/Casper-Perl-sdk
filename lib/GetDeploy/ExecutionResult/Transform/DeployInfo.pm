@@ -9,7 +9,7 @@ sub new {
 		_from => shift,
 		_source => shift, 
 		_gas => shift,
-		_transfers => [ @_ ] , # TransferAddr list of type String
+		_transfers => [ @_ ] , # list of TransferAddr object, in form of String type
 	};
 	bless $self,$class;
 	return $self;

@@ -1,4 +1,5 @@
 package GetEraInfoBySwitchBlock::GetEraInfoResult;
+use GetEraInfoBySwitchBlock::EraSummary;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -32,5 +33,12 @@ sub getEraSummary {
 }
 # This function parse the JsonObject (taken from server RPC method call) to GetEraInfoResult object
 sub fromJsonToGetEraInfoResult {
-	
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetEraInfoBySwitchBlock::GetEraInfoResult();
+	$ret->setApiVersion($json->{'api_version'});
+	my $eraSummary = GetEraInfoBySwitchBlock::EraSummary->fromJsonToEraSummary($json->{'era_summary'});
+	$ret->setEraSummary($eraSummary);
+	return $ret;
 }
+1;

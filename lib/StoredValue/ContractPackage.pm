@@ -69,6 +69,7 @@ sub fromJsonObjectToContractPackage {
 	my $json = $list[1];
 	my $ret = new StoredValue::ContractPackage();
 	$ret->setAccessKey($json->{'access_key'});
+	
 	# get list of DisableVersion object
 	my @listDVJson = @{$json->{'disabled_versions'}};
 	my $totalDV = @listDVJson;
@@ -92,6 +93,7 @@ sub fromJsonObjectToContractPackage {
 		}
 		$ret->setGroups(@listGroup);
 	}
+	
 	# get list of ContractVersion object
 	my @listVersionJson = @{$json->{'versions'}};
 	my $totalVersion = @listVersionJson;

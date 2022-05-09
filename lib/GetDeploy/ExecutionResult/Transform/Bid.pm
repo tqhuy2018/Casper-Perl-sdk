@@ -117,8 +117,6 @@ sub fromJsonToBid {
 	my %listDelegatorJson = %{$json->{'delegators'}};
 	print "\nlistDelegatorJson:".$listDelegatorJson."\n";
 	my $counter = 0;
-	
-	
 	foreach my $k (sort keys %listDelegatorJson) {
     	my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($listDelegatorJson{$k});
 		$oneDelegator->setPublicKey($k);

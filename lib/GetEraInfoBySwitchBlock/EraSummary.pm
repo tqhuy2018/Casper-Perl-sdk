@@ -1,7 +1,6 @@
 # Class built for storing EraSummary information
 # This class hold the stored value,  which can be 1 among 10 possible value in this enum,  defined at this address
 # https: //docs.rs/casper-node/latest/casper_node/types/json_compatibility/enum.StoredValue.html
- 
 package GetEraInfoBySwitchBlock::EraSummary;
 use StoredValue::StoredValue;
 sub new {
@@ -90,3 +89,4 @@ sub fromJsonToEraSummary {
 	$ret->setStoredValue($storedValue);
 	return $ret;
 }
+1;
