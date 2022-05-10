@@ -59,17 +59,13 @@ sub generateParameterStr {
 		foreach(@listPath) {
 			my $onePath = $_;
 			$pathStr = $pathStr.'"'.$onePath.'"';
-			if($counter < $totalPath) {
+			if($counter < $totalPath-1) {
 				$pathStr = $pathStr.",";
 			}
 			$counter ++;
 		}
 	}
 	$pathStr = $pathStr."]";
-	if ($pathStr eq "[]") {
-		return '{"id": 1, "method": "state_get_item" , "params": {"state_root_hash": "'.$self->{_stateRootHash}.'", "key": "'.$self->{_key}.'", "path": '.$pathStr.'},  "jsonrpc": "2.0"}';
-	} else {
-		return '{"id": 1, "method": "state_get_item" , "params": {"state_root_hash": "'.$self->{_stateRootHash}.'", "key": "'.$self->{_key}.'", "path": "'.$pathStr.'"},  "jsonrpc": "2.0"}';
-	}
+	return '{"id": 1, "method": "state_get_item" , "params": {"state_root_hash": "'.$self->{_stateRootHash}.'", "key": "'.$self->{_key}.'", "path": '.$pathStr.'},  "jsonrpc": "2.0"}';
 }
 1;

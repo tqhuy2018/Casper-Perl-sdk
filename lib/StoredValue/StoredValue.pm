@@ -25,6 +25,9 @@ use GetDeploy::ExecutionResult::Transform::CasperTransfer;
 use StoredValue::CasperContract;
 use GetDeploy::ExecutionResult::Transform::DeployInfo;
 use GetDeploy::ExecutionResult::Transform::EraInfo;
+use GetDeploy::ExecutionResult::Transform::Bid;
+use GetDeploy::ExecutionResult::Transform::Withdraw;
+use StoredValue::Account;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -137,8 +140,10 @@ sub fromJsonObjectToStoredValue {
 	}
 	# 10. Get StoredValue of type Withdraw
 	my $storedValueWithdraw = $json->{$Common::ConstValues::STORED_VALUE_WITHDRAW};
+	print "\nstoredValueWithdraw:".$storedValueWithdraw."\n";
 	if($storedValueWithdraw) {
-		my $withdraw = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($storedValueWithdraw);
+		my @listWithdrawJson = @{$storedValueWithdraw};
+		my $withdraw = GetDeploy::ExecutionResult::Transform::Withdraw->fromJsonArrayToWithdraw($storedValueWithdraw);
 		$ret->setItsValue($withdraw);
 		$ret->setItsType($Common::ConstValues::STORED_VALUE_WITHDRAW);
 		return $ret;

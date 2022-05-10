@@ -11,6 +11,7 @@ sub new {
 		_validatorPublicKey => shift,
 		_delegatorPublicKey => shift,
 		_vestingSchedule => shift, # Optional value of type VestingSchedule
+		_isVSExists => shift, # This attribute hold the information to indicate that VestingSchedule exists or not
 	};
 	bless $self,$class;
 	return $self;
@@ -82,6 +83,17 @@ sub getVestingSchedule {
 	return $self->{_vestingSchedule};
 }
 
+# get-set method for _isVSExists
+sub setIsVSExists {
+	my ($self,$publicKey) = @_;
+	$self->{_isVSExists} = $publicKey if defined($publicKey);
+	return $self->{_isVSExists};
+}
+sub getIsVSExists {
+	my ($self)  = @_;
+	return $self->{_isVSExists};
+}
+
 # This function parse the JsonObject (taken from server RPC method call) to get the Delegator object
 sub fromJsonToDelegator {
 	my @list = @_;
@@ -96,6 +108,9 @@ sub fromJsonToDelegator {
 	if($vsJson) {
 		my $vs = GetDeploy::ExecutionResult::Transform::VestingSchedule->fromJsonToVestingSchedule($vsJson);
 		$ret->setVestingSchedule($vs);
+		$ret->setIsVSExists(1);
+	} else {
+		$ret->setIsVSExists(0);
 	}
 	return $ret;
 }

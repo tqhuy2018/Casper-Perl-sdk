@@ -21,7 +21,7 @@ sub setAccountHash {
 	$self->{_accountHash} = $value if defined($value);
 	return $self->{_accountHash};
 }
-
+ 
 sub getAccountHash {
 	my ( $self ) = @_;
 	return $self->{_accountHash};

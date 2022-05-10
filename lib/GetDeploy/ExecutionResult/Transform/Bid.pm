@@ -103,6 +103,7 @@ sub fromJsonToBid {
 	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::Transform::Bid();
 	$ret->setBondingPurse($json->{'bonding_purse'});
+	print "\nbonding purse:".$json->{'bonding_purse'}."\n";
 	$ret->setDelegationRate($json->{'delegation_rate'});
 	$ret->setInactive($json->{'inactive'});
 	$ret->setStakedAmount($json->{'staked_amount'});
@@ -110,12 +111,12 @@ sub fromJsonToBid {
 	my $vsJson = $json->{'vesting_schedule'};
 	if($vsJson) {
 		my $vs = GetDeploy::ExecutionResult::Transform::VestingSchedule->fromJsonToVestingSchedule($vsJson);
-		$ret->setVestingSchedule($json->{'vesting_schedule'});	
+		$ret->setVestingSchedule($vs);	
 	}
 	# get delegators
 	my @delegatorList = ();
 	my %listDelegatorJson = %{$json->{'delegators'}};
-	print "\nlistDelegatorJson:".$listDelegatorJson."\n";
+	# print "\nlistDelegatorJson:".$listDelegatorJson."\n";
 	my $counter = 0;
 	foreach my $k (sort keys %listDelegatorJson) {
     	my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($listDelegatorJson{$k});

@@ -122,8 +122,12 @@ sub fromJsonToTransfer {
 	$ret->setTarget($json->{'target'});
 	$ret->setAmount($json->{'amount'});
 	$ret->setGas($json->{'gas'});
-	if($json->{'id'}) {
+	if($json->{'id'} == 0) {
 		$ret->setId($json->{'id'});
+		print "\nid is:".$json->{'id'}."\n";
+	} elsif($json->{'id'}) {
+		$ret->setId($json->{'id'});
+		print "\nid is:".$json->{'id'}."\n";
 	}
 	return $ret;
 }
