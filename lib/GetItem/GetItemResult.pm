@@ -1,5 +1,6 @@
 # Class built for storing GetItemResult information, taken from state_get_item RPC method
 package GetItem::GetItemResult;
+use StoredValue::StoredValue;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -18,7 +19,7 @@ sub setApiVersion {
 	return $self->{_apiVersion};
 }
 
-sub setApiVersion {
+sub getApiVersion {
 	my ( $self ) = @_;
 	return $self->{_apiVersion};
 }

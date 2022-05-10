@@ -10,7 +10,7 @@ Information of a sample CLValue object
 package CLValue::CLValue;
 
 use CLValue::CLType;
-
+use CLValue::CLParse;
 sub new {
 	my $class = shift;
 	my $self = {
