@@ -137,6 +137,7 @@ sub getProtocolVersion {
 	my ( $self ) = @_;
 	return $self->{_protocolVersion};	
 }
+
 # This function parse the JsonObject (taken from server RPC method call) to JsonBlockHeader object
 sub fromJsonObjectToJsonBlockHeader {
 	my @list = @_;

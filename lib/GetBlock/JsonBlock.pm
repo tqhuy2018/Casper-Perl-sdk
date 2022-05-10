@@ -64,6 +64,7 @@ sub getProofs {
 	wantarray ? @list : \@list;
 }
 
+# This function parse the JsonObject (taken from server RPC method call) to JsonBlock object
 sub fromJsonObjectToJsonBlock {
 	my @list = @_;
 	my $json = $list[1];

@@ -1,5 +1,6 @@
 # Class built for storing AuctionState information
 package GetAuction::AuctionState;
+use GetAuction::JsonEraValidators;
 sub new {
 	my $class = shift;
 	my $self = {

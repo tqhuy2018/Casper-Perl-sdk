@@ -1,5 +1,6 @@
 # Class built for storing JsonBid information
 package GetAuction::JsonBid;
+use GetAuction::JsonDelegator;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -69,4 +70,26 @@ sub setStakedAmount {
 sub getStakedAmount {
 	my ( $self ) = @_;
 	return $self->{_stakedAmount};
+}
+
+# This function parse the JsonObject (taken from server RPC method call) to JsonBid object
+sub fromJsonObjectToJsonBid {
+	my @list = @_;
+	my $json = $list[1];
+	my $ret = new GetAuction::JsonBid();
+	$ret->setBondingPurse($json->{'bonding_purse'});
+	$ret->setDelegationRate($json->{'delegation_rate'});
+	$ret->setInactive($json->{'inactive'});
+	$ret->setStakedAmount($json->{'staked_amount'});
+	my @delegators = @{$json->{'delegators'}};
+	my $totalD = @delegators;
+	if($totalD > 0) {
+		my @listD = ();
+		foreach(@delegators) {
+			my $oneD = GetAuction::JsonDelegator->fromJsonObjectToJsonDelegator($_);
+			push(@listD,$oneD);
+		}
+		$ret->setDelegators(@listD);
+	}
+	return $ret;
 }

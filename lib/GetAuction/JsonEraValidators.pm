@@ -35,7 +35,7 @@ sub getValidatorWeights {
 	my @list = @{$self->{_validatorWeights}};
 	wantarray ? @list : \@list;
 }
-# This function parse the JsonObject (taken from server RPC method call) to AuctionState object
+# This function parse the JsonObject (taken from server RPC method call) to JsonEraValidators object
 sub fromJsonObjectToJsonEraValidators {
 	my @list = @_;
 	my $json = $list[1];
