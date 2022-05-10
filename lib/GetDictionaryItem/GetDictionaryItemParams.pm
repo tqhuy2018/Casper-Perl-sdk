@@ -1,12 +1,10 @@
-# Class built for storing GetItemParams information. This class generate the string parameter to send the 
-# post method for the state_get_item RPC call
+# Class built for storing GetDictionaryItemParams, used to generate the parameter for state_get_dictionary_item RPC call
 package GetDictionaryItem::GetDictionaryItemParams;
 sub new {
 	my $class = shift;
 	my $self = {
 		_stateRootHash => shift,
-		_key => shift, 
-		_path => [ @_ ], # list of Path in String format
+		_dictionaryIdentifier => shift,
 	};
 	bless $self, $class;
 	return $self;
@@ -24,48 +22,36 @@ sub getStateRootHash {
 	return $self->{_stateRootHash};
 }
 
-# get-set method for _key
-sub setKey {
+# get-set method for _dictionaryIdentifier
+sub setDictionaryIdentifier {
 	my ( $self, $value) = @_;
-	$self->{_key} = $value if defined($value);
-	return $self->{_key};
+	$self->{_dictionaryIdentifier} = $value if defined($value);
+	return $self->{_dictionaryIdentifier};
 }
 
-sub getKey {
+sub getDictionaryIdentifier {
 	my ( $self ) = @_;
-	return $self->{_key};
+	return $self->{_dictionaryIdentifier};
 }
 
-# get-set method for _path
-sub setPath {
-	my ( $self, @value) = @_;
-	$self->{_path} = \@value;
-	return $self->{_path};
-}
 
-sub getPath {
-	my ( $self ) = @_;
-	my @list = @{$self->{_path}};
-	wantarray ? @list : \@list;
-}
-# This function generate the parameter for the post method of the state_get_item RPC call
+# This function generate the parameter for the post method of the state_get_dictionary_item RPC call
 sub generateParameterStr {
 	my ($self) = @_;
-	my @listPath = @{$self->{_path}};
-	my $totalPath = @listPath;
-	my $pathStr = "[";
-	if($totalPath > 0) {
-		my $counter = 0;
-		foreach(@listPath) {
-			my $onePath = $_;
-			$pathStr = $pathStr.'"'.$onePath.'"';
-			if($counter < $totalPath-1) {
-				$pathStr = $pathStr.",";
-			}
-			$counter ++;
-		}
+	my $di = $self->{_dictionaryIdentifier};
+	my $diType = $di->getItsType();
+	my $diValue = $di->getItsValue();
+	my $ret = "";
+	if($diType eq "AccountNamedKey") {
+		$ret = '{"method" : "'.$Common::ConstValues::RPC_GET_DICTIONARY_ITEM.'", "id" :  1, "params" : {"state_root_hash" :  "'.$self->{_stateRootHash}.'", "dictionary_identifier": {"AccountNamedKey": {"dictionary_name": "'.$diValue->getDictionaryName().'", "key": "'.$diValue->getKey().'", "dictionary_item_key": "'.$diValue->getDictionaryItemKey().'"}}}, "jsonrpc" :  "2.0"}';
+	} elsif ($diType eq "ContractNamedKey") {
+		$ret = '{"method" : "'.$Common::ConstValues::RPC_GET_DICTIONARY_ITEM.'", "id" :  1, "params" : {"state_root_hash" :  "'.$self->{_stateRootHash}.'", "dictionary_identifier": {"ContractNamedKey": {"dictionary_name": "'.$diValue->getDictionaryName().'", "key": "'.$diValue->getKey().'", "dictionary_item_key": "'.$diValue->getDictionaryItemKey().'"}}}, "jsonrpc" :  "2.0"}';
+	} elsif ($diType eq "URef") {
+		$ret =  '{"method" : "'.$Common::ConstValues::RPC_GET_DICTIONARY_ITEM.'", "id" :  1, "params" : {"state_root_hash" :  "'.$self->{_stateRootHash}.'", "dictionary_identifier": {"URef": {"seed_uref": "'.$diValue->getSeedUref().'", "dictionary_item_key": "'.$diValue->getDictionaryItemKey().'"}}}, "jsonrpc" :  "2.0"}';
+	} elsif ($diType eq "Dictionary") {
+		$ret =  '{"method" : "'.$Common::ConstValues::RPC_GET_DICTIONARY_ITEM.'", "id" :  1, "params" : {"state_root_hash" :  "'.$self->{_stateRootHash}.'", "dictionary_identifier": {"Dictionary": "'.$diValue->getItsValue().'"}}, "jsonrpc" :  "2.0"}';
 	}
-	$pathStr = $pathStr."]";
-	return '{"id": 1, "method": "state_get_item" , "params": {"state_root_hash": "'.$self->{_stateRootHash}.'", "key": "'.$self->{_key}.'", "path": '.$pathStr.'},  "jsonrpc": "2.0"}';
+	print "\n".$ret."\n";
+	return $ret;
 }
 1;
