@@ -48,6 +48,7 @@ sub getTransferHashes {
 	my @list = @{$self->{_transferHashes}};
 	wantarray ? @list : \@list;
 }
+# This function parse the JsonObject (taken from server RPC method call) to JsonBlockBody object
 sub fromJsonObjectToJsonBlockBody {
 	my @list = @_;
 	my $json = $list[1];
