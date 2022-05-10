@@ -1,5 +1,5 @@
-# Class built for state_get_item RPC call
-package GetItem::GetItemRPC;
+# Class built for state_get_dictionary_item RPC call
+package GetDictionaryItem::GetDictionaryItemRPC;
 use LWP::UserAgent;
 use Data::Dumper;
 use Common::ErrorException;
@@ -23,7 +23,7 @@ sub getUrl {
 =comment
 	
 =cut
-sub getItem {
+sub getDictionaryItem {
 	my ($self) = @_;
 	my @list = @_;
 	my $uri = $self->{_url};
@@ -47,7 +47,7 @@ sub getItem {
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
 	    	return $errorException;
 	    } else {
-		    my $ret = GetItem::GetItemResult->fromJsonToGetItemResult($decoded->{'result'});
+		    my $ret = GetDictionaryItem::GetDictionaryItemResult->fromJsonToGetDictionaryItemResult($decoded->{'result'});
 		   	return $ret;
 	    }
 	}
