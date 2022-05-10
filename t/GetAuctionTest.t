@@ -26,5 +26,12 @@ sub getAuction1 {
 	ok($getAResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok($as->getStateRootHash() eq "bb3a1f9325c1da6820358f9b4981b84e0c28d924b0ef5776f6bb4cdd1328e261","Test 1 state root hash value, Passed");
+	ok($as->getBlockHeight() eq "673041","Test 1 block height value, Passed");
+	my @listEV = $as->getEraValidators();
+	my $totalEV = @listEV;
+	ok($totalEV == 2, "Test 1, total EraValidators = 2 , Passed");
+	my $oneEV = $listEV[0];
+	ok($oneEV->getEraId() eq "4348", "Test 1st EraValidators, era id value, Passed");
+	# bid = 1550
 }
 getAuction1();
