@@ -1,6 +1,7 @@
 # Class built for storing AuctionState information
 package GetAuction::AuctionState;
 use GetAuction::JsonEraValidators;
+use GetAuction::JsonBids;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -75,8 +76,20 @@ sub fromJsonObjectToAuctionState {
 	if($totalEV > 0 ) {
 		my @listEV = ();
 		foreach(@eraValidaforJsonList) {
-			my $onEV = GetAuction::JsonEraValidators->fromJsonObjectToJsonEraValidators($_);
+			my $oneEV = GetAuction::JsonEraValidators->fromJsonObjectToJsonEraValidators($_);
+			push(@listEV,$oneEV);
 		}
+		$ret->setEraValidators(@listEV);
+	}
+	my @bidListJson = @{$json->{'bids'}};
+	my $totalBid = @bidListJson;
+	if($totalBid > 0) {
+		my @listBid = ();
+		foreach(@bidListJson) {
+			my $oneBid = GetAuction::JsonBids->fromJsonObjectToJsonBids($_);
+			push(@listBid,$oneBid);
+		}
+		$ret->setBids(@listBid);
 	}
 	return $ret;
 }

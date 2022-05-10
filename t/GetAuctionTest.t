@@ -33,5 +33,13 @@ sub getAuction1 {
 	my $oneEV = $listEV[0];
 	ok($oneEV->getEraId() eq "4348", "Test 1st EraValidators, era id value, Passed");
 	# bid = 1550
+	my @listJsonBids = $as->getBids();
+	my $totalBids = @listJsonBids;
+	ok($totalBids == 1550, "Test 1, total JsonBids = 1550, Passed");
+	my $oneJBids = $listJsonBids[0];
+	ok($oneJBids->getPublicKey() eq "01001b79b9a6e13d2b96e916f7fa7dff40496ba5188479263ca0fb2ccf8b714305", "Test1, 1st bid public key, Passed");
+	my $oneJBid = $oneJBids->getBid();
+	ok($oneJBid->getBondingPurse() eq "uref-68f12244cf9e37759aa78e3146c431cc4577fc122272989b9f9ebf2e8f27d741-007","Test1, 1st bid bonding_purse, Passed");
+	ok($oneJBid->getDelegationRate() == 10, "Test1, 1st bid bonding_purse, Passed");
 }
 getAuction1();

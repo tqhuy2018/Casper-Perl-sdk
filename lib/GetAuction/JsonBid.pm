@@ -93,3 +93,4 @@ sub fromJsonObjectToJsonBid {
 	}
 	return $ret;
 }
+1;
