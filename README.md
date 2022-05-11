@@ -19,3 +19,29 @@ The SDK can be built and tested in different IDEs and from command line.
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
 ### Build and test from command line
+
+# Documentation for classes and methods
+
+* [List of classes and methods](./Docs/Help.md#list-of-rpc-methods)
+
+  -  [Get State Root Hash](./Docs/Help.md#i-get-state-root-hash)
+
+  -  [Get Peer List](./Docs/Help.md#ii-get-peers-list)
+
+  -  [Get Deploy](./Docs/Help.md#iii-get-deploy)
+  
+  -  [Get Status](./Docs/Help.md#iv-get-status)
+  
+  -  [Get Block Transfers](./Docs/Help.md#v-get-block-transfers)
+  
+  -  [Get Block](./Docs/Help.md#vi-get-block)
+  
+  -  [Get Era Info By Switch Block](./Docs/Help.md#vii-get-era-info-by-switch-block)
+  
+  -  [Get Item](./Docs/Help.md#vii-get-item)
+  
+  -  [Get Dictionary Item](./Docs/Help.md#ix-get-dictionaray-item)
+  
+  -  [Get Balance](./Docs/Help.md#x-get-balance)
+  
+  -  [Get Auction Info](./Docs/Help.md#xi-get-auction-info)
