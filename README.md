@@ -22,9 +22,9 @@ In this document, we focus on how to implement the SDK in Eclipse as IDE, with E
 After installing Perl, you also need to install one more thing.
 Type this command in Terminal or Command Prompt
 
-'''Perl
 perl -MCPAN -e "install Bundle::LWP"
-'''
+perl -MCPAN -e 'install LWP::UserAgent::Cached'
+
 You need to add this 
 # Documentation for classes and methods
 
