@@ -62,9 +62,7 @@ sub fromJsonObjToCLValue {
 	my $json = $list[1];
 	my $ret = new CLValue::CLValue();
 	$ret->setBytes($json->{'bytes'});
-	print "\nIn get CLValue, bytes is:".$json->{'bytes'}."\n";
 	my $clType = CLValue::CLType->getCLType($json->{'cl_type'});
-	print "\nIn get CLValue, bytes is:".$clType->getItsTypeStr()."\n";
 	$ret->setCLType($clType);
 	my $clParse = CLValue::CLParse->getCLParsed($json->{'parsed'},$clType);
 	$ret->setParse($clParse);

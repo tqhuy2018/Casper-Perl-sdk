@@ -2,6 +2,7 @@
 
 package GetDeploy::ExecutionResult::ExecutionEffect;
 use GetDeploy::ExecutionResult::TransformEntry;
+use GetDeploy::ExecutionResult::CasperOperation;
 
 sub new {
 	my $class = shift;
@@ -44,20 +45,19 @@ sub fromJsonToExecutionEffect {
 	my @transformJsonList = @{ $json->{'transforms'}};
 	my $totalOperation = @operationJsonList;
 	my $totalTransform = @transformJsonList;
-	print "\ntotal Operations:".$totalOperation." and total transform:".$totalTransform."\n";
 	my $ret = new GetDeploy::ExecutionResult::ExecutionEffect();
 	if ($totalOperation > 0) {
 		my @listOperation = ();
 		foreach(@operationJsonList) {
-			
+			my $oneOperation = GetDeploy::ExecutionResult::CasperOperation->fromJsonObjectToCasperOperation($_);
+			push(@listOperation,$oneOperation);
 		}
-		$ret->setOperations(@listOperation);		
+		$ret->setOperations(@listOperation);	
 	}
 	if ($totalTransform > 0) {
 		my @listTransform = ();
 		foreach(@transformJsonList) {
-			my $oneTransformJson = $_;
-			my $oneTransformEntry = GetDeploy::ExecutionResult::TransformEntry->fromJsonToCasperTransform($oneTransformJson);
+			my $oneTransformEntry = GetDeploy::ExecutionResult::TransformEntry->fromJsonToCasperTransform($_);
 			push(@listTransform,$oneTransformEntry);
 		}
 		$ret->setTransforms(@listTransform);

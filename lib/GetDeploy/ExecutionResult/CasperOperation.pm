@@ -40,7 +40,7 @@ sub getKind {
 # This function turn Json Object to a CasperOperation object
 sub fromJsonObjectToCasperOperation {
 	my @list = @_;
-	my $json = @list[1];
+	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::CasperOperation();
 	$ret->setKey($json->{'key'});
 	$ret->setKind($json->{'kind'});

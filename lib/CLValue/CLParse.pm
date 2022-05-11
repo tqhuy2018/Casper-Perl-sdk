@@ -110,8 +110,6 @@ sub getCLParsedPrimitive {
 	my @list = @_;
 	my $json = $list[0];
 	my $clType = $list[1];
-	print "get clparse for cltype primitive, with json:".$json."\n";
-	print "get clparse for cltype primitive, with clType:".$clType->getItsTypeStr()."\n";
 	my $ret = new CLValue::CLParse();
 	$ret->setItsCLType($clType);
 	# Get primitive for key, which is complicated, for other type of primitive , the rule for getting parse is simple
@@ -142,23 +140,17 @@ sub getCLParsedCompound {
 	my $clType = $list[1];
 	my $ret = new CLValue::CLParse();
 	if($clType->getItsTypeStr() eq "Option") { # with Option value, the cltype will get the inner cltype1
-		print "\nAbout to get parse value for Option cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
-		print "\nInner cltype is:".$innerCLType->getItsTypeStr()."\n";
 		$ret = getCLParsed2($json,$innerCLType);
 	} elsif($clType->getItsTypeStr() eq "List") {  # with List value, the cltype will get the inner cltype1
-		print "\nAbout to get parse value for List cltype\n";
 		my $innerCLType = $clType->getInnerCLType1();
-		print "\nInner cltype of List is:".$innerCLType->getItsTypeStr()." and Json is:".$json."\n";
 		my @listValue=();
 		my $counterList = 0;
 		foreach($json) {
 			my @oneElement = @{$_};
-			print "Get List element number ".$counterList."Element is: ".$_."\n";
 			$counterList ++;
 			foreach(@oneElement) {
 				my $oE = $_;
-				print "LIST LIST LIST Inner element is:".$oE." and cltype:".$innerCLType->getItsTypeStr()."\n";
 				my $oneParse = getCLParsed2($oE,$innerCLType);
 				push(@listValue,$oneParse);
 			}
@@ -166,22 +158,17 @@ sub getCLParsedCompound {
 		$ret->setItsValueList(@listValue);
 		$ret->setItsValueStr("List assigned");
 		my $listLen = @listValue;
-		print "\n****After parsing list, the length of list is:".$listLen."\n";
 	} elsif($clType->getItsTypeStr() eq "Result") { # with Result value, the cltype will get the inner cltype1 for Ok, inner cltype2 for Err
-		print "\nAbout to get parse value for Result cltype\n";
 		my $valueOK = $json->{'Ok'};
 		my $valueErr = $json->{'Err'};
 		if($valueOK) {
 			my $innerCLType = $clType->getInnerCLType1();
-			print "\nInner cltype is for RESULT OK is:".$innerCLType->getItsTypeStr()."\n";
 			$ret->setItsValueStr("Ok");
 			my $value = getCLParsed2($valueOK,$innerCLType);
 			$ret->setInnerParse1($value);
-			print "\nAfter parsing the result of CLTYPE RESULT is:".$ret->getItsValueStr()."\n";
 		} elsif($valueErr) {
 			$ret->setItsValueStr("Err");
 			my $innerCLType = $clType->getInnerCLType2();
-			print "\nInner cltype is for RESULT ERR is:".$innerCLType->getItsTypeStr()."\n";
 			my $value = getCLParsed2($valueErr,$innerCLType);
 			$ret->setInnerParse1($value);
 		}
@@ -195,13 +182,10 @@ sub getCLParsedCompound {
 			my @listValue = ();
 			foreach(@oneElement) {
 				my $oE = $_;
-				print "\n--------------***GET MAP ELEMENT number ".$counter."***--------------\n";
 				$counter ++;
-				print "Inner element is:".$oE." and key is:".$oE->{'key'}." and value:".$oE->{'value'}."\n";
 				my $clTypeKey = $clType->getInnerCLType1();
 				my $clTypeValue = $clType->getInnerCLType2();
 				my $keyParse = getCLParsed2($oE->{'key'},$clTypeKey);
-				print "\nKEY AFTER PARSING is:".$keyParse->getItsValueStr()."\n";
 				my $valueParse = getCLParsed2($oE->{'value'},$clTypeValue);
 				push(@listKey,$keyParse);
 				push(@listValue,$valueParse);
@@ -231,8 +215,6 @@ sub getCLParsedCompound {
 		my $counter = 0;
 		my $clType1 = $clType->getInnerCLType1();
 		my $clType2 = $clType->getInnerCLType2();
-		print "\nIn get Tuple 2, cltype 1 is:".$clType1->setItsTypeStr()."\n";
-		print "\nIn get Tuple 2, cltype 2 is:".$clType2->getItsTypeStr()."\n";
 		my $tupleParse1;
 		my $tupleParse2;
 		foreach($json) {
@@ -240,11 +222,8 @@ sub getCLParsedCompound {
 			foreach(@list) {
 				if($counter == 0) { # get parse for first tuple
 					my $oE = $_;
-					print "\nTuple 1 value:".$_."\n";
 					$tupleParse1 = getCLParsed2($oE,$clType1);
-					print "\nAfter parsing, tuple 1 value is:".$tupleParse1->getItsValueStr()."\n";
 				} elsif($counter == 1) { # get parse for second tuple
-					print "\nTuple 2 value:".$_."\n";
 					my $oE = $_;
 					$tupleParse2 = getCLParsed2($oE,$clType2);
 				}
@@ -295,18 +274,13 @@ sub getCLParsed2 {
 	my $clType = $list[1];
 	my $ret = new CLValue::CLParse();
 	if($json) { # if the parse value not NULL
-		print "In get CLParse, json: ".$json;
-		print "And clType:".$clType->getItsTypeStr()."\n";
 		if ($clType->isCLTypePrimitive()) {
-			print "Get parse for cltype primitive, with CLTYPE:".$clType->getItsTypeStr()."\n";
 			$ret = getCLParsedPrimitive($json,$clType);
 		} else {
-			print "Get parse for cltype compound-------\n";
 			$ret = getCLParsedCompound($json,$clType);
 		}
 	} else { # if the parse value is NULL
 		#$ret->setItsValueStr("NULL_VALUE");
-		print "\nParse is null and get this value:".$Common::ConstValues::NULL_VALUE."\n";
 		$ret->setItsValueStr($Common::ConstValues::NULL_VALUE);
 	}
 	return $ret;

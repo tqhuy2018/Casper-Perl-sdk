@@ -88,18 +88,10 @@ sub fromJsonArrayToApprovalList {
 	my @approvalList = ();
 	foreach(@json) {
 		my $oneApprovalJson = $_;
-		print("One ApprovalJson:".$oneApprovalJson."\n");
-		print("singer:".$oneApprovalJson->{'signer'}."\n");
 		my $oneApproval = GetDeploy::Approval->fromJsonObjectToApproval($_);
-		print("One Approval in deploy signer:".$oneApproval->getSigner()."\n");
 		push(@approvalList,$oneApproval);
 	}
 	return @approvalList;
 }
 
-# This function log information of a deploy
-sub logInfo {
-	my ( $self ) = @_;
-	print "\nDeploy hash:".$self->{_deployHash}."\n";
-}
 1;

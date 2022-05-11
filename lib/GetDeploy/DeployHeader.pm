@@ -125,8 +125,6 @@ This function turn a json object to a deploy header object
 =cut
 sub fromJsonObjectToDeployHeader {
 	my @list = @_;
-	print "\nparameter in get deploy header str is:".$list[1]."\n";
-    print "about to parse the json to get deploy header";
     #my $json = decode_json($list[1]);
     my $json = $list[1];
 	my $retDeployHeader = new GetDeploy::DeployHeader();
