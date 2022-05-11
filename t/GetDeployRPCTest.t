@@ -124,7 +124,6 @@ sub getDeploy2 {
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
-	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
 	ok($deploy->getHeader()->getAccount() eq "016d9e3db0a800aef8d18975b469c77bef042ee909d24cb83d27df97a22bb6d8ad","Test deploy header account - Passed");
 	ok($deploy->getHeader()->getBodyHash() eq "c406b290036fde575a70505da636b412ee36bb10ee449d3c5eb5276c4e3c08a8","Test deploy body account - Passed");
@@ -214,7 +213,6 @@ sub getDeploy2 {
 	foreach(@listCLParse) {
 		if($counter1 == 0) {
 			my $parseValue = $_;
-			print "value is --: ".$parseValue->getItsValueStr()."\n";
 			ok($parseValue->getItsValueStr() eq "2","Test session second arg CLValue, parse only element value is 2- Passed");
 		} 
 		$counter1 ++;
@@ -241,9 +239,7 @@ sub getDeploy2 {
 			my $parseValue2 = $_;
 			# get the list of key for the clparse map
 			my $parseKey = $parseValue2->getInnerParse1();
-			print "parseKey value for map:".$parseKey->getItsValueStr()."\n";
 			my $parseValue = $parseValue2->getInnerParse2();
-			print "parseValue value for map:".$parseValue->getItsValueStr()."\n";
 			my @listKey = $parseValue2->getInnerParse1()->getItsValueList();
 			my @listValue = $parseValue2->getInnerParse2()->getItsValueList();
 			my $totalKey = @listKey;
@@ -252,7 +248,6 @@ sub getDeploy2 {
 			# assertion for map - key values
 			foreach(@listKey) {
 				my $key = $_;
-				print "key number ".$counter2." value is:".$key->getItsValueStr()."\n";
 				if($counter2 == 0) {
 					ok($key->getItsValueStr() eq "token_uri","Test session third arg CLValue of type List(Map(String,String)) with value of key = token_uri - Passed");					
 				}
@@ -260,7 +255,6 @@ sub getDeploy2 {
 			$counter2 = 0;
 			foreach(@listValue) {
 				my $value = $_;
-				print "key number ".$counter2." value is:".$value->getItsValueStr()."\n";
 				if($counter2 == 0) {
 					ok($value->getItsValueStr() eq "https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk","Test session third arg CLValue of type List(Map(String,String)) with value of value = https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk - Passed");					
 				}
@@ -278,7 +272,6 @@ sub getDeploy3 {
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
-	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
 	ok($deploy->getHeader()->getAccount() eq "0203d9f3588e6589f334938f88ce50b2d6e15d90e2979d9cb533bf44772581f06e01","Test deploy header account - Passed");
 	ok($deploy->getHeader()->getBodyHash() eq "73b9bd80c07eddf12dfdf1b2db4cf3ae803728e631030d0405853b471249891c","Test deploy body account - Passed");
@@ -359,11 +352,9 @@ sub getDeploy3 {
 	foreach(@listCLParse) {
 		if($counter1 == 0) {
 			my $parseValue = $_;
-			print "value is --: ".$parseValue->getItsValueStr()."\n";
 			ok($parseValue->getItsValueStr() eq "hash-9B287f35b7C11659046cF575B13055DdE7F9A309cae5FE1cE3ca985d87f029b0","Test session 3rd arg CLValue, parse first element value is hash-9B287f35b7C11659046cF575B13055DdE7F9A309cae5FE1cE3ca985d87f029b0- Passed");
 		} elsif($counter1 == 1) {
 			my $parseValue = $_;
-			print "value is --: ".$parseValue->getItsValueStr()."\n";
 			ok($parseValue->getItsValueStr() eq "hash-C892904523320D9b6fe40A615C60e4F1cc71e33515173bFcf5e66000D0976C40","Test session 3rd arg CLValue, parse second element value is hash-C892904523320D9b6fe40A615C60e4F1cc71e33515173bFcf5e66000D0976C40- Passed");
 		}
 		$counter1 ++;
@@ -392,7 +383,6 @@ sub getDeploy4 {
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
 	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
 	my $deployPayment = $deploy->getPayment();
-	print "deploy 2 header account:".$deploy->getHeader()->getAccount()."\n";
 	# Test assertion for Deploy Header
 	ok($deploy->getHeader()->getAccount() eq "014caf1ce908f9ef3d427dceac17e5c47950becf15d1def0810c235e0d58a9efad","Test deploy header account - Passed");
 	ok($deploy->getHeader()->getBodyHash() eq "d7ffe9fa44f5958d18923630576302903f12ebee3e7516834d93b44ebf0454f9","Test deploy body account - Passed");
@@ -498,9 +488,7 @@ sub getDeploy4 {
 			my $parseValue2 = $_;
 			# get the list of key for the clparse map
 			my $parseKey = $parseValue2->getInnerParse1();
-			print "parseKey value for map:".$parseKey->getItsValueStr()."\n";
 			my $parseValue = $parseValue2->getInnerParse2();
-			print "parseValue value for map:".$parseValue->getItsValueStr()."\n";
 			my @listKey = $parseValue2->getInnerParse1()->getItsValueList();
 			my @listValue = $parseValue2->getInnerParse2()->getItsValueList();
 			my $totalKey = @listKey;
@@ -509,7 +497,6 @@ sub getDeploy4 {
 			# assertion for map - key values
 			foreach(@listKey) {
 				my $key = $_;
-				print "key number ".$counter2." value is:".$key->getItsValueStr()."\n";
 				if($counter2 == 0) {
 					ok($key->getItsValueStr() eq "name","Test session third arg CLValue of type List(Map(String,String)) with value of key = name - Passed");					
 				}
@@ -528,7 +515,6 @@ sub getDeploy4 {
 			$counter2 = 0;
 			foreach(@listValue) {
 				my $value = $_;
-				print "key number ".$counter2." value is:".$value->getItsValueStr()."\n";
 				if($counter2 == 0) {
 					ok($value->getItsValueStr() eq "Test Prod Admin","Test session third arg CLValue of type List(Map(String,String)) with value of value = Test Prod Admin - Passed");					
 				}
