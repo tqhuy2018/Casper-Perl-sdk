@@ -45,7 +45,7 @@ sub fromJsonObjectToJsonEraValidators {
 	my $totalVW = @listVWJson;
 	if($totalVW > 0 ) {
 		my @listVW = ();
-		foreach($listVWJson) {
+		foreach(@listVWJson) {
 			my $oneVW = GetAuction::JsonValidatorWeights->fromJsonObjectToJsonValidatorWeights($_);
 			push(@listVW,$oneVW);
 		}
