@@ -19,7 +19,13 @@ The SDK can be built and tested in different IDEs and from command line.
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
 ### Build and test from command line
+After installing Perl, you also need to install one more thing.
+Type this command in Terminal or Command Prompt
 
+'''Perl
+perl -MCPAN -e "install Bundle::LWP"
+'''
+You need to add this 
 # Documentation for classes and methods
 
 * [List of classes and methods](./docs/Help.md#list-of-rpc-methods)
