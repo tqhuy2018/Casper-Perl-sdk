@@ -2,19 +2,13 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-
 use Test::Simple tests => 151;
-
-#use CLValue::CLType;
-#use  GetPeers::GetPeerRPC;
-
-
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
-
 use GetDeploy::GetDeployRPC;
 use GetDeploy::GetDeployParams;
 use Common::ConstValues;
+
 # Test 10: information for deploy at this address: https://testnet.cspr.live/deploy/0fe0adccf645e99b9b58493c843516cd354b189e1c3efe62c4f2768716a41932
 # Test the following CLType: Any with Null value, Map(String,String), URef
 # Test Transform of the following type:

@@ -103,7 +103,6 @@ sub fromJsonToBid {
 	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutionResult::Transform::Bid();
 	$ret->setBondingPurse($json->{'bonding_purse'});
-	print "\nbonding purse:".$json->{'bonding_purse'}."\n";
 	$ret->setDelegationRate($json->{'delegation_rate'});
 	$ret->setInactive($json->{'inactive'});
 	$ret->setStakedAmount($json->{'staked_amount'});
@@ -116,7 +115,6 @@ sub fromJsonToBid {
 	# get delegators
 	my @delegatorList = ();
 	my %listDelegatorJson = %{$json->{'delegators'}};
-	# print "\nlistDelegatorJson:".$listDelegatorJson."\n";
 	my $counter = 0;
 	foreach my $k (sort keys %listDelegatorJson) {
     	my $oneDelegator = GetDeploy::ExecutionResult::Transform::Delegator->fromJsonToDelegator($listDelegatorJson{$k});
@@ -125,7 +123,6 @@ sub fromJsonToBid {
 		$counter ++;
 	}
 	my $totalDelegator = @delegatorList;
-	print "\nTotal delegator in Bid is:".$totalDelegator."\n";
 	$ret->setDelegators(@delegatorList);
 	return $ret;
 }

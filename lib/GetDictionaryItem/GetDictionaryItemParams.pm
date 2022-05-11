@@ -51,7 +51,6 @@ sub generateParameterStr {
 	} elsif ($diType eq "Dictionary") {
 		$ret =  '{"method" : "'.$Common::ConstValues::RPC_GET_DICTIONARY_ITEM.'", "id" :  1, "params" : {"state_root_hash" :  "'.$self->{_stateRootHash}.'", "dictionary_identifier": {"Dictionary": "'.$diValue->getItsValue().'"}}, "jsonrpc" :  "2.0"}';
 	}
-	print "\n".$ret."\n";
 	return $ret;
 }
 1;

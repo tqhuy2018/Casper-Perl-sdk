@@ -2,9 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-
 use Test::Simple tests => 36;
-
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 use Scalar::Util qw(looks_like_number);
@@ -17,6 +15,7 @@ use GetDictionaryItem::DIAccountNamedKey;
 use GetDictionaryItem::DIContractNamedKey;
 use GetDictionaryItem::DIDictionary;
 use GetDictionaryItem::DIURef;
+
 # Test 1: Parameter DictionaryIdentifier of type AccountNamedKey
 sub getDictionaryItem1 {
 	my $getDIRPC = new GetDictionaryItem::GetDictionaryItemRPC();

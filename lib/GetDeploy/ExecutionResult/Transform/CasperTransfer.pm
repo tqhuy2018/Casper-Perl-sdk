@@ -110,7 +110,6 @@ sub getGas {
 sub fromJsonToTransfer {
 	my @list = @_;
 	my $json = $list[1];
-	print "\nJson of CasperTransfer is:".$json."\n";
 	my $ret = new GetDeploy::ExecutionResult::Transform::CasperTransfer();
 	$ret->setDeployHash($json->{'deploy_hash'});
 	$ret->setFrom($json->{'from'});
@@ -124,7 +123,6 @@ sub fromJsonToTransfer {
 	my $id = $json->{'id'};
 	if(looks_like_number($id)) {
 		$ret->setId($json->{'id'});
-		print "\nid is:".$json->{'id'}."\n";
 	}
 	return $ret;
 }

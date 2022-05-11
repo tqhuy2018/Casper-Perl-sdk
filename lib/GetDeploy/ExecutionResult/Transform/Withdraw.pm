@@ -28,7 +28,6 @@ sub fromJsonArrayToWithdraw {
 	my @list = @_;
 	my @json = @{$list[1]};
 	my $totalWithdraw = @json;
-	print "\nTotal withdraw is:".$totalWithdraw."\n";
 	my @listUP = ();
 	foreach(@json) {
 		my $oneUP = GetDeploy::ExecutionResult::Transform::UnbondingPurse->fromJsonToUnbondingPurse($_);

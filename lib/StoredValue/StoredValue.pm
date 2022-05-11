@@ -140,7 +140,6 @@ sub fromJsonObjectToStoredValue {
 	}
 	# 10. Get StoredValue of type Withdraw
 	my $storedValueWithdraw = $json->{$Common::ConstValues::STORED_VALUE_WITHDRAW};
-	print "\nstoredValueWithdraw:".$storedValueWithdraw."\n";
 	if($storedValueWithdraw) {
 		my @listWithdrawJson = @{$storedValueWithdraw};
 		my $withdraw = GetDeploy::ExecutionResult::Transform::Withdraw->fromJsonArrayToWithdraw($storedValueWithdraw);

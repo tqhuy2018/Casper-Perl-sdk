@@ -2,18 +2,16 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-
 use Test::Simple tests => 15;
-
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 use Scalar::Util qw(looks_like_number);
-
 use Common::ConstValues;
 use GetBalance::GetBalanceParams;
 use GetBalance::GetBalanceResult;
 use GetBalance::GetBalanceResultRPC;
 use Common::ConstValues;
+
 # Positive test 1
 sub getBalance1 {
 	my $rpc = new GetBalance::GetBalanceResultRPC();

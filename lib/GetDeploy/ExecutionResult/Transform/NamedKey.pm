@@ -40,7 +40,6 @@ sub fromJsonObjectToNamedKey {
 	my $ret = new GetDeploy::ExecutionResult::Transform::NamedKey();
 	$ret->setName($json->{'name'});
 	$ret->setKey($json->{'key'});
-	print "Name is:".$json->{'name'}." and key is:".$json->{'key'};
 	return $ret;
 }
 1;
