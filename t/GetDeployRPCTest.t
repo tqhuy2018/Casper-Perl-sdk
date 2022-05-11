@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 363;
+use Test::Simple tests => 377;
 
 #use CLValue::CLType;
 #use  GetPeers::GetPeerRPC;
@@ -23,7 +23,8 @@ sub getDeploy1 {
 	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
 	my $paramStr = $getDeployParams->generateParameterStr();
 	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $deploy = $getDeployRPC->getDeployResult($paramStr)->getDeploy();
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+	my $deploy = $getDeployResult->getDeploy();
 	my $deployPayment = $deploy->getPayment();
 	
 	# Test assertion for Deploy Header
@@ -113,6 +114,42 @@ sub getDeploy1 {
 	ok($sessionArgCLValue1->getBytes() eq "0400ca9a3b","Test session 3rd arg CLValue, bytes value = 0400ca9a3b - Passed");
 	ok($sessionArgCLValue1->getCLType()->getItsTypeStr() eq "U256","Test session 3rd arg CLValue, cl_type = U256 - Passed");
 	ok($sessionArgCLValue1->getParse()->getItsValueStr() eq "1000000000","Test session 3rd arg CLValue, parse = 1000000000 - Passed");
+	my @list =  $getDeployResult->getExecutionResults();
+	my $totalER = @list;
+	ok ($totalER == 1, "Test total JsonExecutionResult = 1, Passed");
+	$counter1 = 0;
+	foreach(@list) {
+		if($counter1 == 0) {
+			my $oneER = $_; #JsonExecutionResult object
+			ok($oneER->getBlockHash() eq "a2523fc91181faa27e6887c3a85871b53abbe71bbb90d2be08aa05a58a6b776a", "Test JsonExecutionResult block hash, Passed" );
+			my $result = $oneER->getResult();
+			# assertion for ExecutionResult
+			ok($result->getItsType() eq "Failure", "Test ExecutionResult of type Success, Passed");
+			ok($result->getCost() eq "1071470630", "Test ExecutionResult cost, Passed");
+			my @transfers = $result->getTransfers();
+			my $totalTransfer = @transfers;
+			ok($totalTransfer == 0 , "Test total transfers, Passed");
+			my $effect = $result->getEffect();
+			my @transform = $effect->getTransforms();
+			my @operations = $effect->getOperations();
+			my $totalOperations = @operations;
+			my $totalTransform = @transform;
+			ok($totalTransform == 18, "Test total Transform = 18, Passed");
+			ok($totalOperations == 0, "Test total Operations = 0, Passed");
+			my $oneTransform = $transform[0];
+			ok($oneTransform->getKey() eq "hash-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401", "Test first transform - key, Passed");
+			my $oneT = $oneTransform->getTransform(); # CasperTransform of type Identity
+			ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_IDENTITY,"Test first transform of type Identity, Passed");
+			$oneTransform = $transform[6];
+			ok($oneTransform->getKey() eq "balance-be6a4c855b98793799acbdad265096983fb9dde19b825fcdacfc8692c91b5e1c", "Test 6th transform - key, Passed");
+			$oneT = $oneTransform->getTransform(); # CasperTransform of type WriteCLValue
+			ok($oneT->getItsType() eq $Common::ConstValues::TRANSFORM_WRITE_CLVALUE,"Test first transform of type WriteCLValue, Passed");
+			my $clValue = $oneT->getItsValue();
+			ok($clValue->getBytes() eq "0500acc78fdd","Test 7th transform of type WriteCLValue and CLValue bytes, Passed");
+			ok($clValue->getCLType()->getItsTypeStr() eq "U512","Test 7th transform of type WriteCLValue and CLValue clType of U512, Passed");
+			ok($clValue->getParse()->getItsValueStr() eq "951600000000","Test 7th transform of type WriteCLValue and CLValue clParsed, Passed");
+		}
+	}
 }
 
 #Test 2: information for deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a37Bc9386020609aa1CabaD895c3E2E104d877B936C6Ffa2302268
@@ -1252,12 +1289,12 @@ sub getDeploy9 {
 	}
 }
 getDeploy1();
-#getDeploy2();
-#getDeploy3();
-#getDeploy4();
-#getDeploy5();
-#getDeploy6();
-#getDeploy7();
-#getDeploy8();
-#getDeploy9();
+getDeploy2();
+getDeploy3();
+getDeploy4();
+getDeploy5();
+getDeploy6();
+getDeploy7();
+getDeploy8();
+getDeploy9();
 

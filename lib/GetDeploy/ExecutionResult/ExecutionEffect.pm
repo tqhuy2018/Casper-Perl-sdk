@@ -52,7 +52,7 @@ sub fromJsonToExecutionEffect {
 			my $oneOperation = GetDeploy::ExecutionResult::CasperOperation->fromJsonObjectToCasperOperation($_);
 			push(@listOperation,$oneOperation);
 		}
-		$ret->setOperations(@listOperation);	
+		$ret->setOperations(@listOperation);
 	}
 	if ($totalTransform > 0) {
 		my @listTransform = ();

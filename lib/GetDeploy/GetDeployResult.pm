@@ -64,7 +64,6 @@ sub fromJsonObjectToGetDeployResult {
 	 #get deploy header
     my $deployHeaderJson = $json->{'deploy'}{'header'};
     my $deployHeader = GetDeploy::DeployHeader->fromJsonObjectToDeployHeader($deployHeaderJson);
-    print "\ndeploy header hash: ".$deployHeader->getBodyHash()."\n";
     $deploy->setDeployHash($json->{'deploy'}{'hash'});
     $deploy->setHeader($deployHeader);
     
@@ -83,14 +82,12 @@ sub fromJsonObjectToGetDeployResult {
     $deploy->setApprovals(@approvalList);
     foreach(@approvalList) {
     	my $oneA = $_;
-    	print("In parsing Deploy, approval signer:".$oneA->getSigner()."\n");
     }
     #get the execution_results
     my @jsonList = @{$json->{'execution_results'}};
     my @listER = ();
     foreach(@jsonList) {
     	my $er = GetDeploy::ExecutionResult::JsonExecutionResult->fromJsonToJsonExecutionResult($_);
-    	print "\nAdd 1 ER to THE LIST\n";
     	push(@listER,$er);
     }
     $ret->setExecutionResults(@listER);

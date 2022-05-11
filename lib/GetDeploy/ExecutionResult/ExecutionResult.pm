@@ -108,10 +108,10 @@ sub fromJsonToExecutionResult{
 		# get cost
 		$ret->setCost($failureJson->{'cost'});
 		# get ExecutionEffect
-		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($successJson->{'effect'});
+		my $executionEffect = GetDeploy::ExecutionResult::ExecutionEffect->fromJsonToExecutionEffect($failureJson->{'effect'});
 		$ret->setEffect($executionEffect);
 		# get Transfers
-		my @listTransferJson = @ {$successJson->{'transfers'}};
+		my @listTransferJson = @ {$failureJson->{'transfers'}};
 		my $totalTransfer = @listTransferJson;
 		if($totalTransfer > 0) {
 			my @list = ();
