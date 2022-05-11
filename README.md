@@ -22,26 +22,26 @@ In this document, we focus on how to implement the SDK in Eclipse as IDE, with E
 
 # Documentation for classes and methods
 
-* [List of classes and methods](./Docs/Help.md#list-of-rpc-methods)
+* [List of classes and methods](./docs/Help.md#list-of-rpc-methods)
 
-  -  [Get State Root Hash](./Docs/Help.md#i-get-state-root-hash)
+  -  [Get State Root Hash](./docs/Help.md#i-get-state-root-hash)
 
-  -  [Get Peer List](./Docs/Help.md#ii-get-peers-list)
+  -  [Get Peer List](./docs/Help.md#ii-get-peers-list)
 
-  -  [Get Deploy](./Docs/Help.md#iii-get-deploy)
+  -  [Get Deploy](./docs/Help.md#iii-get-deploy)
   
-  -  [Get Status](./Docs/Help.md#iv-get-status)
+  -  [Get Status](./docs/Help.md#iv-get-status)
   
-  -  [Get Block Transfers](./Docs/Help.md#v-get-block-transfers)
+  -  [Get Block Transfers](./docs/Help.md#v-get-block-transfers)
   
-  -  [Get Block](./Docs/Help.md#vi-get-block)
+  -  [Get Block](./docs/Help.md#vi-get-block)
   
-  -  [Get Era Info By Switch Block](./Docs/Help.md#vii-get-era-info-by-switch-block)
+  -  [Get Era Info By Switch Block](./docs/Help.md#vii-get-era-info-by-switch-block)
   
-  -  [Get Item](./Docs/Help.md#vii-get-item)
+  -  [Get Item](./docs/Help.md#vii-get-item)
   
-  -  [Get Dictionary Item](./Docs/Help.md#ix-get-dictionaray-item)
+  -  [Get Dictionary Item](./docs/Help.md#ix-get-dictionaray-item)
   
-  -  [Get Balance](./Docs/Help.md#x-get-balance)
+  -  [Get Balance](./docs/Help.md#x-get-balance)
   
-  -  [Get Auction Info](./Docs/Help.md#xi-get-auction-info)
+  -  [Get Auction Info](./docs/Help.md#xi-get-auction-info)
