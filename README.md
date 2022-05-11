@@ -20,9 +20,17 @@ There are variety of IDE for Perl as described in this link: https://www.duneboo
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
 ### Build and test from command line
 Download the Source code from Github and put it in your local computer.
-From the Terminal(Mac OS) or Command Prompt (Windows)
+From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of the SDK. Then enter the "t" folder of the SDK.
+Run this command to test for each test file in the "t" folder.
+perl "test file".
+For example if you want to test for file "GetAuction.t" which contain all test for the "state_get_auction_info" RPC call, run this command
 
-You need to add this 
+perl GetAuction.t
+
+If you want to test for file "GetDeployRPCTest.t" run this command
+
+perl GetDeployRPCTest.t
+
 # Documentation for classes and methods
 
 * [List of classes and methods](./docs/Help.md#list-of-rpc-methods)
