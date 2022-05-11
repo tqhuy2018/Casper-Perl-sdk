@@ -34,16 +34,13 @@ sub fromJsonListToRuntimeArgs {
     foreach(@argListJson) {
     	my @oneArg = @{$_};
     	my $jsonOA = encode_json(@oneArg);
-    	print "******** GET NAMED ARGS NUMBER ".$counter." ***********\n";
     	$counter ++;
     	my $oneNamedArg = GetDeploy::ExecutableDeployItem::NamedArg->fromJsonArrayToNamedArg($_);
-    	print "NameArgs name:".$oneNamedArg->getItsName()."\n";
     	push(@listNamedArg,$oneNamedArg);
     }
     my $ret = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
     $ret->setListNamedArg(@listNamedArg);
     my $totalNamedArgs = @listNamedArg;
-    print "IN PARSE, TOTAL NamedArgs:".$totalNamedArgs."\n";
     return $ret;
 }
 1;

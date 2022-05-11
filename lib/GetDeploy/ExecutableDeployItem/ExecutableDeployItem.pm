@@ -68,7 +68,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type ModuleBytes
     my $ediMBJson = $json->{'ModuleBytes'};
     if($ediMBJson) {
-    	print "\nedi of type ModuleBytes";
     	my $ediMB = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes->fromJsonObjectToEDIModuleBytes($ediMBJson);
     	$ret->setItsValue($ediMB);
     	$ret->setItsType("ModuleBytes");
@@ -76,7 +75,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type StoredContractByHash
     my $ediHashJson = $json->{'StoredContractByHash'};
     if($ediHashJson) {
-    	print "\nedi of type StoredContractByHash";
     	my $ediHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash->fromJsonObjectToEDIStoredContractByHash($ediHashJson);
     	$ret->setItsValue($ediHash);
     	$ret->setItsType("StoredContractByHash");
@@ -84,7 +82,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type StoredContractByName
     my $ediNameJson = $json->{'StoredContractByName'};
     if($ediNameJson) {
-    	print "\nedi of type StoredContractByName";
     	my $ediName = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName->fromJsonObjectToEDIStoredContractByName($ediNameJson);
     	$ret->setItsValue($ediName);
     	$ret->setItsType("StoredContractByHash");
@@ -92,7 +89,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type StoredVersionedContractByName
     my $ediVersionedNameJson = $json->{'StoredVersionedContractByName'};
     if($ediVersionedNameJson) {
-    	print "\nedi of type StoredVersionedContractByName";
     	my $ediVName = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName->fromJsonObjectToEDIStoredContractVersionedByName($ediVersionedNameJson);
     	$ret->setItsValue($ediVName);
     	$ret->setItsType("StoredVersionedContractByName");
@@ -100,7 +96,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type StoredVersionedContractByHash
     my $ediVersionedHashJson = $json->{'StoredVersionedContractByHash'};
     if($ediVersionedHashJson) {
-    	print "\nedi of type StoredVersionedContractByHash";
     	my $ediVHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash->fromJsonObjectToEDIStoredContractVersionedByHash($ediVersionedHashJson);
     	$ret->setItsValue($ediVHash);
     	$ret->setItsType("StoredVersionedContractByHash");
@@ -108,7 +103,6 @@ sub fromJsonToExecutableDeployItem {
     # get ExecutableDeployItem of type Transfer    
     my $ediTransfer = $json->{'Transfer'};
     if($ediTransfer) {
-    	print "\nedi of type Transfer";
     	my $ediVHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer->fromJsonObjectToEDITransfer($ediTransfer);
     	$ret->setItsValue($ediVHash);
     	$ret->setItsType("Transfer");

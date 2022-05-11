@@ -52,45 +52,34 @@ sub fromJsonToCasperTransform {
 	my $transformJson = $json->{'transform'};
 	my $transform = new GetDeploy::ExecutionResult::CasperTransform();
 	if ($transformJson eq "Identity") {
-		print "Transform Entry of type Identity";
 		$transform->setItsType("Identity");
 	} elsif ($transformJson eq "WriteContractWasm") {
-		print "Transform Entry of type WriteContractWasm";
 		$transform->setItsType("WriteContractWasm");
 	} elsif ($transformJson eq "WriteContract") {
-		print "Transform Entry of type WriteContract";
 		$transform->setItsType("WriteContract");
 	} elsif ($transformJson eq "WriteContractPackage") {
-		print "Transform Entry of type WriteContractPackage";
 		$transform->setItsType("WriteContractPackage");
 	} elsif ($transformJson->{'AddInt32'}) {
 		$transform->setItsType("AddInt32");
 		$transform->setItsValue($transformJson->{'AddInt32'});
-		print "\nTransformEntry Of type AddInt32\n";
 	} elsif ($transformJson->{'AddUInt64'}) {
 		$transform->setItsType("AddUInt64");
 		$transform->setItsValue($transformJson->{'AddUInt64'});
-		print "\nTransformEntry Of type AddUInt64\n";
 	} elsif ($transformJson->{'AddUInt128'}) {
 		$transform->setItsType("AddUInt128");
 		$transform->setItsValue($transformJson->{'AddUInt128'});
-		print "\nTransformEntry Of type AddUInt128\n";
 	} elsif ($transformJson->{'AddUInt256'}) {
 		$transform->setItsType("AddUInt256");
 		$transform->setItsValue($transformJson->{'AddUInt256'});
-		print "\nTransformEntry Of type AddUInt256\n";
 	} elsif ($transformJson->{'AddUInt512'}) {
 		$transform->setItsType("AddUInt512");
 		$transform->setItsValue($transformJson->{'AddUInt512'});
-		print "\nTransformEntry Of type AddUInt512\n";
 	} elsif ($transformJson->{'Failure'}) {
 		$transform->setItsType("Failure");
 		$transform->setItsValue($transformJson->{'Failure'});
-		print "\nTransformEntry Of type Failure\n";
 	}  elsif ($transformJson->{'WriteAccount'}) {
 		$transform->setItsType("WriteAccount");
 		$transform->setItsValue($transformJson->{'WriteAccount'});
-		print "\nTransformEntry Of type WriteAccount\n";
 	} elsif ($transformJson->{'WriteCLValue'}) {
 		$transform->setItsType("WriteCLValue");
 		my $clValueJson = $transformJson->{'WriteCLValue'};
@@ -103,7 +92,6 @@ sub fromJsonToCasperTransform {
    		$clValue->setCLType($clType);
    		$clValue->setParse($clParse);
 		$transform->setItsValue($clValue);
-		print "\nTransformEntry Of type WriteCLValue\n";
 	} elsif ($transformJson->{'AddKeys'}) {
 		$transform->setItsType("AddKeys");
 		my @listNamedKeyJson = @{$transformJson->{'AddKeys'}};
@@ -114,31 +102,25 @@ sub fromJsonToCasperTransform {
 			push(@list,$nameKey);
 		}
 		$transform->setItsListValue(@list);
-		print "\nTransformEntry Of type AddKeys\n";
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO);
 		my $deployInfo = GetDeploy::ExecutionResult::Transform::DeployInfo->fromJsonToDeployInfo($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_DEPLOY_INFO});
-		print "\nTransformEntry Of type WriteDeployInfo\n";
 		$transform->setItsValue($deployInfo);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_TRANSFER}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_TRANSFER);
 		my $casperTransfer = GetDeploy::ExecutionResult::Transform::CasperTransfer->fromJsonToTransfer($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_TRANSFER});
-		print "\nTransformEntry Of type WriteTransfer\n";
 		$transform->setItsValue($casperTransfer);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_WITHDRAW}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_WITHDRAW);
 		my $withdraw = GetDeploy::ExecutionResult::Transform::Withdraw->fromJsonArrayToWithdraw($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_WITHDRAW});
-		print "\nTransformEntry Of type WriteWithdraw\n";
 		$transform->setItsValue($withdraw);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_BID}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_BID);
 		my $bid = GetDeploy::ExecutionResult::Transform::Bid->fromJsonToBid($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_BID});
-		print "\nTransformEntry Of type WriteBid\n";
 		$transform->setItsValue($bid);
 	} elsif($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO}) {
 		$transform->setItsType($Common::ConstValues::TRANSFORM_WRITE_ERA_INFO);
 		my $eraInfo = GetDeploy::ExecutionResult::Transform::EraInfo->fromJsonObjectToEraInfo($transformJson->{$Common::ConstValues::TRANSFORM_WRITE_ERA_INFO});
-		print "\nTransformEntry Of type WriteEraInfo\n";
 		$transform->setItsValue($eraInfo);
 	}
 	$ret->setTransform($transform);

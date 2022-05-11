@@ -57,15 +57,12 @@ sub getArgs {
 #This function turn the JsonObject to a ExecutableDeployItem_StoredContractByHash object
 sub fromJsonObjectToEDIStoredContractByHash {
 	my @list = @_;
-	print "\nstr json to get edimb is:".$list[1]."\n";
 	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash();
 	my $hash = $json->{'hash'};
     $ret->setItsHash($hash);
     $ret->setEntryPoint($json->{'entry_point'});
-    print "Hash is:".$hash." and entryPoint:".$json->{'entry_point'}."\n";
     my @argsJson = $json->{'args'};
-    print "\nargs for payment:".@argsJson."\n";
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);
     $ret->setArgs($args);
 	return $ret;

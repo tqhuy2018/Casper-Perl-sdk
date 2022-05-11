@@ -1,7 +1,7 @@
 # Class built for storing Bid information
 
 package GetDeploy::ExecutionResult::Transform::CasperTransfer;
-
+use Scalar::Util qw(looks_like_number);
 sub new {
 	my $class = shift,
 	my $self = {
@@ -114,7 +114,6 @@ sub fromJsonToTransfer {
 	my $ret = new GetDeploy::ExecutionResult::Transform::CasperTransfer();
 	$ret->setDeployHash($json->{'deploy_hash'});
 	$ret->setFrom($json->{'from'});
-	print "\nCasperTransfer deploy_hash is:".$json->{'deploy_hash'}."\n";
 	if($json->{'to'}) {
 		$ret->setTo($json->{'to'});
 	}
@@ -122,10 +121,8 @@ sub fromJsonToTransfer {
 	$ret->setTarget($json->{'target'});
 	$ret->setAmount($json->{'amount'});
 	$ret->setGas($json->{'gas'});
-	if($json->{'id'}) {
-		$ret->setId($json->{'id'});
-		print "\nid is:".$json->{'id'}."\n";
-	} elsif($json->{'id'} == 0) {
+	my $id = $json->{'id'};
+	if(looks_like_number($id)) {
 		$ret->setId($json->{'id'});
 		print "\nid is:".$json->{'id'}."\n";
 	}

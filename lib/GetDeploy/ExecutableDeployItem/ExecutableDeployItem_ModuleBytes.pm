@@ -43,16 +43,11 @@ sub getArgs {
 #This does seem to be in need
 sub fromJsonObjectToEDIModuleBytes {
 	my @list = @_;
-	print "\nstr json to get edimb is:".$list[1]."\n";
 	my $json = $list[1];
 	my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes();
 	my $mb = $json->{'module_bytes'};
-    if ($mb eq "") {
-    	print "\nModule bytes is empty";
-    }
     $ret->setModuleBytes($mb);
     my @argsJson = $json->{'args'};
-    print "\nargs in json:".@argsJson."\n";
     my $args = GetDeploy::ExecutableDeployItem::RuntimeArgs->fromJsonListToRuntimeArgs(@argsJson);
     $ret->setArgs($args);
 	return $ret;

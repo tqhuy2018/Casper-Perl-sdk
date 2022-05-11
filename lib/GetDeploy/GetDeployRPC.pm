@@ -16,7 +16,6 @@ use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use GetDeploy::GetDeployResult;
 
 sub new {
-	print "GetDeployRPC called";
 	my $class = shift;
 	my $self = {_url=>shift};
 	bless $self, $class;
