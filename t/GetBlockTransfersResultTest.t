@@ -36,7 +36,6 @@ sub getBlockTransfers {
 	# Test 3: Call with no parameter, latest block transfer is retrieved;
 	$bi->setBlockType("none");
 	my $postParamNoneStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
-	print "\n".$postParamNoneStr."\n";
 	my $getBTResult3 = $getBlockTransfers->getBlockTransfers($postParamNoneStr);
 	ok($getBTResult3->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
 	ok(length($getBTResult3->getBlockHash()) > 0, "Test 3 block_hash, Passed");
@@ -45,7 +44,6 @@ sub getBlockTransfers {
 	$bi->setBlockType("hash");
 	$bi->setBlockHash("aaa");
 	my $postParamStr4 = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
-	print "\n".$postParamStr4."\n";
 	my $getBTResult4 = $getBlockTransfers->getBlockTransfers($postParamStr4);
 	ok($getBTResult4->getApiVersion() eq "1.4.5", "Test 4 api_version, Passed");
 	ok(length($getBTResult4->getBlockHash()) > 0, "Test 4 block_hash, Passed");
@@ -54,7 +52,6 @@ sub getBlockTransfers {
 	$bi->setBlockType("height");
 	$bi->setBlockHeight("999999988777");
 	my $postParamStr5 = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
-	print "\n".$postParamStr5."\n";
 	my $error = $getBlockTransfers->getBlockTransfers($postParamStr5);
 	ok($error->getErrorCode() eq "-32001", "Test error get state root hash with block height > U64.max, error code checked, Passed");
 	ok($error->getErrorMessage() eq "block not known", "Test error get state root hash with block height > U64.max, error is thrown, error message checked, Passed");
@@ -63,7 +60,6 @@ sub getBlockTransfers {
 	$bi->setBlockType("height");
 	$bi->setBlockHeight("75052400");
 	my $postParamStr6 = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
-	print "\n".$postParamStr6."\n";
 	my $error2 = $getBlockTransfers->getBlockTransfers($postParamStr6);
 	ok($error2->getErrorCode() eq "-32001", "Test error get state root hash with block height > U64.max, error code checked, Passed");
 	ok($error2->getErrorMessage() eq "block not known", "Test error get state root hash with block height > U64.max, error is thrown, error message checked, Passed");

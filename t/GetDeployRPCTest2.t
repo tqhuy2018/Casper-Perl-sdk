@@ -173,7 +173,6 @@ sub getDeploy10 {
 					ok($totalKey == 5, "Test total element of the Map parse = 5, Passed");
 					my $counter3 = 0;
 					foreach(@listKey) {
-						print "\nList key number ".$counter3." is:".$_."\n";
 						my $oneParse = $_;
 						if($counter3 == 0) {
 							ok($oneParse->getItsValueStr() eq "contract_package_hash", "Test 1st Map element key, Passed");
@@ -482,11 +481,9 @@ sub getDeploy13 {
 							my $counter4 = 0;
 							foreach(@listLA) {
 								if($counter4 == 0) {
-									print("\nFirst locked amount:".$_."\n");
 									ok($_ eq "7895222924551040", "Test first LockedAmount value, Passed");
 								}
 								elsif($counter4 == 1) {
-									print("\nSecond locked amount:".$_."\n");
 									ok($_ eq "7287898084200960", "Test second LockedAmount value, Passed");
 								}
 								$counter4 ++;

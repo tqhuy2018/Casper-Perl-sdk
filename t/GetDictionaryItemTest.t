@@ -34,7 +34,6 @@ sub getDictionaryItem1 {
 	my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 	ok($getDIResult->getApiVersion() eq "1.4.5", "Test 1 api version, Passed");
 	ok($getDIResult->getDictionaryKey() eq "dictionary-5d3e90f064798d54e5e53643c4fce0cbb1024aadcad1586cc4b7c1358a530373", "Test 1 dictionary key, Passed");
-	print "\n".length($getDIResult->getMerkleProof())."\n";
 	ok(length($getDIResult->getMerkleProof()) == 30330, "Test 1 merkle proof, Passed");
 	my $storedValue = $getDIResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_CLVALUE, "Test 1 Stored value of type CLValue");
@@ -60,7 +59,6 @@ sub getDictionaryItem2 {
 	my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 	ok($getDIResult->getApiVersion() eq "1.4.5", "Test 2 api version, Passed");
 	ok($getDIResult->getDictionaryKey() eq "dictionary-ac34673fa957fa8083306892815496b8fdee0aa1509f0080823979d869176060", "Test 2 dictionary key, Passed");
-	print "\n".length($getDIResult->getMerkleProof())."\n";
 	ok(length($getDIResult->getMerkleProof()) == 30178, "Test merkle proof, Passed");
 	my $storedValue = $getDIResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_CLVALUE, "Test 2 Stored value of type CLValue");
@@ -85,7 +83,6 @@ sub getDictionaryItem3 {
 	my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 	ok($getDIResult->getApiVersion() eq "1.4.5", "Test 3 api version, Passed");
 	ok($getDIResult->getDictionaryKey() eq "dictionary-5d3e90f064798d54e5e53643c4fce0cbb1024aadcad1586cc4b7c1358a530373", "Test 1 dictionary key, Passed");
-	print "\n".length($getDIResult->getMerkleProof())."\n";
 	ok(length($getDIResult->getMerkleProof()) == 30330, "Test 3 merkle proof, Passed");
 	my $storedValue = $getDIResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_CLVALUE, "Test 1 Stored value of type CLValue");
@@ -109,7 +106,6 @@ sub getDictionaryItem4 {
 	my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 	ok($getDIResult->getApiVersion() eq "1.4.5", "Test 4 api version, Passed");
 	ok($getDIResult->getDictionaryKey() eq "dictionary-5d3e90f064798d54e5e53643c4fce0cbb1024aadcad1586cc4b7c1358a530373", "Test 4 dictionary key, Passed");
-	print "\n".length($getDIResult->getMerkleProof())."\n";
 	ok(length($getDIResult->getMerkleProof()) == 30330, "Test 4 merkle proof, Passed");
 	my $storedValue = $getDIResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_CLVALUE, "Test 1 Stored value of type CLValue");

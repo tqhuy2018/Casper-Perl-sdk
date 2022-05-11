@@ -21,7 +21,6 @@ sub getItem1 {
 	$getItemParams->setStateRootHash("340a09b06bae99d868c68111b691c70d9d5a253c0f2fd7ee257a04a198d3818e");
 	$getItemParams->setKey("uref-ba620eee2b06c6df4cd8da58dd5c5aa6d42f3a502de61bb06dc70b164eee4119-007");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $getItemResult = $getItemRPC->getItem($paramStr);
 	ok($getItemResult->getApiVersion() eq "1.4.5", "Test 1 api version, Passed");
 	ok(length($getItemResult->getMerkleProof()) == 35056, "Test 1, merkle proof, Passed");
@@ -72,7 +71,6 @@ sub getItem3 {
 	$getItemParams->setStateRootHash("1416302b2c637647e2fe8c0b9f7ee815582cc7a323af5823313ff8a8684c8cf8");
 	$getItemParams->setKey("transfer-8218fa8c55c19264e977bf2bae9f5889082aee4d2c4eaf9642478173c37d1ed4");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $getItemResult = $getItemRPC->getItem($paramStr);
 	ok($getItemResult->getApiVersion() eq "1.4.5", "Test 3 api version, Passed");
 	ok(length($getItemResult->getMerkleProof()) == 41424, "Test 3, merkle proof, Passed");
@@ -95,7 +93,6 @@ sub getItem4 {
 	$getItemParams->setStateRootHash("1416302b2c637647e2fe8c0b9f7ee815582cc7a323af5823313ff8a8684c8cf8");
 	$getItemParams->setKey("deploy-a49c06f9b2adf02812a7b2fdcad08804a2ce4896ffec7c06c920d417e7e39cfe");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $getItemResult = $getItemRPC->getItem($paramStr);
 	ok($getItemResult->getApiVersion() eq "1.4.5", "Test 4 api version, Passed");
 	ok(length($getItemResult->getMerkleProof()) == 39984, "Test 4, merkle proof, Passed");
@@ -119,11 +116,9 @@ sub getItem5 {
 	$getItemParams->setStateRootHash("647C28545316E913969B032Cf506d5D242e0F857061E70Fb3DF55980611ace86");
 	$getItemParams->setKey("bid-24b6D5Aabb8F0AC17D272763A405E9CECa9166B75B745Cf200695E172857c2dD");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	$getItemRPC->setUrl($Common::ConstValues::MAIN_NET);
 	my $getItemResult = $getItemRPC->getItem($paramStr);
 	ok($getItemResult->getApiVersion() eq "1.4.5", "Test 5 api version, Passed");
-	print "\n".length($getItemResult->getMerkleProof())."\n";
 	ok(length($getItemResult->getMerkleProof()) == 905760, "Test 5, merkle proof, Passed");
 	my $storedValue = $getItemResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_BID, "Test 5, stored value of type Bid, Passed");
@@ -184,10 +179,8 @@ sub getItem6 {
 	$getItemParams->setStateRootHash("d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228");
 	$getItemParams->setKey("withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $getItemResult = $getItemRPC->getItem($paramStr);
 	ok($getItemResult->getApiVersion() eq "1.4.5", "Test 6 api version, Passed");
-	print "\n".length($getItemResult->getMerkleProof())."\n";
 	ok(length($getItemResult->getMerkleProof()) == 6876, "Test 6, merkle proof, Passed");
 	my $storedValue = $getItemResult->getStoredValue();
 	ok($storedValue->getItsType() eq $Common::ConstValues::STORED_VALUE_WITHDRAW, "Test 6, stored value of type Withdraw");
@@ -210,7 +203,6 @@ sub getItem7 {
 	$getItemParams->setStateRootHash("AAA");
 	$getItemParams->setKey("withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $error2 = $getItemRPC->getItem($paramStr);
 	ok($error2->getErrorCode() eq "-32602", "Test error get item with wrong state root hash, error code checked, Passed");
 	ok($error2->getErrorMessage() eq "Invalid params", "Test error get item with wrong state root hash, error is thrown, error message checked, Passed");
@@ -222,7 +214,6 @@ sub getItem8 {
 	$getItemParams->setStateRootHash("d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228");
 	$getItemParams->setKey("withdraw-AAA");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $error2 = $getItemRPC->getItem($paramStr);
 	ok($error2->getErrorCode() eq "-32002", "Test error get item with wrong key, error code checked, Passed");
 	ok($error2->getErrorMessage() eq "failed to parse key: withdraw-key from string error: Base16 data cannot have length 3 (must be even)", "Test error get item with wrong key, error is thrown, error message checked, Passed");
@@ -234,7 +225,6 @@ sub getItem9 {
 	$getItemParams->setStateRootHash("BBB");
 	$getItemParams->setKey("withdraw-AAA");
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $error2 = $getItemRPC->getItem($paramStr);
 	ok($error2->getErrorCode() eq "-32602", "Test error get item with wrong state root hash, error code checked, Passed");
 	ok($error2->getErrorMessage() eq "Invalid params", "Test error get item with wrong state root hash, error is thrown, error message checked, Passed");
@@ -248,7 +238,6 @@ sub getItem10 {
 	my @path = ("path1","path2","path3");
 	$getItemParams->setPath(@path);
 	my $paramStr = $getItemParams->generateParameterStr();
-	print "\n".$paramStr."\n";
 	my $error2 = $getItemRPC->getItem($paramStr);
 	ok($error2->getErrorCode() eq "-32003", "Test error get item with wrong state root hash, error code checked, Passed");
 	ok($error2->getErrorMessage() eq "state query failed: ValueNotFound(\"UnbondingPurses value found. at path: Key::Withdraw(df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1)\")", "Test error get item with wrong state root hash, error is thrown, error message checked, Passed");
