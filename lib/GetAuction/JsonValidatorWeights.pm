@@ -40,7 +40,6 @@ sub fromJsonObjectToJsonValidatorWeights {
 	my $json = $list[1];
 	my $ret = new GetAuction::JsonValidatorWeights();
 	$ret->setPublicKey($json->{'public_key'});
-	print "\nJsonValidatorWeights,public key is:".$json->{'public_key'}."\n";
 	$ret->setWeight($json->{'weight'});
 	return $ret;
 }

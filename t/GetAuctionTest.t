@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
 
-use Test::Simple tests => 66;
+use Test::Simple tests => 76;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
@@ -21,7 +21,6 @@ sub getAuction1 {
 	$bi->setBlockType("hash");
 	$bi->setBlockHash("fe35810a3dcfbf853b9d3ac2445fe1fa4aaab047d881d95d9009dc257d396e7e");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
-	print "\n".$postParamStr."\n";
 	my $getAResult = $getAuction->getAuction($postParamStr);
 	ok($getAResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
@@ -108,7 +107,6 @@ sub getAuction2 {
 	$bi->setBlockType("height");
 	$bi->setBlockHeight(100);
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
-	print "\n".$postParamStr."\n";
 	my $getAResult = $getAuction->getAuction($postParamStr);
 	ok($getAResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
@@ -116,9 +114,9 @@ sub getAuction2 {
 	ok($as->getBlockHeight() eq "100","Test 2 block height value, Passed");
 	my @listEV = $as->getEraValidators();
 	my $totalEV = @listEV;
-	ok($totalEV == 2, "Test 1, total EraValidators = 2 , Passed");
+	ok($totalEV == 2, "Test 2, total EraValidators = 2 , Passed");
 	my $oneEV = $listEV[0];
-	ok($oneEV->getEraId() eq "0", "Test 1st EraValidators, era id value, Passed");
+	ok($oneEV->getEraId() eq "0", "Test 2, 1st EraValidators, era id value, Passed");
 	my @listVW = $oneEV->getValidatorWeights();
 	my $totalVW = @listVW;
 	ok($totalVW == 2, "Test 2, EraValidators, total ValidatorWeights, Passed");
@@ -131,7 +129,7 @@ sub getAuction2 {
 	# bid = 57
 	my @listJsonBids = $as->getBids();
 	my $totalBids = @listJsonBids;
-	ok($totalBids == 57, "Test 1, total JsonBids = 1550, Passed");
+	ok($totalBids == 57, "Test 2, total JsonBids = 57, Passed");
 	# assertion for 1st JsonBids
 	my $oneJBids = $listJsonBids[0];
 	ok($oneJBids->getPublicKey() eq "0106ca7c39cd272dbf21a86eeb3b36b7c26e2e9b94af64292419f7862936bca2ca", "Test 2, 1st bid public key, Passed");
@@ -149,13 +147,65 @@ sub getAuction2 {
 	ok($oneJBids->getPublicKey() eq "010b0f958cae89f265d7585f8abc67639fd68f9764390682801c744b0e126fb9b3", "Test1, 2nd bid public key, Passed");
 	$oneJBid = $oneJBids->getBid();
 	ok($oneJBid->getBondingPurse() eq "uref-bfaccb266a7a9f3e466e9876637db577b997866a6a36baef779dbff368c5a0e7-007","Test1, 2nd bid bonding_purse, Passed");
-	ok($oneJBid->getDelegationRate() == 10, "Test1, 2nd bid bonding_purse, Passed");
-	ok($oneJBid->getStakedAmount() eq "999000000000", "Test1, 2nd bid staked_amount, Passed");
-	ok($oneJBid->getInactive() == 0, "Test1, 2nd bid inactive, Passed");
+	ok($oneJBid->getDelegationRate() == 10, "Test2, 2nd bid bonding_purse, Passed");
+	ok($oneJBid->getStakedAmount() eq "999000000000", "Test2, 2nd bid staked_amount, Passed");
+	ok($oneJBid->getInactive() == 0, "Test2, 2nd bid inactive, Passed");
 	@delegators = $oneJBid->getDelegators();
 	$totalD = @delegators;
 	ok($totalD == 0, "Test1, 1st bid, total delegator = 1, Passed");	
 }
+# Test 3: Call with no parameter, auction for latest block is retrieved
+sub getAuction3 {
+	my $getAuction = new GetAuction::GetAuctionInfoRPC();
+	my $bi = new Common::BlockIdentifier();
+	$bi->setBlockType("none");
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
+	my $getAResult = $getAuction->getAuction($postParamStr);
+	ok($getAResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	my $as = $getAResult->getAuctionState();
+	ok(length($as->getStateRootHash()) > 0 ,"Test 3 state root hash value, Passed");
+	ok($as->getBlockHeight() > 700000 ,"Test 3 block height value, Passed");
+}
 
+# Negative test - Test 4: Call with wrong block hash, auction for latest block is retrieved
+sub getAuction4 {
+	my $getAuction = new GetAuction::GetAuctionInfoRPC();
+	my $bi = new Common::BlockIdentifier();
+	$bi->setBlockType("hash");
+	$bi->setBlockHash("AAA"); # THIS IS WRONG VALUE
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
+	my $getAResult = $getAuction->getAuction($postParamStr);
+	ok($getAResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	my $as = $getAResult->getAuctionState();
+	ok(length($as->getStateRootHash()) > 0 ,"Test 3 state root hash value, Passed");
+	ok($as->getBlockHeight() > 700000 ,"Test 3 block height value, Passed");
+}
+
+# Negative test - Test 5: Call with too big block height with the height > U64.Max , error is thrown;
+sub getAuction5 {
+	my $getAuction = new GetAuction::GetAuctionInfoRPC();
+	my $bi = new Common::BlockIdentifier();
+	$bi->setBlockType("height");
+	$bi->setBlockHeight("999999999999999999"); # THIS IS WRONG VALUE
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
+	my $error = $getAuction->getAuction($postParamStr);
+	ok($error->getErrorCode() eq "-32001", "Test error get auction with block height > U64.max, error code checked, Passed");
+	ok($error->getErrorMessage() eq "get-auction-info failed to get specified block", "Test error get auction with block height > U64.max, error is thrown, error message checked, Passed");
+}
+# Negative test - Test 6: Call with too big block height with the height < U64.Max, but > latest block height , error is thrown;
+sub getAuction6 {
+	my $getAuction = new GetAuction::GetAuctionInfoRPC();
+	my $bi = new Common::BlockIdentifier();
+	$bi->setBlockType("height");
+	$bi->setBlockHeight("7621010"); # THIS IS WRONG VALUE
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
+	my $error = $getAuction->getAuction($postParamStr);
+	ok($error->getErrorCode() eq "-32001", "Test error get auction with block height < U64.max, error code checked, Passed");
+	ok($error->getErrorMessage() eq "get-auction-info failed to get specified block", "Test error get auction with block height > U64.max, error is thrown, error message checked, Passed");
+}
 getAuction1();
 getAuction2();
+getAuction3();
+getAuction4();
+getAuction5();
+getAuction6();
