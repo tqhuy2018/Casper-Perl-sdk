@@ -22,14 +22,21 @@ In this document, we focus on how to implement the SDK in Eclipse as IDE, with E
 Download the Source code from Github and put it in your local computer.
 From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of the SDK. Then enter the "t" folder of the SDK.
 Run this command to test for each test file in the "t" folder.
+
+```Perl
 perl "test file".
-For example if you want to test for file "GetAuction.t" which contain all test for the "state_get_auction_info" RPC call, run this command
+```
 
+For example if you want to test for file "GetAuction.t" which contain all test for the "state_get_auction_info" RPC call, run this command:
+
+```Perl
 perl GetAuction.t
+```
+If you want to test for file "GetDeployRPCTest.t" run this command:
 
-If you want to test for file "GetDeployRPCTest.t" run this command
-
+```Perl
 perl GetDeployRPCTest.t
+```
 
 # Documentation for classes and methods
 
