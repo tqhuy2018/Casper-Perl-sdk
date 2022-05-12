@@ -40,55 +40,69 @@ The calling the RPC follow this sequence:
 
 ### I. Get State Root Hash  
 
-The task is done in file "GetStateRootHash.h" and "GetStateRootHash.m"
+The task is done in file "GetStateRootHashRPC.pm" in folder "GetStateRootHash"
 
 #### 1. Method declaration
 
 ```Perl
-+(void) getStateRootHashWithJsonParam:(NSString*) jsonString 
+sub getStateRootHash
 ```
 
 #### 2. Input & Output: 
 
-Input: NSString represents the json parameter needed to send along with the POST method to Casper server. This parameter is build based on the BlockIdentifier.
+The sample code for calling chain_get_state_root_hash RPC is done in the "GetStateRootHashTest.t" file under "t" folder of the SDK.
+The procedure for calling the get state root hash is: 
+First you need to instantiate an instance of the BlockIdentifier class (which declared in file "BlockIdentifier.pm" under folder "Common"). The BlockIdentifier object is used to set the input parameter for the chain_get_state_root_hash call.
+When the parameter for the BlockIdentifier is set, the BlockIdentifier then generate the post parameter for sending to Casper server to get the state root hash back. The sending POST request is sent and handled within file "GetStateRootHashRPC.pm" in folder "GetStateRootHash". Then the state root hash is retrieved if the correct data for the POST request is used, otherwise there will be error object thrown. 
+
+- Here are some examples of correct data to send:
+
+	- *Set the BlockIdentifier with type of Hash and pass a correct block hash to the BlockIdentifier*
+
+	- *Set the BlockIdentifier with type of Height and pass a correct block height to the BlockIdentifier*
+
+- Here are some examples of incorrect data to send:
+
+	- *Set the BlockIdentifier with type of Hash and pass a incorrect block hash to the BlockIdentifier*
+
+	- *Set the BlockIdentifier with type of Height and pass a incorrect block height to the BlockIdentifier - for example the height is too big, bigger than the max current height of the block, or bigger than U64.max.*
+
+Please refer to the "GetStateRootHashTest.t" under "t" folder to see the real example of how to generate the parameter with correct and incorrect data.
+
+**In detail:**
+
+**Input:** NSString represents the json parameter needed to send along with the POST method to Casper server. This parameter is build based on the BlockIdentifier.
 
 When call this method to get the state root hash, you need to declare a BlockIdentifier object and then assign the height or hash or just none to the BlockIdentifier. Then the BlockIdentifier is transfer to the jsonString parameter. The whole sequence can be seen as the following code:
 1. Declare a BlockIdentifier and assign its value
 ```Perl
-    BlockIdentifier * bi = [[BlockIdentifier alloc] init];
-    bi.blockType = USE_NONE;
+    my $bi = new Common::BlockIdentifier();
+	# Call with block hash
+	$bi->setBlockType("hash");
+	$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
     
     //or you can set the block attribute like this
     
-    //bi.blockType = USE_BLOCK_HASH;
-   // [bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
+    $bi->setBlockType("height");
+	$bi->setBlockHeight("1234");
    
    or like this
    
-   //bi.blockType = USE_BLOCK_HEIGHT;
-   // [bi assignBlockHeigthtWithParam:12345];
+   $bi->setBlockType("none");
    
-   //then you generate the jsonString to call the getStateRootHashWithJsonParam function
-    NSString * jsonString = [bi toJsonStringWithMethodName:@"chain_get_state_root_hash"];
+   //then you generate the jsonString to call the generatePostParam function
+    my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH);
 ```
-2. Use the jsonString to call the function:
+2. Use the $postParamStr to call the function:
 
 ```Perl
-+(void) getStateRootHashWithJsonParam:(NSString*) jsonString 
+    my $getStateRootHashRPC = new GetStateRootHash::GetStateRootHashRPC();
+	my $stateRootHash = $getStateRootHashRPC->getStateRootHash($postParamStr);
 ```
 
-Output: the actual output is retrieved within the function body of getStateRootHashWithJsonParam function:
+**Output:** the state root hash is retrieved if the correct data for the POST request is used, otherwise there will be error object thrown. 
 
-```Perl
-[HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_GET_STATE_ROOT_HASH];
-```
-From this the other method is called
-
-```Perl
-+(NSString*) fromJsonToStateRootHash:(NSDictionary*) nsData 
-```
-
-This function return the state_root_hash value.
+This process is done within the function "sub getStateRootHash" of the class "GetStateRootHash::GetStateRootHashRPC" (declare in file GetStateRootHashRPC.pm under folder lib/GetStateRootHash).
 
 #### 3. The Unit test file for GetStateRootHash is in file "GetStateRootHashTest.m". 
 
