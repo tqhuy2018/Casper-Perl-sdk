@@ -43,7 +43,12 @@ To test for all file, enter the root folder of the SDK and run this command:
 ```Perl
 ./Build test
 ```
+or 
 
+
+```Perl
+make test
+```
 # Documentation for classes and methods
 
 * [List of classes and methods](./docs/Help.md#list-of-rpc-methods)
