@@ -40,15 +40,22 @@ The calling the RPC follow this sequence:
 
 ### I. Get State Root Hash  
 
-The task is done in file "GetStateRootHash.h" and "GetStateRootHash.m"
+The task is done in file "GetStateRootHashRPC.pm" in folder "GetStateRootHash"
 
 #### 1. Method declaration
 
 ```Perl
-+(void) getStateRootHashWithJsonParam:(NSString*) jsonString 
+sub getStateRootHash
 ```
 
 #### 2. Input & Output: 
+
+The sample code for calling chain_get_state_root_hash RPC is done in the "GetStateRootHashTest.t" file under "t" folder of the SDK.
+The procedure for calling the get state root hash is: 
+First you need to instantiate an instance of the BlockIdentifier class (which declared in file "BlockIdentifier.pm" under folder "Common"). The BlockIdentifier object is used to set the input parameter for the chain_get_state_root_hash call.
+When the parameter for the BlockIdentifier is set, the BlockIdentifier then generate the post parameter for sending to Casper server to get the state root hash back. The sending POST request is sent and handled within file "GetStateRootHashRPC.pm" in folder "GetStateRootHash". Then the state root hash is retrieved if the correct data for the POST request is used, otherwise there will be error object thrown.
+
+In detail: 
 
 Input: NSString represents the json parameter needed to send along with the POST method to Casper server. This parameter is build based on the BlockIdentifier.
 
