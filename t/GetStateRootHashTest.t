@@ -62,6 +62,6 @@ sub getStateRootHash {
 	my $postParamStr6 = $bi->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH);
 	my $getStateRootHashRPC6 = new GetStateRootHash::GetStateRootHashRPC();
 	my $stateRootHash6 = $getStateRootHashRPC5->getStateRootHash($postParamStr6);
-	ok(length($stateRootHash6) > 0, "Test get state root hash with wrong block identifier height, but still U64 value - latest state_root_hash is retrieved, Passed");
+	ok(length($stateRootHash6) > 0, "Test get state root hash with wrong block identifier height, but value <= U64.max value - latest state_root_hash is retrieved, Passed");
 }
 getStateRootHash();

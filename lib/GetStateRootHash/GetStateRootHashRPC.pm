@@ -7,14 +7,30 @@ use JSON qw( decode_json );
 
 sub new {
 	my $class = shift;
-	my $self = {};
+	my $self = {_url=>shift};
 	bless $self, $class;
 	return $self;
 }
 
+# get-set method for _url
+sub setUrl {
+	my ($self,$value) = @_;
+	$self->{_url} = $value if defined ($value);
+	return $self->{_url};
+}
+sub getUrl {
+	my ($self) = @_;
+	return $self->{_url};
+}
+
+# This function does chain_get_state_root_hash RPC call
 sub getStateRootHash {
 	my @list = @_;
-	my $uri = 'https://node-clarity-testnet.make.services/rpc';
+	my $uri = $self->{_url};
+	if($uri) {
+	} else {
+		$uri = $Common::ConstValues::TEST_NET;
+	}
 	my $json = $list[1];
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');

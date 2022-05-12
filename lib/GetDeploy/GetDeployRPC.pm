@@ -38,8 +38,6 @@ This function does info_get_deploy RPC call
 sub getDeployResult {
 	my ($self) = @_;
 	my @list = @_;
-	#print "\nparameter str is:".$list[1]."\n";
-	#my $uri = 'https://node-clarity-testnet.make.services/rpc';
 	my $uri = $self->{_url};
 	if($uri) {
 	} else {
