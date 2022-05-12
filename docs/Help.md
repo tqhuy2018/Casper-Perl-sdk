@@ -56,13 +56,18 @@ First you need to instantiate an instance of the BlockIdentifier class (which de
 When the parameter for the BlockIdentifier is set, the BlockIdentifier then generate the post parameter for sending to Casper server to get the state root hash back. The sending POST request is sent and handled within file "GetStateRootHashRPC.pm" in folder "GetStateRootHash". Then the state root hash is retrieved if the correct data for the POST request is used, otherwise there will be error object thrown. 
 
 - Here is some example of correct data to send:
-*Set the BlockIdentifier with type of Hash and pass a correct block hash to the BlockIdentifier
-*Set the BlockIdentifier with type of Height and pass a correct block height to the BlockIdentifier
-- Here is some example of incorrect data to send:
-*Set the BlockIdentifier with type of Hash and pass a incorrect block hash to the BlockIdentifier
-*Set the BlockIdentifier with type of Height and pass a incorrect block height to the BlockIdentifier - for example the height is too big, bigger than the max current height of the block, or bigger than U64.max.
 
-**In detail: 
+*Set the BlockIdentifier with type of Hash and pass a correct block hash to the BlockIdentifier*
+
+*Set the BlockIdentifier with type of Height and pass a correct block height to the BlockIdentifier*
+
+- Here is some example of incorrect data to send:
+- 
+*Set the BlockIdentifier with type of Hash and pass a incorrect block hash to the BlockIdentifier*
+
+*Set the BlockIdentifier with type of Height and pass a incorrect block height to the BlockIdentifier - for example the height is too big, bigger than the max current height of the block, or bigger than U64.max.*
+
+**In detail: **
 
 **Input:** NSString represents the json parameter needed to send along with the POST method to Casper server. This parameter is build based on the BlockIdentifier.
 
