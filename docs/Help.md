@@ -218,7 +218,7 @@ sub fromJsonObjectToGetStatusResult
 
 #### 2. Input & Output: 
 
-* For this function in file "GetStatusResultRPC.pm":
+* In this function in file "GetStatusResultRPC.pm":
 
 ```Perl
 sub getStatus
@@ -231,13 +231,13 @@ sub getStatus
 
 - **Output:** The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetStatusResult function, described below:
 
-* For function 
+* In this function in file "GetStatusResult.pm":
 
 ```Perl
-+(GetStatusResult *) fromJsonDictToGetStatusResult:(NSDictionary*) jsonDict
+sub fromJsonObjectToGetStatusResult
 ```
 
-- **Input:** The NSDictionaray object represents the GetStatusResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetStatusResult is taken to pass to the function to get the status information.
+- **Input:** The Json object represents the GetStatusResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetStatusResult object is taken through this function.
 
 - **Output:** The GetStatusResult which contains all information of the status. From this result you can retrieve information such as: api_version,chainspec_name,starting_state_root_hash,peers,last_added_block_info...
 
@@ -245,18 +245,16 @@ sub getStatus
 
 #### 1. Method declaration
 
-The call for Get Block Transfers RPC method is done through this function in "GetBlockTransfersResult.m" file
+The call for Get Block Transfers RPC method is done through this function in "GetBlockTransfersRPC.pm" file under folder "GetBlockTransfers":
 
 ```Perl
-+(void) getBlockTransfersWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_CHAIN_GET_BLOCK_TRANSFERS];
-}
+sub getBlockTransfers
 ```
 
-From this the GetBlockTransfersResult is retrieved through this function, also in "GetBlockTransfersResult.m" file
+From this the GetBlockTransfersResult is retrieved through this function, in "GetBlockTransfersResult.pm" file, which is also in folder "GetBlockTransfers":
 
 ```Perl
-+(GetBlockTransfersResult *) fromJsonDictToGetBlockTransfersResult:(NSDictionary*) jsonDict
+sub fromJsonObjectToGetBlockTransfersResult
 ```
 
 #### 2. Input & Output: 
