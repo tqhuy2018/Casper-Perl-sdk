@@ -22,7 +22,7 @@ The calling the RPC follow this sequence:
 
 4) [Get Status (info_get_status)](#iv-get-status)
 
-5) [Get Block transfer (chain_get_block_transfers)](#v-get-block-transfers)
+5) [GetBlockTransfersResult transfer (chain_get_block_transfers)](#v-get-block-transfers)
 
 6) [Get Block (chain_get_block)](#vi-get-block)
 
@@ -331,27 +331,24 @@ Output: The GetBlockTransfersResult which contains all information of the Block 
 
 #### 1. Method declaration
 
-The call for Get Block Transfers RPC method is done through this function in "GetBlockResult.m" file
+The call for Get Block Transfers RPC method is done through this function in "GetBlockRPC.pm" file under folder "GetBlock":
 
 ```Perl
-+(void) getBlockWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_CHAIN_GET_BLOCK];
-}
+sub getBlock
 ```
 
-From this the GetBlockResult is retrieved through this function, also in "GetBlockResult.m" file
+From this the GetBlockResult is retrieved through this function in file "GetBlockResult.pm" under the same folder "GetBlock":
 
 ```Perl
-+(GetBlockResult*) fromJsonDictToGetBlockResult:(NSDictionary *) jsonDict
+sub fromJsonObjectToGetBlockResult
 ```
 
 #### 2. Input & Output: 
 
-* For function 
+* For function in file "GetBlockRPC.pm":
 
 ```Perl
-+(void) getBlockWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_CHAIN_GET_BLOCK];
+sub getBlock
 }
 ```
 
@@ -360,29 +357,53 @@ Input: a JsonString of such value:
 {"method" : "chain_get_block","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.h" and "BlockIdentifier.m"
+To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.pm" under folder "Common"
 
-Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "toJsonStringWithMethodName" of the "BlockIdentifier" class to generate such parameter string like above.
-
-Sample  code for this process
-
+Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "generatePostParam" of the "BlockIdentifier" class to generate such parameter string like above.
+The whole sequence can be seen as the following code:
+1. Declare a BlockIdentifier and assign its value
 ```Perl
-BlockIdentifier * bi = [[BlockIdentifier alloc] init];
-bi.blockType = USE_BLOCK_HASH;
-[bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
-NSString * paramStr = [bi toJsonStringWithMethodName:@"chain_get_block"];
-[GetBlockResult getBlockWithParams:paramStr];
+my $bi = new Common::BlockIdentifier();
+# Call with block hash
+$bi->setBlockType("hash");
+$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
+
+//or you can set the block attribute like this
+
+$bi->setBlockType("height");
+$bi->setBlockHeight("1234");
+
+or like this
+
+$bi->setBlockType("none");
+   
+//then you generate the jsonString to call the generatePostParam function
+my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetBlockResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBlockTransfersResult object.
 
-* For function 
+The code for this process is in function getBlockTransfers of file "GetBlockTransferRPC.pm" like this:
 
 ```Perl
-+(GetBlockResult *) fromJsonDictToGetBlockResult:(NSDictionary*) jsonDict
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+   	my $ret = GetBlock::GetBlockResult->fromJsonObjectToGetBlockResult($decoded->{'result'});
+	return $ret;
+}
+```
+* For this function in file "GetBlockResult.pm":
+
+```Perl
+sub fromJsonObjectToGetBlockResult
 ```
 
-Input: The NSDictionaray object represents the GetBlockResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetBlockResult is taken to pass to the function to get the block information.
+Input: The Json object represents the GetBlockResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBlockResult is taken to pass to the function to get the block information.
 
 Output: The GetBlockResult which contains all information of the block. From this result you can retrieve information such as: api_version,JsonBlock object(in which you can retrieve information such as: blockHash, JsonBlockHeader,JsonBlockBody, list of proof)
 
