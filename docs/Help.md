@@ -411,18 +411,16 @@ Output: The GetBlockResult which contains all information of the block. From thi
 
 #### 1. Method declaration
 
-The call for Get Era Info RPC method is done through this function in "GetEraInfoResult.m" file
+The call for Get Era Info RPC method is done through this function in "GetEraInfoBySwitchBlockRPC.pm" file under folder "GetEraInfoBySwitchBlock"
 
 ```Perl
-+(void) getEraInfoWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_CHAIN_GET_ERA_BY_SWITCH_BLOCK];
-}
+sub getEraInfo 
 ```
 
-From this the GetEraInfoResult is retrieved through this function, also in "GetEraInfoResult.m" file
+Fro this the GetEraInfoResult is retrieved through this function, also in "GetEraInfoResult.m" file
 
 ```Perl
-+(GetEraInfoResult*) fromJsonDictToGetEraInfoResult:(NSDictionary*) fromDict
+sub fromJsonToGetEraInfoResult
 ```
 
 #### 2. Input & Output: 
