@@ -536,7 +536,7 @@ Output: The result of the Post request for the RPC method is a Json string data 
 The code for this process is in function getItem of file "GetItemRPC.pm" like this:
 
 ```Perl
- my $d = $response->decoded_content;
+my $d = $response->decoded_content;
 my $decoded = decode_json($d);
 my $errorCode = $decoded->{'error'}{'code'};
 if($errorCode) {
@@ -564,28 +564,24 @@ Output: The GetItemResult which contains all information of the item. From this 
 
 #### 1. Method declaration
 
-The call for Get Dictionary Item RPC method is done through this function in "GetDictionaryItemResult.m" file
+The call for Get Dictionary Item RPC method is done through this function in "GetDictionaryItemRPC.pm" file under "GetDictionaryItem" folder:
 
 ```Perl
-+(void) getDictionaryItemWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_DICTIONARY_ITEM];
-}
+sub getDictionaryItem
 ```
 
-From this the GetDictionaryItemResult is retrieved through this function, also in "GetDictionaryItemResult.m" file
+From this the GetDictionaryItemResult is retrieved through this function in "GetDictionaryItemResult.pm" file, also under "GetDictionaryItem" folder:
 
 ```Perl
-+(GetDictionaryItemResult*) fromJsonDictToGetItemResult:(NSDictionary*) fromDict
+sub fromJsonToGetDictionaryItemResult
 ```
 
 #### 2. Input & Output: 
 
-* For function 
+* For this function in file "GetDictionaryItemRPC.pm": 
 
 ```Perl
-+(void) getDictionaryItemWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_DICTIONARY_ITEM];
-}
+sub getDictionaryItem
 ```
 
 Input: a JsonString of such value:
@@ -593,7 +589,7 @@ Input: a JsonString of such value:
 {"method" : "state_get_dictionary_item","id" : 1,"params" :{"state_root_hash" : "146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8","dictionary_identifier":{"AccountNamedKey":{"dictionary_name":"dict_name","key":"account-hash-ad7e091267d82c3b9ed1987cb780a005a550e6b3d1ca333b743e2dba70680877","dictionary_item_key":"abc_name"}}},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type GetDictionaryItemParams class, which declared in file "GetDictionaryItemParams.h" and "GetDictionaryItemParams.m"
+To generate such string, you need to use an object of type GetDictionaryItemParams class, which declared in file "GetDictionaryItemParams.pm" under folder "GetDictionaryItem"
 
 Instantiate the GetDictionaryItemParams, then assign the GetDictionaryItemParams object with state_root_hash and an DictionaryIdentifier value.
 The DictionaryIdentifier can be 1 among 4 possible classes defined in folder "DictionaryIdentifierEnum".
@@ -602,28 +598,47 @@ When the state_root_hash and DictionaryIdentifier value are sets, use function "
 Sample  code for this process, with DictionaryIdentifier of type AccountNamedKey
 
 ```Perl
-GetDictionaryItemParams * itemParam = [[GetDictionaryItemParams alloc] init];
-itemParam.state_root_hash = @"146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8";
-DictionaryIdentifier_AccountNamedKey * item = [[DictionaryIdentifier_AccountNamedKey alloc] init];
-item.key = @"account-hash-ad7e091267d82c3b9ed1987cb780a005a550e6b3d1ca333b743e2dba70680877";
-item.dictionary_name = @"dict_name";
-item.dictionary_item_key = @"abc_name";
-itemParam.dictionaryIdentifierType = @"AccountNamedKey";
-itemParam.innerDict = [[NSMutableArray alloc] init];
-[itemParam.innerDict addObject:item];
-NSString * jsonStr = [itemParam toJsonString];
-[GetDictionaryItemResult getDictionaryItem:jsonStr];
+my $getDIRPC = new GetDictionaryItem::GetDictionaryItemRPC();
+my $getDIParams = new GetDictionaryItem::GetDictionaryItemParams();
+my $diANK = new GetDictionaryItem::DIAccountNamedKey();
+$diANK->setKey("account-hash-ad7e091267d82c3b9ed1987cb780a005a550e6b3d1ca333b743e2dba70680877");
+$diANK->setDictionaryName("dict_name");
+$diANK->setDictionaryItemKey("abc_name");
+my $di = new GetDictionaryItem::DictionaryIdentifier();
+$di->setItsType("AccountNamedKey");
+$di->setItsValue($diANK);
+$getDIParams->setStateRootHash("146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8");
+$getDIParams->setDictionaryIdentifier($di);
+my $paramStr = $getDIParams->generateParameterStr();
+my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetItemResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
-* For function 
+The code for this process is in function getItem of file "GetDictionaryItemRPC.pm" like this:
 
 ```Perl
-+(GetDictionaryItemResult*) fromJsonDictToGetItemResult:(NSDictionary*) fromDict 
+my $d = $response->decoded_content;
+my $decoded = decode_json($d);
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+    	my $ret = GetDictionaryItem::GetDictionaryItemResult->fromJsonToGetDictionaryItemResult($decoded->{'result'});
+	return $ret;
+}
 ```
 
-Input: The NSDictionaray object represents the GetDictionaryItemResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetDictionaryItemResult is taken to pass to the function to get the dictionary item information.
+* For this function in file "GetDictionaryItemResult.pm": 
+
+```Perl
+sub fromJsonToGetDictionaryItemResult 
+```
+
+Input: The Json object represents the GetDictionaryItemResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetDictionaryItemResult is retrieved.
 
 Output: The GetDictionaryItemResult which contains all information of the dictionary item. From this result you can retrieve information such as: api_version,dictionary_key, merkle_proof,stored_value.
 
