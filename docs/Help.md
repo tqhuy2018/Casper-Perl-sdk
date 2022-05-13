@@ -104,43 +104,14 @@ When call this method to get the state root hash, you need to declare a BlockIde
 
 This process is done within the function "sub getStateRootHash" of the class "GetStateRootHash::GetStateRootHashRPC" (declare in file GetStateRootHashRPC.pm under folder lib/GetStateRootHash).
 
-#### 3. The Unit test file for GetStateRootHash is in file "GetStateRootHashTest.m". 
-
-In Unit test, the GetStateRootHash is done within the following sequence:
-
-1. Declare a BlockIdentifier and assign its atributes
-
-```Perl
-    BlockIdentifier * bi = [[BlockIdentifier alloc] init];
-    bi.blockType = USE_NONE;
-    
-    //or you can set the block attribute like this
-    
-    //bi.blockType = USE_BLOCK_HASH;
-   // [bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
-   
-   or like this
-   
-   //bi.blockType = USE_BLOCK_HEIGHT;
-   // [bi assignBlockHeigthtWithParam:12345];
-   
-   //then you generate the jsonString to call the getStateRootHashWithJsonParam function
-    NSString * jsonString = [bi toJsonStringWithMethodName:@"chain_get_state_root_hash"];
-```
-2. Call the function to get the state root hash
-
-```Perl
-[self getStateRootHashWithJsonParam:jsonString];
-```
-
 ### II. Get Peers List  
 
-The task is done in file "GetPeerResult.h" and "GetPeerResult.m"
+The task is done in file "GetPeerPRC.pm" and "GetPeerResult.pm"
 
 #### 1. Method declaration
 
 ```Perl
-+(void) getPeerResultWithJsonParam:(NSString*) jsonString;
+sub getPeers
 ```
 
 #### 2. Input & Output: 
@@ -151,53 +122,14 @@ Input: NSString represents the json parameter needed to send along with the POST
 {"params" : [],"id" : 1,"method":"info_get_peers","jsonrpc" : "2.0"}
 ```
 
-The code under  function handler the getting of peerlist
+The retrieve of PeerEntry List is done with this function:
 
 ```Perl
-[HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_INFO_GET_PEERS];
+GetPeers::GetPeersResult->fromJsonObjectToGetPeersResult($json)
 ```
-
-From this, in HttpHandler class, the retrieve of PeerEntry List is done with this function:
-
-```Perl
-+(GetPeerResult*) fromJsonObjToGetPeerResult:(NSDictionary*) jsonDict;
-```
+in which $json is the $json data retrieved from the http response.
 
 - Output: List of peer defined in class GetPeersResult, which contain a list of PeerEntry - a class contain of nodeId and address.
-
-#### 3. The Unit test file for GetPeerResult is in file "GetPeerResultTest.m"
-
-The steps in doing the test.
-
-1.Declare the json parameter to send to POST request
-
-```Perl
-NSString *jsonString = @"{\"params\" : [],\"id\" : 1,\"method\":\"info_get_peers\",\"jsonrpc\" : \"2.0\"}";
-```
-From the POST request, the json data is retrieved and stored in forJSONObject variable.
-
-2. Get GetPeerResult from the forJSONObject variable
-
-```Perl
-GetPeerResult * gpr = [[GetPeerResult alloc] init];
-        gpr = [GetPeerResult fromJsonObjToGetPeerResult:forJSONObject];
-```
-
-From this you can Log out the retrieved information, such as the following code Log out total peer and print address and node id for each peer.
-
-```Perl
-NSLog(@"Get peer result api_version:%@",gpr.api_version);
-NSLog(@"Get peer result, total peer entry:%lu",[gpr.PeersMap count]);
-NSLog(@"List of peer printed out:");
-NSInteger totalPeer = [gpr.PeersMap count];
-NSInteger  counter = 1;
-for (int i = 0 ; i < totalPeer;i ++) {
-    PeerEntry * pe = [[PeerEntry alloc] init];
-    pe = [gpr.PeersMap objectAtIndex:i];
-    NSLog(@"Peer number %lu address:%@ and node id:%@",counter,pe.address,pe.nodeID);
-    counter = counter + 1;
-}
-```
 
 ### III. Get Deploy 
 
