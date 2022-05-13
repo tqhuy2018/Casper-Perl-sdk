@@ -110,8 +110,16 @@ The task is done in file "GetPeerPRC.pm" and "GetPeerResult.pm"
 
 #### 1. Method declaration
 
+From file GetPeerPRC.pm call this method
+
 ```Perl
 sub getPeers
+```
+
+This method call other method from file GetPeerResult.pm to get the state root hash or handle the error retrieved from the http response.
+
+```Perl
+sub fromJsonObjectToGetPeersResult
 ```
 
 #### 2. Input & Output: 
