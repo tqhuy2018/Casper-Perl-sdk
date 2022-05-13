@@ -393,7 +393,7 @@ if($errorCode) {
 	$errorException->setErrorMessage($decoded->{'error'}{'message'});
 	return $errorException;
 } else {
-   	my $ret = GetBlock::GetBlockResult->fromJsonObjectToGetBlockResult($decoded->{'result'});
+   	my $ret = GetBlockTransfers::GetBlockTransfersResult->fromJsonObjectToGetBlockTransfersResult($decoded->{'result'});
 	return $ret;
 }
 ```
@@ -425,12 +425,10 @@ sub fromJsonToGetEraInfoResult
 
 #### 2. Input & Output: 
 
-* For function 
+* For function in file "GetEraInfoBySwitchBlockRPC.pm":
 
 ```Perl
-+(void) getEraInfoWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_CHAIN_GET_ERA_BY_SWITCH_BLOCK];
-}
+sub getEraInfo
 ```
 
 Input: a JsonString of such value:
@@ -438,29 +436,53 @@ Input: a JsonString of such value:
 {"method" : "chain_get_era_info_by_switch_block","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.h" and "BlockIdentifier.m"
+To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.pm" under folder "Common"
 
-Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "toJsonStringWithMethodName" of the "BlockIdentifier" class to generate such parameter string like above.
-
-Sample  code for this process
-
+Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "generatePostParam" of the "BlockIdentifier" class to generate such parameter string like above.
+The whole sequence can be seen as the following code:
+1. Declare a BlockIdentifier and assign its value
 ```Perl
-BlockIdentifier * bi = [[BlockIdentifier alloc] init];
-bi.blockType = USE_BLOCK_HASH;
-[bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
-NSString * paramStr = [bi toJsonStringWithMethodName:@"chain_get_block"];
-[GetEraInfoResult getEraInfoWithParams:paramStr];
+my $bi = new Common::BlockIdentifier();
+# Call with block hash
+$bi->setBlockType("hash");
+$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
+
+//or you can set the block attribute like this
+
+$bi->setBlockType("height");
+$bi->setBlockHeight("1234");
+
+or like this
+
+$bi->setBlockType("none");
+   
+//then you generate the jsonString to call the generatePostParam function
+my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetEraInfoResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
-* For function 
+The code for this process is in function GetEraInfoResult of file "GetEraInfoBySwitchBlockRPC.pm" like this:
 
 ```Perl
-+(GetEraInfoResult*) fromJsonDictToGetEraInfoResult:(NSDictionary*) fromDict 
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+   	my $ret = GetEraInfoBySwitchBlock::GetEraInfoResult->fromJsonToGetEraInfoResult($decoded->{'result'});
+	return $ret;
+}
+```
+* For this function in file "GetEraInfoResult.pm" under folder "GetEraInfoBySwitchBlock":
+
+```Perl
+sub fromJsonToGetEraInfoResult
 ```
 
-Input: The NSDictionaray object represents the GetEraInfoResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetEraInfoResult is taken to pass to the function to get the era info information.
+Input: The Json object represents the GetEraInfoResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that the JSON data the GetEraInfoResult is retrieved.
 
 Output: The GetEraInfoResult which contains all information of the era info. From this result you can retrieve information such as: api_version, era_summary (in which you can retrieve information such as: block_hash, era_id, state_root_hash, merkle_proof, stored_value).
 
@@ -469,28 +491,24 @@ Output: The GetEraInfoResult which contains all information of the era info. Fro
 
 #### 1. Method declaration
 
-The call for Get Item RPC method is done through this function in "GetItemResult.m" file
+The call for Get Item RPC method is done through this function in file "GetItemRPC.pm" under folder "GetItem":
 
 ```Perl
-+(void) getItemWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_ITEM];
-}
+sub getItem
 ```
 
-From this the GetItemResult is retrieved through this function, also in "GetItemResult.m" file
+From this the GetItemResult is retrieved through this function in file "GetItemResult.pm", also under folder "GetItem": 
 
 ```Perl
-+(GetItemResult*) fromJsonDictToGetItemResult:(NSDictionary*) fromDict
+sub fromJsonToGetItemResult
 ```
 
 #### 2. Input & Output: 
 
-* For function 
+* For this function in file "GetItemRPC.pm":
 
 ```Perl
-+(void) getItemWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_ITEM];
-}
+sub getItem
 ```
 
 Input: a JsonString of such value:
@@ -498,29 +516,47 @@ Input: a JsonString of such value:
 {"method" : "state_get_item","id" : 1,"params" :{"state_root_hash" : "d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228","key":"withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1","path":[]},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type GetItemParams class, which declared in file "GetItemParams.h" and "GetItemParams.m"
+To generate such string, you need to use an object of type GetItemParams class, which declared in file "GetItemParams.pm" under folder "GetItem"
 
-Instantiate the GetItemParams, then assign the GetItemParams object with state_root_hash, key, and path, then use function "toJsonString" of the "GetItemParams" class to generate such parameter string like above.
+Instantiate the GetItemParams, then assign the GetItemParams object with state_root_hash, key, and path, then use function "generateParameterStr" of the "GetItemParams" class to generate such parameter string like above.
 
 Sample  code for this process:
 
 ```Perl
-GetItemParams * item = [[GetItemParams alloc] init];
-item.state_root_hash = @"d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228";
-item.key = @"withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1";
-NSString * paramStr = [item toJsonString];
-[GetItemResult getItemWithParams:paramStr];
+my $getItemRPC = new GetItem::GetItemRPC();
+my $getItemParams = new GetItem::GetItemParams();
+$getItemParams->setStateRootHash("340a09b06bae99d868c68111b691c70d9d5a253c0f2fd7ee257a04a198d3818e");
+$getItemParams->setKey("uref-ba620eee2b06c6df4cd8da58dd5c5aa6d42f3a502de61bb06dc70b164eee4119-007");
+my $paramStr = $getItemParams->generateParameterStr();
+my $getItemResult = $getItemRPC->getItem($paramStr);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetItemResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
-* For function 
+The code for this process is in function getItem of file "GetItemRPC.pm" like this:
 
 ```Perl
-+(GetItemResult*) fromJsonDictToGetItemResult:(NSDictionary*) fromDict 
+ my $d = $response->decoded_content;
+my $decoded = decode_json($d);
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+   	my $ret = GetItem::GetItemResult->fromJsonToGetItemResult($decoded->{'result'});
+	return $ret;
+}
 ```
 
-Input: The NSDictionaray object represents the GetItemResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetItemResult is taken to pass to the function to get the item information.
+* For this function in file "GetItemResult.pm":
+
+```Perl
+sub fromJsonToGetItemResult
+```
+
+Input: The Json object represents the GetItemResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetItemResult is retrieved.
 
 Output: The GetItemResult which contains all information of the item. From this result you can retrieve information such as: api_version,merkle_proof, stored_value.
 
