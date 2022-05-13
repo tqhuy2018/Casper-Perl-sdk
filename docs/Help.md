@@ -615,7 +615,7 @@ my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 
 Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
-The code for this process is in function getItem of file "GetDictionaryItemRPC.pm" like this:
+The code for this process is in function getDictionaryItem of file "GetDictionaryItemRPC.pm" like this:
 
 ```Perl
 my $d = $response->decoded_content;
@@ -646,28 +646,24 @@ Output: The GetDictionaryItemResult which contains all information of the dictio
 
 #### 1. Method declaration
 
-The call for Get Balance RPC method is done through this function in "GetBalanceResult.m" file
+The call for Get Balance RPC method is done through this function in "GetBalanceResultRPC.pm" file under folder "GetBalance":
 
 ```Perl
-+(void) getBalanceWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_BALANCE];
-}
+sub getBalance
 ```
 
-From this the GetBalanceResult is retrieved through this function, also in "GetBalanceResult.m" file
+From this the GetBalanceResult is retrieved through this function, in "GetBalanceResult.pm" file, also under folder "GetBalance":
 
 ```Perl
-+(GetBalanceResult*) fromJsonDictToGetBalanceResult:(NSDictionary*) fromDict
+sub fromJsonToGetBalanceResult
 ```
 
 #### 2. Input & Output: 
 
-* For function 
+* For this function in file "GetBalanceResultRPC.pm":  
 
 ```Perl
-+(void) getBalanceWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_BALANCE];
-}
+sub getBalance
 ```
 
 Input: a JsonString of such value:
@@ -675,28 +671,46 @@ Input: a JsonString of such value:
 {"method" : "state_get_balance","id" : 1,"params" :{"state_root_hash" : "8b463b56f2d124f43e7c157e602e31d5d2d5009659de7f1e79afbd238cbaa189","purse_uref":"uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007"},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type GetBalanceParams class, which declared in file "GetBalanceParams.h" and "GetBalanceParams.m"
+To generate such string, you need to use an object of type GetBalanceParams class, which declared in file "GetBalanceParams.pm" under folder "GetBalance".
 
-Instantiate the GetBalanceParams, then assign the GetBalanceParams with state_root_hash and purse_uref then use function "toJsonString" of the "GetBalanceParams" class to generate such parameter string like above.
+Instantiate the GetBalanceParams, then assign the GetBalanceParams with state_root_hash and purse_uref then use function "generateParameterStr" of the "GetBalanceParams" class to generate such parameter string like above.
 
 Sample  code for this process
 
 ```Perl
- GetBalanceParams * param = [[GetBalanceParams alloc] init];
- param.state_root_hash = @"8b463b56f2d124f43e7c157e602e31d5d2d5009659de7f1e79afbd238cbaa189";
- param.purse_uref = @"uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007";
- NSString * jsonStr = [param toJsonString];
- [GetBalanceResult getBalance:jsonStr];
+my $rpc = new GetBalance::GetBalanceResultRPC();
+my $params = new GetBalance::GetBalanceParams();
+$params->setStateRootHash("8b463b56f2d124f43e7c157e602e31d5d2d5009659de7f1e79afbd238cbaa189");
+$params->setPurseUref("uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007");
+my $paramStr = $params->generateParameterStr();
+my $result = $rpc->getBalance($paramStr);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetBalanceResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBalanceResult object.
 
-* For function 
+The code for this process is in function getBalance of file "GetBalanceResultRPC.pm" like this:
+
 ```Perl
-+(GetBalanceResult*) fromJsonDictToGetBalanceResult:(NSDictionary*) fromDict 
+my $d = $response->decoded_content;
+my $decoded = decode_json($d);
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+    	my $ret = GetBalance::GetBalanceResult->fromJsonToGetBalanceResult($decoded->{'result'});
+	return $ret;
+}
 ```
 
-Input: The NSDictionaray object represents the GetBalanceResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetBalanceResult is taken to pass to the function to get the balance information.
+* For this function in file "GetBalanceResult.pm": 
+```Perl
+sub fromJsonToGetBalanceResult
+```
+
+Input: The Json object represents the GetBalanceResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBalanceResult is taken.
 
 Output: The GetBalanceResult which contains all information of the balance. From this result you can retrieve information such as: api_version,balance_value, merkle_proof.
 
@@ -704,18 +718,16 @@ Output: The GetBalanceResult which contains all information of the balance. From
 
 #### 1. Method declaration
 
-The call for Get Auction RPC method is done through this function in "GetAuctionInfoResult.m" file
+The call for Get Auction RPC method is done through this function in "GetAuctionInfoRPC.pm" file under folder "GetAuction":
 
 ```Perl
-+(void) getAuctionWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_AUCTION_INFO];
-}
+sub getAuction
 ```
 
-From this the GetAuctionInfoResult is retrieved through this function, also in "GetAuctionInfoResult.m" file
+From this the GetAuctionInfoResult is retrieved through this function in "GetAuctionInfoResult.pm" file under folder "GetAuction":
 
 ```Perl
-+(GetAuctionInfoResult*) fromJsonDictToGetAuctionResult:(NSDictionary*) fromDict
+sub fromJsonToGetItemResult
 ```
 
 #### 2. Input & Output: 
