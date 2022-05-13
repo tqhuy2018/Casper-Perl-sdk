@@ -81,7 +81,7 @@ my $bi = new Common::BlockIdentifier();
 $bi->setBlockType("hash");
 $bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 
-//or you can set the block attribute like this
+# or you can set the block attribute like this
 
 $bi->setBlockType("height");
 $bi->setBlockHeight("1234");
@@ -90,7 +90,7 @@ or like this
 
 $bi->setBlockType("none");
    
-//then you generate the jsonString to call the generatePostParam function
+# then you generate the jsonString to call the generatePostParam function
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH);
 ```
 2. Use the $postParamStr to call the function:
@@ -282,7 +282,7 @@ my $bi = new Common::BlockIdentifier();
 $bi->setBlockType("hash");
 $bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 
-//or you can set the block attribute like this
+# or you can set the block attribute like this
 
 $bi->setBlockType("height");
 $bi->setBlockHeight("1234");
@@ -291,7 +291,7 @@ or like this
 
 $bi->setBlockType("none");
    
-//then you generate the jsonString to call the generatePostParam function
+# then you generate the jsonString to call the generatePostParam function
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
 ```
 2. Use the $postParamStr to call the function:
@@ -368,7 +368,7 @@ my $bi = new Common::BlockIdentifier();
 $bi->setBlockType("hash");
 $bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 
-//or you can set the block attribute like this
+# or you can set the block attribute like this
 
 $bi->setBlockType("height");
 $bi->setBlockHeight("1234");
@@ -377,7 +377,7 @@ or like this
 
 $bi->setBlockType("none");
    
-//then you generate the jsonString to call the generatePostParam function
+# then you generate the jsonString to call the generatePostParam function
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
@@ -447,7 +447,7 @@ my $bi = new Common::BlockIdentifier();
 $bi->setBlockType("hash");
 $bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 
-//or you can set the block attribute like this
+# or you can set the block attribute like this
 
 $bi->setBlockType("height");
 $bi->setBlockHeight("1234");
@@ -456,7 +456,7 @@ or like this
 
 $bi->setBlockType("none");
    
-//then you generate the jsonString to call the generatePostParam function
+# then you generate the jsonString to call the generatePostParam function
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
@@ -732,12 +732,10 @@ sub fromJsonToGetItemResult
 
 #### 2. Input & Output: 
 
-* For function 
+* For this function in file "GetAuctionInfoRPC.pm": 
 
 ```Perl
-+(void) getAuctionWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_STATE_GET_AUCTION_INFO];
-}
+sub getAuction
 ```
 
 Input: a JsonString of such value:
@@ -745,28 +743,55 @@ Input: a JsonString of such value:
 {"method" : "state_get_auction_info","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.h" and "BlockIdentifier.m"
+To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.pm" under folder "Common"
 
-Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "toJsonStringWithMethodName" of the "BlockIdentifier" class to generate such parameter string like above.
-
-Sample  code for this process
-
+Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "generatePostParam" of the "BlockIdentifier" class to generate such parameter string like above.
+The whole sequence can be seen as the following code:
+1. Declare a BlockIdentifier and assign its value
 ```Perl
- BlockIdentifier * bi = [[BlockIdentifier alloc] init];
- bi.blockType = USE_BLOCK_HASH;
-[bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
- NSString * paramStr = [bi toJsonStringWithMethodName:@"chain_get_block"];
-[GetAuctionInfoResult getAuctionWithParams:paramStr];
+my $bi = new Common::BlockIdentifier();
+# Call with block hash
+$bi->setBlockType("hash");
+$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
+
+# or you can set the block attribute like this
+
+$bi->setBlockType("height");
+$bi->setBlockHeight("1234");
+
+or like this
+
+$bi->setBlockType("none");
+   
+# then you generate the jsonString to call the generatePostParam function
+my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 ```
 
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetAuctionResult function, described below:
+Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetAuctionInfoResult object.
 
-* For function 
+The code for this process is in function getAuction of file "GetAuctionInfoRPC.pm" like this:
 
 ```Perl
-+(GetAuctionInfoResult*) fromJsonDictToGetAuctionResult:(NSDictionary*) fromDict 
+my $d = $response->decoded_content;
+my $decoded = decode_json($d);
+my $errorCode = $decoded->{'error'}{'code'};
+if($errorCode) {
+	my $errorException = new Common::ErrorException();
+	$errorException->setErrorCode($errorCode);
+	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	return $errorException;
+} else {
+    	my $ret = GetAuction::GetAuctionInfoResult->fromJsonToGetItemResult($decoded->{'result'});
+	return $ret;
+}
 ```
 
-Input: The NSDictionaray object represents the GetAuctionInfoResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetAuctionInfoResult is taken to pass to the function to get the aunction information.
+* For this function in file "GetAuctionInfoResult.pm":
+
+```Perl
+sub fromJsonToGetItemResult 
+```
+
+Input: The Json object represents the GetAuctionInfoResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetAuctionInfoResult is taken.
 
 Output: The GetAuctionInfoResult which contains all information of the aunction. From this result you can retrieve information such as: api_version,auction_state (in which you can retrieve information such as state_root_hash, block_height, list of JsonEraValidators).
