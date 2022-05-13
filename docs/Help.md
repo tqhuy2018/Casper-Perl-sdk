@@ -149,26 +149,24 @@ in which $json is the $json data retrieved from the http response.
 
 #### 1. Method declaration
 
-The call for Get Deploy RPC method is done through this function in "GetDeployResult.m" file
+The call for Get Deploy RPC method is done through this function in "GetDeployRPC.pm" file under folder "GetDeploy"
 
 ```Perl
-+(void) getDeployWithParams:(NSString*) jsonString {
-    [HttpHandler handleRequestWithParam:jsonString andRPCMethod:CASPER_RPC_METHOD_INFO_GET_DEPLOY];
-}
+sub getDeployResult
 ```
 
-From this the GetDeployResult is retrieved through this function, also in "GetDeployResult.m" file
+From this the GetDeployResult is retrieved through this function, defined in "GetDeployResult.m" file
 
 ```Perl
-+(GetDeployResult*) fromJsonDictToGetDeployResult:(NSDictionary*) fromDict  
+GetDeploy::GetDeployResult->fromJsonObjectToGetDeployResult($json) 
 ```
 
 #### 2. Input & Output: 
 
-* For function 
+* In this function of file "GetDeployRPC.pm"
 
 ```Perl
-+(void) getDeployWithParams:(NSString*) jsonString
+sub getDeployResult
 ```
 
 Input is the string of parameter sent to Http Post request to the RPC method, which in form of
@@ -176,7 +174,7 @@ Input is the string of parameter sent to Http Post request to the RPC method, wh
 ```Perl
 {"id" : 1,"method" : "info_get_deploy","params" : {"deploy_hash" : "6e74f836d7b10dd5db7430497e106ddf56e30afee993dd29b85a91c1cd903583"},"jsonrpc" : "2.0"}
 ```
-To generate such string, you need to use GetDeployParams class, which declared in file "GetDeployParams.h" and "GetDeployParams.m"
+To generate such string, you need to use GetDeployParams class, which declared in file "GetDeployParams.pm"
 
 Instantiate the GetDeployParams, then assign the deploy_hash to the object and use function generatePostParam to generate such parameter string like above.
 
@@ -184,20 +182,21 @@ Sample  code for this process
 
 
 ```Perl
-GetDeployParams * item = [[GetDeployParams alloc]init];
-item.deploy_hash = @"acb4d78cbb900fe91a896ea8a427374c5d600cd9206efae2051863316265f1b1";
-NSString * paramStr = [item generatePostParam];
-[GetDeployResult getDeployWithParams:paramStr];
+	my $getDeployParams = new GetDeploy::GetDeployParams();
+	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
+	my $paramStr = $getDeployParams->generateParameterStr();
+	my $getDeployRPC = new GetDeploy::GetDeployRPC();
+	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
 ```
-Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetDeployResult function, described below:
+Output: The ouput is handler in HttpHandler class and then pass to fromJsonObjectToGetDeployResult function, described below:
 
 * For function 
 
 ```Perl
-+(GetDeployResult*) fromJsonDictToGetDeployResult:(NSDictionary*) fromDict  
+sub fromJsonObjectToGetDeployResult 
 ```
 
-Input: The NSDictionaray object represents the GetDeployResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the NSDictionary part represents the GetDeployResult is taken to pass to the function to get the Deploy information.
+Input: The Json object represents the GetDeployResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data GetDeployResult is taken to pass to the function to get the Deploy information.
 
 Output: The GetDeployResult which contains all information of the Deploy. From this result you can retrieve information of Deploy hash, Deploy header, Deploy session, payment, ExecutionResults.
 
