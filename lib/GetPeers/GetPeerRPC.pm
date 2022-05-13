@@ -24,7 +24,16 @@ sub getUrl {
 }
 
 =comment
-This function does info_get_peers RPC call
+This function does info_get_peers RPC call.
+The procedure for this process is:
+1. Assign the url for the post method, by default the url will be the test net 
+(url for test net is: https://node-clarity-testnet.make.services/rpc which defined in Common::ConstValues class)
+You can change the url to main net or localhost for the method by calling the function setUrl.
+2. Generate the Post parameter to send along with the Post method. In this method it is
+my $json = '{"params" :  [], "id" :  1, "method": "info_get_peers", "jsonrpc" :  "2.0"}';
+3. Send the post method and read the response data back.
+If the response error encapsulated in json, there will be error thrown.
+Otherwise, the peer list is retrieved by parsing the json data back, using  GetPeers::GetPeersResult->fromJsonObjectToGetPeersResult function
 =cut
 sub getPeers {
 	 my( $self ) = @_;

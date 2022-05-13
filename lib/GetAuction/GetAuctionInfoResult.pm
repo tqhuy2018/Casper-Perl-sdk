@@ -1,5 +1,5 @@
 # Class built for storing GetItemResult information, taken from state_get_item RPC method
-package GetAuction::GetItemResult;
+package GetAuction::GetAuctionInfoResult;
 use GetAuction::AuctionState;
 sub new {
 	my $class = shift;
@@ -35,11 +35,11 @@ sub getAuctionState {
 	return $self->{_auctionState};
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to generate the GetItemResult object
+# This function parse the JsonObject (taken from server RPC method call) to generate the GetAuctionInfoResult object
 sub fromJsonToGetItemResult { 
 	my @list = @_;
 	my $json = $list[1];
-	my $ret = new GetAuction::GetItemResult();
+	my $ret = new GetAuction::GetAuctionInfoResult();
 	$ret->setApiVersion($json->{'api_version'});
 	my $as = GetAuction::AuctionState->fromJsonObjectToAuctionState($json->{'auction_state'});
 	$ret->setAuctionState($as);

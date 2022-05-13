@@ -47,7 +47,7 @@ sub getAuction {
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
 	    	return $errorException;
 	    } else {
-		    my $ret = GetAuction::GetItemResult->fromJsonToGetItemResult($decoded->{'result'});
+		    my $ret = GetAuction::GetAuctionInfoResult->fromJsonToGetItemResult($decoded->{'result'});
 		   	return $ret;
 	    }
 	}
