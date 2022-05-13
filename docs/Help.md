@@ -259,29 +259,45 @@ sub fromJsonObjectToGetBlockTransfersResult
 
 #### 2. Input & Output: 
 
-* For function 
+* In this function in file "GetBlockTransfersRPC.pm":
 
 ```Perl
-+(void) getBlockTransfersWithParams:(NSString*) jsonString
+sub getBlockTransfers
 ```
 
-Input: a JsonString of such value:
+- **Input:** a JsonString of such value:
 ```Perl
 {"method" : "chain_get_block_transfers","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
 
-To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.h" and "BlockIdentifier.m"
+To generate such string, you need to use an object of type BlockIdentifier class, which declared in file "BlockIdentifier.pm" under folder "Common"
 
 Instantiate the BlockIdentifier, then assign the block with block hash or block height or just assign nothing to the object and use function "toJsonStringWithMethodName" of the "BlockIdentifier" class to generate such parameter string like above.
+The whole sequence can be seen as the following code:
+1. Declare a BlockIdentifier and assign its value
+```Perl
+my $bi = new Common::BlockIdentifier();
+# Call with block hash
+$bi->setBlockType("hash");
+$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 
-Sample  code for this process
+//or you can set the block attribute like this
+
+$bi->setBlockType("height");
+$bi->setBlockHeight("1234");
+
+or like this
+
+$bi->setBlockType("none");
+   
+//then you generate the jsonString to call the generatePostParam function
+my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
+```
+2. Use the $postParamStr to call the function:
 
 ```Perl
-BlockIdentifier * bi = [[BlockIdentifier alloc] init];
-bi.blockType = USE_BLOCK_HASH;
-[bi assignBlockHashWithParam:@"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"];
-NSString * paramStr = [bi toJsonStringWithMethodName:@"chain_get_block"];
-[GetBlockTransfersResult getBlockTransfersWithParams:paramStr];
+my $getBlockTransfers = new GetBlockTransfers::GetBlockTransfersRPC();
+my $getBTResult = $getBlockTransfers->getBlockTransfers($postParamStr);
 ```
 
 Output: The ouput is handler in HttpHandler class and then pass to fromJsonDictToGetBlockTransfersResult function, described below:
