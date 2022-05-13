@@ -182,11 +182,11 @@ Sample  code for this process
 
 
 ```Perl
-	my $getDeployParams = new GetDeploy::GetDeployParams();
-	$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
-	my $paramStr = $getDeployParams->generateParameterStr();
-	my $getDeployRPC = new GetDeploy::GetDeployRPC();
-	my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
+my $getDeployParams = new GetDeploy::GetDeployParams();
+$getDeployParams->setDeployHash("55968ee1a0a7bb5d03505cd50996b4366af705692645e54125184a885c8a65aa");
+my $paramStr = $getDeployParams->generateParameterStr();
+my $getDeployRPC = new GetDeploy::GetDeployRPC();
+my $getDeployResult = $getDeployRPC->getDeployResult($paramStr);
 ```
 Output: The ouput is handler in HttpHandler class and then pass to fromJsonObjectToGetDeployResult function, described below:
 
