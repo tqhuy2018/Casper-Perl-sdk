@@ -301,7 +301,7 @@ my $getBlockTransfers = new GetBlockTransfers::GetBlockTransfersRPC();
 my $getBTResult = $getBlockTransfers->getBlockTransfers($postParamStr);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBlockTransfersResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBlockTransfersResult object.
 
 The code for this process is in function getBlockTransfers of file "GetBlockTransferRPC.pm" like this:
 
@@ -323,9 +323,9 @@ if($errorCode) {
 sub fromJsonObjectToGetBlockTransfersResult
 ```
 
-Input: The Json object represents the GetBlockTransfersResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBlockTransfersResult is taken.
+**Input:** The Json object represents the GetBlockTransfersResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBlockTransfersResult is taken.
 
-Output: The GetBlockTransfersResult which contains all information of the Block Transfers. From this result you can retrieve information such as: api_version,block_hash, list of transfers. (Transfer is wrap in class Transfer.h and all information of Transfer can retrieve from this result).
+**Output:** The GetBlockTransfersResult which contains all information of the Block Transfers. From this result you can retrieve information such as: api_version,block_hash, list of transfers. (Transfer is wrap in class Transfer.h and all information of Transfer can retrieve from this result).
 
 ### VI. Get Block 
 
@@ -352,7 +352,7 @@ sub getBlock
 }
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "chain_get_block","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
@@ -381,7 +381,7 @@ $bi->setBlockType("none");
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBlockTransfersResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBlockTransfersResult object.
 
 The code for this process is in function getBlockTransfers of file "GetBlockTransferRPC.pm" like this:
 
@@ -403,9 +403,9 @@ if($errorCode) {
 sub fromJsonObjectToGetBlockResult
 ```
 
-Input: The Json object represents the GetBlockResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBlockResult is taken to pass to the function to get the block information.
+**Input:** The Json object represents the GetBlockResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBlockResult is taken to pass to the function to get the block information.
 
-Output: The GetBlockResult which contains all information of the block. From this result you can retrieve information such as: api_version,JsonBlock object(in which you can retrieve information such as: blockHash, JsonBlockHeader,JsonBlockBody, list of proof)
+**Output:** The GetBlockResult which contains all information of the block. From this result you can retrieve information such as: api_version,JsonBlock object(in which you can retrieve information such as: blockHash, JsonBlockHeader,JsonBlockBody, list of proof)
 
 ### VII. Get Era Info By Switch Block
 
@@ -431,7 +431,7 @@ sub fromJsonToGetEraInfoResult
 sub getEraInfo
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "chain_get_era_info_by_switch_block","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
@@ -460,7 +460,7 @@ $bi->setBlockType("none");
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
 The code for this process is in function GetEraInfoResult of file "GetEraInfoBySwitchBlockRPC.pm" like this:
 
@@ -482,9 +482,9 @@ if($errorCode) {
 sub fromJsonToGetEraInfoResult
 ```
 
-Input: The Json object represents the GetEraInfoResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that the JSON data the GetEraInfoResult is retrieved.
+**Input:** The Json object represents the GetEraInfoResult object. This Json object is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that the JSON data the GetEraInfoResult is retrieved.
 
-Output: The GetEraInfoResult which contains all information of the era info. From this result you can retrieve information such as: api_version, era_summary (in which you can retrieve information such as: block_hash, era_id, state_root_hash, merkle_proof, stored_value).
+**Output:** The GetEraInfoResult which contains all information of the era info. From this result you can retrieve information such as: api_version, era_summary (in which you can retrieve information such as: block_hash, era_id, state_root_hash, merkle_proof, stored_value).
 
 
 ### VII. Get Item
@@ -511,7 +511,7 @@ sub fromJsonToGetItemResult
 sub getItem
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "state_get_item","id" : 1,"params" :{"state_root_hash" : "d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228","key":"withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1","path":[]},"jsonrpc" : "2.0"}
 ```
@@ -531,7 +531,7 @@ my $paramStr = $getItemParams->generateParameterStr();
 my $getItemResult = $getItemRPC->getItem($paramStr);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
 The code for this process is in function getItem of file "GetItemRPC.pm" like this:
 
@@ -556,9 +556,9 @@ if($errorCode) {
 sub fromJsonToGetItemResult
 ```
 
-Input: The Json object represents the GetItemResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetItemResult is retrieved.
+**Input:** The Json object represents the GetItemResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetItemResult is retrieved.
 
-Output: The GetItemResult which contains all information of the item. From this result you can retrieve information such as: api_version,merkle_proof, stored_value.
+**Output:** The GetItemResult which contains all information of the item. From this result you can retrieve information such as: api_version,merkle_proof, stored_value.
 
 ### IX. Get Dictionaray Item
 
@@ -584,7 +584,7 @@ sub fromJsonToGetDictionaryItemResult
 sub getDictionaryItem
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "state_get_dictionary_item","id" : 1,"params" :{"state_root_hash" : "146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8","dictionary_identifier":{"AccountNamedKey":{"dictionary_name":"dict_name","key":"account-hash-ad7e091267d82c3b9ed1987cb780a005a550e6b3d1ca333b743e2dba70680877","dictionary_item_key":"abc_name"}}},"jsonrpc" : "2.0"}
 ```
@@ -613,7 +613,7 @@ my $paramStr = $getDIParams->generateParameterStr();
 my $getDIResult = $getDIRPC->getDictionaryItem($paramStr);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetEraInfoResult object.
 
 The code for this process is in function getDictionaryItem of file "GetDictionaryItemRPC.pm" like this:
 
@@ -638,9 +638,9 @@ if($errorCode) {
 sub fromJsonToGetDictionaryItemResult 
 ```
 
-Input: The Json object represents the GetDictionaryItemResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetDictionaryItemResult is retrieved.
+**Input:** The Json object represents the GetDictionaryItemResult object. This NSDictionaray is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetDictionaryItemResult is retrieved.
 
-Output: The GetDictionaryItemResult which contains all information of the dictionary item. From this result you can retrieve information such as: api_version,dictionary_key, merkle_proof,stored_value.
+**Output:** The GetDictionaryItemResult which contains all information of the dictionary item. From this result you can retrieve information such as: api_version,dictionary_key, merkle_proof,stored_value.
 
 ### X. Get Balance
 
@@ -666,7 +666,7 @@ sub fromJsonToGetBalanceResult
 sub getBalance
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "state_get_balance","id" : 1,"params" :{"state_root_hash" : "8b463b56f2d124f43e7c157e602e31d5d2d5009659de7f1e79afbd238cbaa189","purse_uref":"uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007"},"jsonrpc" : "2.0"}
 ```
@@ -686,7 +686,7 @@ my $paramStr = $params->generateParameterStr();
 my $result = $rpc->getBalance($paramStr);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBalanceResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetBalanceResult object.
 
 The code for this process is in function getBalance of file "GetBalanceResultRPC.pm" like this:
 
@@ -710,9 +710,9 @@ if($errorCode) {
 sub fromJsonToGetBalanceResult
 ```
 
-Input: The Json object represents the GetBalanceResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBalanceResult is taken.
+**Input:** The Json object represents the GetBalanceResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetBalanceResult is taken.
 
-Output: The GetBalanceResult which contains all information of the balance. From this result you can retrieve information such as: api_version,balance_value, merkle_proof.
+**Output:** The GetBalanceResult which contains all information of the balance. From this result you can retrieve information such as: api_version,balance_value, merkle_proof.
 
 ### XI. Get Auction Info
 
@@ -738,7 +738,7 @@ sub fromJsonToGetItemResult
 sub getAuction
 ```
 
-Input: a JsonString of such value:
+**Input:** a JsonString of such value:
 ```Perl
 {"method" : "state_get_auction_info","id" : 1,"params" : {"block_identifier" : {"Hash" :"d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e"}},"jsonrpc" : "2.0"}
 ```
@@ -767,7 +767,7 @@ $bi->setBlockType("none");
 my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 ```
 
-Output: The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetAuctionInfoResult object.
+**Output:** The result of the Post request for the RPC method is a Json string data back, which can represents the error or the GetAuctionInfoResult object.
 
 The code for this process is in function getAuction of file "GetAuctionInfoRPC.pm" like this:
 
@@ -792,6 +792,6 @@ if($errorCode) {
 sub fromJsonToGetItemResult 
 ```
 
-Input: The Json object represents the GetAuctionInfoResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetAuctionInfoResult is taken.
+**Input:** The Json object represents the GetAuctionInfoResult object. This Json is returned from the POST method when call the RPC method. Information is sent back as JSON data and from that JSON data the GetAuctionInfoResult is taken.
 
-Output: The GetAuctionInfoResult which contains all information of the aunction. From this result you can retrieve information such as: api_version,auction_state (in which you can retrieve information such as state_root_hash, block_height, list of JsonEraValidators).
+**Output:** The GetAuctionInfoResult which contains all information of the aunction. From this result you can retrieve information such as: api_version,auction_state (in which you can retrieve information such as state_root_hash, block_height, list of JsonEraValidators).
