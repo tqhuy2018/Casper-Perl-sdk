@@ -19,7 +19,7 @@ sub getAuction1 {
 	$bi->setBlockHash("fe35810a3dcfbf853b9d3ac2445fe1fa4aaab047d881d95d9009dc257d396e7e");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 	my $getAResult = $getAuction->getAuction($postParamStr);
-	ok($getAResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getAResult->getApiVersion()) > 0, "Test 1 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok($as->getStateRootHash() eq "bb3a1f9325c1da6820358f9b4981b84e0c28d924b0ef5776f6bb4cdd1328e261","Test 1 state root hash value, Passed");
 	ok($as->getBlockHeight() eq "673041","Test 1 block height value, Passed");
@@ -105,7 +105,7 @@ sub getAuction2 {
 	$bi->setBlockHeight(100);
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 	my $getAResult = $getAuction->getAuction($postParamStr);
-	ok($getAResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getAResult->getApiVersion()) > 0, "Test 1 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok($as->getStateRootHash() eq "c50822987f4b0b620825f7b8941c7bd446a426c8b8fa2f19bec432727a32d196","Test 2 state root hash value, Passed");
 	ok($as->getBlockHeight() eq "100","Test 2 block height value, Passed");
@@ -158,7 +158,7 @@ sub getAuction3 {
 	$bi->setBlockType("none");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 	my $getAResult = $getAuction->getAuction($postParamStr);
-	ok($getAResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	ok(length($getAResult->getApiVersion()) > 0, "Test 3 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok(length($as->getStateRootHash()) > 0 ,"Test 3 state root hash value, Passed");
 	ok($as->getBlockHeight() > 700000 ,"Test 3 block height value, Passed");
@@ -172,7 +172,7 @@ sub getAuction4 {
 	$bi->setBlockHash("AAA"); # THIS IS WRONG VALUE
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 	my $getAResult = $getAuction->getAuction($postParamStr);
-	ok($getAResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	ok(length($getAResult->getApiVersion()) > 0, "Test 3 api_version, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok(length($as->getStateRootHash()) > 0 ,"Test 3 state root hash value, Passed");
 	ok($as->getBlockHeight() > 700000 ,"Test 3 block height value, Passed");

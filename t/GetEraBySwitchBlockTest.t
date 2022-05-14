@@ -21,7 +21,7 @@ sub getEraInfo {
 	$bi->setBlockHash("f028506fb8add2edd3f9f3713e5acd7441a5d0cd433b863c627ff6542e8c0860");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	my $getEraResult = $getEra->getEraInfo($postParamStr);
-	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getEraResult->getApiVersion()) > 0, "Test 1 api_version, Passed");
 	my $eraSummary = $getEraResult->getEraSummary();
 	ok($eraSummary->getBlockHash() eq "f028506fb8add2edd3f9f3713e5acd7441a5d0cd433b863c627ff6542e8c0860","Test 1 block hash value, Passed");
 	ok($eraSummary->getEraId() == 2,"Test 1 era id value, Passed");
@@ -49,7 +49,7 @@ sub getEraInfo {
 	$bi->setBlockHeight("208");
 	my $postParamHeightStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	$getEraResult = $getEra->getEraInfo($postParamHeightStr);
-	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 2 api_version, Passed");
+	ok(length($getEraResult->getApiVersion()) > 0, "Test 2 api_version, Passed");
 	$eraSummary = $getEraResult->getEraSummary();
 	ok($eraSummary->getBlockHash() eq "623199fd62ce81e9870db8b301afcdd2491eae4555396c58825d699c4d58dd62","Test 2 block hash value, Passed");
 	ok($eraSummary->getEraId() == 1,"Test 2 era id value, Passed");
@@ -76,7 +76,7 @@ sub getEraInfo {
 	$bi->setBlockType("none");
 	my $postParamNoneStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	$getEraResult = $getEra->getEraInfo($postParamNoneStr);
-	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	ok(length($getEraResult->getApiVersion()) > 0, "Test 3 api_version, Passed");
 	ok($getEraResult->getIsEraExists() == 0, "Test 3 era summary Null, Passed");
 	
 	# Negative test: Test 4: Call with wrong block hash, latest block transfer is retrieved;
@@ -84,7 +84,7 @@ sub getEraInfo {
 	$bi->setBlockHash("aaa");
 	my $postParamStr4 = $bi->generatePostParam($Common::ConstValues::RPC_GET_ERA);
 	$getEraResult = $getEra->getEraInfo($postParamStr4);
-	ok($getEraResult->getApiVersion() eq "1.4.5", "Test 4 api_version, Passed");
+	ok(length($getEraResult->getApiVersion()) > 0, "Test 4 api_version, Passed");
 	ok($getEraResult->getIsEraExists() == 0, "Test 3 era summary Null, Passed");
 	
 	# Negative test: Test 5: Call with too big block height with the height > U64.Max , error is thrown;

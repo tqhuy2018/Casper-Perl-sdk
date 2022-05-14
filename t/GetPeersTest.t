@@ -12,7 +12,7 @@ use  GetPeers::PeerEntry;
 sub getPeers {
 	my $getPeer = new GetPeers::GetPeerRPC();
 	my $getPeerResult = $getPeer->getPeers();
-	ok($getPeerResult->getApiVersion() eq "1.4.5", "Test api_version, Passed");
+	ok(length($getPeerResult->getApiVersion()) > 0, "Test api_version, Passed");
 	my @peerList = $getPeerResult->getPeers();
 	my $totalPeerEntry = @peerList;
 	ok($totalPeerEntry > 0, "Test total PeerEntry > 0, Passed");

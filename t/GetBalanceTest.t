@@ -20,7 +20,7 @@ sub getBalance1 {
 	$params->setPurseUref("uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007");
 	my $paramStr = $params->generateParameterStr();
 	my $result = $rpc->getBalance($paramStr);
-	ok($result->getApiVersion() eq "1.4.5", "Test 1 api version, Passed");
+	ok(length($result->getApiVersion()) > 0, "Test 1 api version, Passed");
 	ok(length($result->getMerkleProof()) == 31766, "Test 1, merkle proof, Passed");
 	ok($result->getBalanceValue() eq "522693296224", "Test 1, balanceValue, Passed");
 }
@@ -32,7 +32,7 @@ sub getBalance2 {
 	$params->setPurseUref("uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007");
 	my $paramStr = $params->generateParameterStr();
 	my $result = $rpc->getBalance($paramStr);
-	ok($result->getApiVersion() eq "1.4.5", "Test 1 api version, Passed");
+	ok(length($result->getApiVersion()) > 0, "Test 1 api version, Passed");
 	ok(length($result->getMerkleProof()) == 32650, "Test 2, merkle proof, Passed");
 	ok($result->getBalanceValue() eq "345375534574", "Test 2, balanceValue, Passed");
 }
@@ -44,7 +44,7 @@ sub getBalance3 {
 	$params->setPurseUref("uref-1303d3004197c2511da8d172479c00c13e95b400bb29cda5c4a0a05e74d38bb8-004");
 	my $paramStr = $params->generateParameterStr();
 	my $result = $rpc->getBalance($paramStr);
-	ok($result->getApiVersion() eq "1.4.5", "Test 1 api version, Passed");
+	ok(length($result->getApiVersion()) > 0 , "Test 1 api version, Passed");
 	ok(length($result->getMerkleProof()) == 32584, "Test 3, merkle proof, Passed");
 	ok($result->getBalanceValue() eq "9354495182020", "Test 3, balanceValue, Passed");
 }

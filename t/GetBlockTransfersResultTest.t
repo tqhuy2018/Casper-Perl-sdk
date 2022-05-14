@@ -19,7 +19,7 @@ sub getBlockTransfers {
 	$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
 	my $getBTResult = $getBlockTransfers->getBlockTransfers($postParamStr);
-	ok($getBTResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getBTResult->getApiVersion()) > 0, "Test 1 api_version, Passed");
 	ok($getBTResult->getBlockHash() eq "d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e", "Test 1 block_hash, Passed");
 	
 	# Test 2: Call with block height
@@ -27,14 +27,14 @@ sub getBlockTransfers {
 	$bi->setBlockHeight("12345");
 	my $postParamHeightStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
 	my $getBTResult2 = $getBlockTransfers->getBlockTransfers($postParamHeightStr);
-	ok($getBTResult2->getApiVersion() eq "1.4.5", "Test 2 api_version, Passed");
+	ok(length($getBTResult2->getApiVersion()) > 0, "Test 2 api_version, Passed");
 	ok($getBTResult2->getBlockHash() eq "bbf21fe52a97c64e6b95098b1f2e098337efc9f9b63ae2ba0de37ef5a0da4b6f", "Test 2 block_hash, Passed");
 
 	# Test 3: Call with no parameter, latest block transfer is retrieved;
 	$bi->setBlockType("none");
 	my $postParamNoneStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
 	my $getBTResult3 = $getBlockTransfers->getBlockTransfers($postParamNoneStr);
-	ok($getBTResult3->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	ok(length($getBTResult3->getApiVersion()) > 0, "Test 3 api_version, Passed");
 	ok(length($getBTResult3->getBlockHash()) > 0, "Test 3 block_hash, Passed");
 	
 	# Negative test: Test 4: Call with wrong block hash, latest block transfer is retrieved;
@@ -42,7 +42,7 @@ sub getBlockTransfers {
 	$bi->setBlockHash("aaa");
 	my $postParamStr4 = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK_TRANSFERS);
 	my $getBTResult4 = $getBlockTransfers->getBlockTransfers($postParamStr4);
-	ok($getBTResult4->getApiVersion() eq "1.4.5", "Test 4 api_version, Passed");
+	ok(length($getBTResult4->getApiVersion()) > 0, "Test 4 api_version, Passed");
 	ok(length($getBTResult4->getBlockHash()) > 0, "Test 4 block_hash, Passed");
 	
 	# Negative test: Test 5: Call with too big block height with the height > U64.Max , error is thrown;

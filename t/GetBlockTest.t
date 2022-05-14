@@ -20,7 +20,7 @@ sub getBlock {
 	$bi->setBlockHash("fe35810a3dcfbf853b9d3ac2445fe1fa4aaab047d881d95d9009dc257d396e7e");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 	my $getBResult = $getBlock->getBlock($postParamStr);
-	ok($getBResult->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getBResult->getApiVersion()) > 0 , "Test 1 api_version, Passed");
 	my $block = $getBResult->getBlock();
 	ok($block->getBlockHash() eq "fe35810a3dcfbf853b9d3ac2445fe1fa4aaab047d881d95d9009dc257d396e7e","Test 1 block hash value, Passed");
 	
@@ -66,7 +66,7 @@ sub getBlock {
 	$bi->setBlockHeight("694679");
 	my $postParamHeightStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 	my $getBResult2 = $getBlock->getBlock($postParamHeightStr);
-	ok($getBResult2->getApiVersion() eq "1.4.5", "Test 1 api_version, Passed");
+	ok(length($getBResult2->getApiVersion()) > 0, "Test 1 api_version, Passed");
 	my $block2 = $getBResult2->getBlock();
 	ok($block2->getBlockHash() eq "cadcf10d323ad4dc9b5b11f1e940a8d51287888a9d7322e39302f911181edcd0","Test 2 block hash value, Passed");
 	
@@ -119,7 +119,7 @@ sub getBlock {
 	$bi->setBlockType("none");
 	my $postParamNoneStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 	my $getBResult3 = $getBlock->getBlock($postParamNoneStr);
-	ok($getBResult3->getApiVersion() eq "1.4.5", "Test 3 api_version, Passed");
+	ok(length($getBResult3->getApiVersion()) > 0, "Test 3 api_version, Passed");
 	my $block3 = $getBResult3->getBlock();
 	ok(length($block3->getBlockHash()) > 0,"Test 3 block hash value, Passed");
 	# block header assertion
@@ -151,7 +151,7 @@ sub getBlock {
 	$bi->setBlockHash("aaa");
 	my $postParamStr4 = $bi->generatePostParam($Common::ConstValues::RPC_GET_BLOCK);
 	my $getBesult4 = $getBlock->getBlock($postParamStr4);
-	ok($getBesult4->getApiVersion() eq "1.4.5", "Test 4 api_version, Passed");
+	ok(length($getBesult4->getApiVersion()) > 0, "Test 4 api_version, Passed");
 	
 	# Negative test: Test 5: Call with too big block height with the height > U64.Max , error is thrown;
 	$bi->setBlockType("height");
