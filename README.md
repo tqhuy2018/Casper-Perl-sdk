@@ -45,12 +45,6 @@ perl GetDeployRPCTest.t
 To test for all file, enter the root folder of the SDK and run this command:
 
 ```Perl
-./Build test
-```
-or 
-
-
-```Perl
 make test
 ```
 # Documentation for classes and methods
