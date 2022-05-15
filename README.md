@@ -12,12 +12,60 @@ The SDK use Perl 5.30.2. To run the SDK you need to have Perl 5.8.3 or above ins
 
 ## Build and test
 To run Perl on specific Operating System, please refer to the Perl language main site for how to set up on each Operating System at this address: https://www.perl.org/get.html
+
 The SDK can be built and tested in different IDEs and from command line.
+
 For Windows user, for fast and easy installation and usage of the command line for Perl, please install "Strawberry Perl" - As the document at the Perl main page:
+
  A 100% Open Source Perl for Windows that is exactly the same as Perl everywhere else; this includes using modules from CPAN, without the need for binary packages. 
+ 
 ### Build and test from IDE
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
+First you need to install Eclipse from this address:
+https://www.eclipse.org/downloads/
+Download the Eclipse installation file (Choose the "Get Eclipse IDE 2022‑03"), install it, choose "Eclipse IDE for Java Developers" is good enough, as in this image below.
+<img width="960" alt="step0" src="https://user-images.githubusercontent.com/94465107/168452628-444541ba-b8da-4231-98d7-829f0d4593c3.png">
+
+Then open Eclipse, and hit "Help->Eclipse Marketplace", as in this image:
+
+<img width="960" alt="step1" src="https://user-images.githubusercontent.com/94465107/168452655-8bfc9ce1-208b-4d3c-8cfc-51411b32c3db.png">
+
+Search for keyword "EPIC", you will see the first result of EPIC addon for Perl in Eclipse appears, choose to install it, as this image 
+
+<img width="960" alt="step2" src="https://user-images.githubusercontent.com/94465107/168452673-cacebfc7-1941-4a5c-a78d-fc8171e3e8da.png">
+
+Accept by clicking all the checkbox during the process of installing EPIC addon
+
+<img width="960" alt="step3" src="https://user-images.githubusercontent.com/94465107/168452684-26285935-b61a-4316-a6fd-0b7cb0c1adf7.png">
+
+Next restart Eclipse and now you are ready to load the Casper Perl SDK in Eclipse.
+
+Download the Casper Perl SDK from Github, place it somewhere in your local hard drive. From Eclipse you can then import the project.
+
+From Eclipse choose "File-> Open Projects from File System..."
+
+<img width="960" alt="step5" src="https://user-images.githubusercontent.com/94465107/168452733-4c5c31f1-f4db-4ff4-802c-5394868962b7.png">
+
+Hit the "Directory" button
+
+<img width="960" alt="step51" src="https://user-images.githubusercontent.com/94465107/168452768-700d24c2-3211-493f-a1c0-b9653aa35e43.png">
+ 
+and choose the already downloaded Casper Perk SDK.
+
+<img width="960" alt="step52" src="https://user-images.githubusercontent.com/94465107/168452773-0a2e73e5-98ac-42b2-b593-cccb4731920c.png">
+
+Click "Finish", you then will see the project in the "Package Explorer" tab of Eclipse
+<img width="960" alt="step6" src="https://user-images.githubusercontent.com/94465107/168452788-8164063f-ef37-4d1c-8d5d-b462a1d5e2ea.png">
+
+Double click on  the "Casper-Perl-sdk" project to expand it.
+The source code for the SDK is in the "lib" folder.
+The test file for the SDK is in the "t" folder.
+To test for the RPC calls, expand the "t" folder. You will see a list of test file in that folder.
+To test for each file, just click on each file, for example to test for "GetAuctionTest.t" file, Double click on that file. Then in Eclispe hit "Run->Run". You will see the result of the test in the Console window, like this:
+<img width="960" alt="step7" src="https://user-images.githubusercontent.com/94465107/168452870-6e403562-2086-4476-b35b-a7d7aa869547.png">
+Follow the same procedure, click on each test file in the "t" folder to test for RPC call that you wish to do.
+
 ### Build and test from command line
 Download the Source code from Github and put it in your local computer.
 From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of the SDK. Then enter the "t" folder of the SDK.
@@ -39,12 +87,6 @@ perl GetDeployRPCTest.t
 ```
 
 To test for all file, enter the root folder of the SDK and run this command:
-
-```Perl
-./Build test
-```
-or 
-
 
 ```Perl
 make test
