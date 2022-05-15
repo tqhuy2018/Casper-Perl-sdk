@@ -22,6 +22,27 @@ For Windows user, for fast and easy installation and usage of the command line f
 ### Build and test from IDE
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
+First you need to install Eclipse from this address:
+https://www.eclipse.org/downloads/
+Download the Eclipse installation file (Choose the "Get Eclipse IDE 2022‑03"), install it, choose "Eclipse IDE for Java Developers" is good enough, as in this image below.
+<img width="960" alt="step0" src="https://user-images.githubusercontent.com/94465107/168452628-444541ba-b8da-4231-98d7-829f0d4593c3.png">
+
+Then open Eclipse, and hit "Help->Eclipse Marketplace", as in this image:
+
+<img width="960" alt="step1" src="https://user-images.githubusercontent.com/94465107/168452655-8bfc9ce1-208b-4d3c-8cfc-51411b32c3db.png">
+
+Search for keyword "EPIC", you will see the first result of EPIC addon for Perl in Eclipse appears, choose to install it, as this image 
+
+<img width="960" alt="step2" src="https://user-images.githubusercontent.com/94465107/168452673-cacebfc7-1941-4a5c-a78d-fc8171e3e8da.png">
+
+Accept by clicking all the checkbox during the process of installing EPIC addon
+
+<img width="960" alt="step3" src="https://user-images.githubusercontent.com/94465107/168452684-26285935-b61a-4316-a6fd-0b7cb0c1adf7.png">
+
+Next restart Eclipse and now you are ready to load the Casper Perl SDK in Eclipse.
+
+Download the Casper Perl SDK from Github, place it somewhere in your local hard drive. From Eclipse you can then import the project 
+
 ### Build and test from command line
 Download the Source code from Github and put it in your local computer.
 From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of the SDK. Then enter the "t" folder of the SDK.
