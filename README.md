@@ -130,6 +130,10 @@ sub testFunc {
 }
 testFunc();
 ```
+Somehow the structure of the "SamplePerlProject" is like this
+
+<img width="710" alt="Screen Shot 2022-05-15 at 10 35 59" src="https://user-images.githubusercontent.com/94465107/168456059-78df9514-694b-4bd4-b50d-83f3145f9437.png">
+
 
 # Documentation for classes and methods
 
