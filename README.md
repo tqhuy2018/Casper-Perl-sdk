@@ -98,7 +98,38 @@ The SDK provide functionality in form of module. To use the module in other Perl
 
 After that, you can call the function directly within the "lib" folder of project or create other file outside of the "lib" folder, for example in the root directory of the project, then call the class/function of the Casper SDK in the "lib" folder.
 
+Detail of how to call the module function of the SDK from other files:
 
+Create 1 simple project in Perl by create 1 folder, for example let call it "SamplePerlProject" and make the same folder "SamplePerlProject" somewhere in your hard disk.
+
+Create a folder with name "lib" under the "SamplePerlProject" folder.
+
+Copy all the file/folder under the "lib" folder of the Casper-Perl-sdk SDK to the "lib" folder under "SamplePerlProject" folder.
+
+Under "SamplePerlProject" folder create 1 Perl file with name "sampleCall.pl" with the following content, just to implement the call for "chain_get_state_root_hash" RPC call.
+
+```Perl
+#!/usr/bin/perl
+$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
+use strict;
+use warnings;
+use FindBin qw( $RealBin );
+use lib "$RealBin/lib";
+use GetStateRootHash::GetStateRootHashRPC;
+use Common::ConstValues;
+use Common::BlockIdentifier;
+sub testFunc {
+	my $bi = new Common::BlockIdentifier();
+	# Test 1: Call with block hash
+	$bi->setBlockType("hash");
+	$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH);
+	my $getStateRootHashRPC = new GetStateRootHash::GetStateRootHashRPC();
+	my $stateRootHash1 = $getStateRootHashRPC->getStateRootHash($postParamStr);
+	print $stateRootHash1;
+}
+testFunc();
+```
 
 # Documentation for classes and methods
 
