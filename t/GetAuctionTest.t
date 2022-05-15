@@ -19,7 +19,7 @@ sub getAuction1 {
 	$bi->setBlockHash("fe35810a3dcfbf853b9d3ac2445fe1fa4aaab047d881d95d9009dc257d396e7e");
 	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_AUCTION);
 	my $getAResult = $getAuction->getAuction($postParamStr);
-	ok(length($getAResult->getApiVersion()) > 0, "Test 1 api_version, Passed");
+	ok(length($getAResult->getApiVersion()) > 0, "Test 1 api_version not null, Passed");
 	my $as = $getAResult->getAuctionState();
 	ok($as->getStateRootHash() eq "bb3a1f9325c1da6820358f9b4981b84e0c28d924b0ef5776f6bb4cdd1328e261","Test 1 state root hash value, Passed");
 	ok($as->getBlockHeight() eq "673041","Test 1 block height value, Passed");
