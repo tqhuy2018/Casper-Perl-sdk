@@ -134,6 +134,15 @@ Somehow the structure of the "SamplePerlProject" is like this
 
 <img width="710" alt="Screen Shot 2022-05-15 at 10 35 59" src="https://user-images.githubusercontent.com/94465107/168456059-78df9514-694b-4bd4-b50d-83f3145f9437.png">
 
+To run the "test.pl" file, in Terminal or Command Prompt enter to the folder of the "test.pl" file and run this command
+
+```Perl
+perl test.pl
+```
+
+Or in Eclipse double click the file "test.pl" and then hit "Run->Run" to run the file.
+
+You will see the state root hash value printed in the Terminal or Console Window of Eclipse.
 
 # Documentation for classes and methods
 
