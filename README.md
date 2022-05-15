@@ -41,7 +41,30 @@ Accept by clicking all the checkbox during the process of installing EPIC addon
 
 Next restart Eclipse and now you are ready to load the Casper Perl SDK in Eclipse.
 
-Download the Casper Perl SDK from Github, place it somewhere in your local hard drive. From Eclipse you can then import the project 
+Download the Casper Perl SDK from Github, place it somewhere in your local hard drive. From Eclipse you can then import the project.
+
+From Eclipse choose "File-> Open Projects from File System..."
+
+<img width="960" alt="step5" src="https://user-images.githubusercontent.com/94465107/168452733-4c5c31f1-f4db-4ff4-802c-5394868962b7.png">
+
+Hit the "Directory" button
+
+<img width="960" alt="step51" src="https://user-images.githubusercontent.com/94465107/168452768-700d24c2-3211-493f-a1c0-b9653aa35e43.png">
+ 
+and choose the already downloaded Casper Perk SDK.
+
+<img width="960" alt="step52" src="https://user-images.githubusercontent.com/94465107/168452773-0a2e73e5-98ac-42b2-b593-cccb4731920c.png">
+
+Click "Finish", you then will see the project in the "Package Explorer" tab of Eclipse
+<img width="960" alt="step6" src="https://user-images.githubusercontent.com/94465107/168452788-8164063f-ef37-4d1c-8d5d-b462a1d5e2ea.png">
+
+Double click on  the "Casper-Perl-sdk" project to expand it.
+The source code for the SDK is in the "lib" folder.
+The test file for the SDK is in the "t" folder.
+To test for the RPC calls, expand the "t" folder. You will see a list of test file in that folder.
+To test for each file, just click on each file, for example to test for "GetAuctionTest.t" file, Double click on that file. Then in Eclispe hit "Run->Run". You will see the result of the test in the Console window, like this:
+<img width="960" alt="step7" src="https://user-images.githubusercontent.com/94465107/168452870-6e403562-2086-4476-b35b-a7d7aa869547.png">
+Follow the same procedure, click on each test file in the "t" folder to test for RPC call that you wish to do.
 
 ### Build and test from command line
 Download the Source code from Github and put it in your local computer.
