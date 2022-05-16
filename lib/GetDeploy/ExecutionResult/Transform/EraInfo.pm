@@ -1,7 +1,6 @@
 # Class built for storing EraInfo information
-
+# and handles the change from Json object to EraInfo object
 package GetDeploy::ExecutionResult::Transform::EraInfo;
-
 use GetDeploy::ExecutionResult::Transform::SeigniorageAllocation;
 
 sub new {
@@ -25,9 +24,7 @@ sub getSeigniorageAllocations {
 	wantarray ? @ret : \@ret;
 }
 
-
 # This function parse the JsonObject (taken from server RPC method call) to get the EraInfo object
-
 sub fromJsonObjectToEraInfo {
 	my @list = @_;
 	my $json = $list[1];

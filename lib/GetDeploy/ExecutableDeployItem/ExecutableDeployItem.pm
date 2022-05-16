@@ -11,12 +11,12 @@ Class built for storing ExecutableDeployItem enum in general
  * ExecutableDeployItem_StoredVersionedContractByHash
  * ExecutableDeployItem_StoredVersionedContractByName
  * ExecutableDeployItem_Transfer
+ * This class also provides helper method to change from Json object to corresponding ExecutableDeployItem object.
 =cut
 
 package GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 
 use JSON;
-
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer;
@@ -33,8 +33,7 @@ sub new {
 	return $self;
 }
 
-#get-set method for itsType
-
+# get-set method for itsType
 sub setItsType {
 	my ($self,$itsType) = @_;
 	$self->{_itsType} = $itsType if defined ($itsType);
@@ -45,7 +44,7 @@ sub getItsType {
 	return $self->{_itsType};
 }
 
-#get-set method for itsValue
+# get-set method for itsValue
 sub setItsValue {
 	my ($self,$itsValue) = @_;
 	$self->{_itsValue} = $itsValue if defined($itsValue);
@@ -57,10 +56,7 @@ sub getItsValue {
 	return $self->{_itsValue};
 }
 
-=comment
-This function turn a json object to an ExecutableDeployItem object
-=cut
-
+# This function turn a Json object to an ExecutableDeployItem object
 sub fromJsonToExecutableDeployItem {
 	my @list = @_;
     my $json = $list[1];

@@ -1,5 +1,5 @@
 # Class built for storing JsonExecutionResult information
-
+# and handles the change from Json object to JsonExecutionResult object
 package GetDeploy::ExecutionResult::JsonExecutionResult;
 use GetDeploy::ExecutionResult::ExecutionResult;
 sub new {

@@ -1,8 +1,8 @@
 =comment
-Class built for storing ExecutableDeployItem enum of type ModuleBytes
+Class built for storing ExecutableDeployItem enum of type ModuleBytes 
+and handles the change from JsonObject to ExecutableDeployItem_ModuleBytes object
 =cut
 package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
-
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
 sub new {
@@ -16,7 +16,6 @@ sub new {
 }
 
 #get-set method for moduleBytes
-
 sub setModuleBytes {
 	my ( $self, $moduleBytes) = @_;
 	$self->{_moduleBytes} = $moduleBytes if defined($moduleBytes);
@@ -29,7 +28,6 @@ sub getModuleBytes {
 }
 
 #get-set method for args
-
 sub setArgs {
 	my ( $self, $args) = @_;
 	$self->{_args} = $args if defined($args);
@@ -40,7 +38,8 @@ sub getArgs {
 	my ( $self ) = @_;
 	return $self->{_args};
 }
-#This does seem to be in need
+
+# This function parse the JsonObject (taken from server RPC method call) to ExecutableDeployItem_ModuleBytes object
 sub fromJsonObjectToEDIModuleBytes {
 	my @list = @_;
 	my $json = $list[1];

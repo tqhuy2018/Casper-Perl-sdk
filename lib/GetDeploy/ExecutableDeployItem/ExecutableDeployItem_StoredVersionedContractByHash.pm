@@ -1,5 +1,6 @@
 =comment
-Class built for storing ExecutableDeployItem enum of type StoredContractVersionedByHash
+Class built for storing ExecutableDeployItem enum of type StoredContractVersionedByHash and 
+# handles the change from JsonObject to ExecutableDeployItem_StoredVersionedContractByHash object
 =cut
 
 package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;

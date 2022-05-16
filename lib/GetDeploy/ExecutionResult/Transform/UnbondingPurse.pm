@@ -1,7 +1,6 @@
 # Class built for storing UnbondingPurse information
-
+# and handles the change from Json object to UnbondingPurse object
 package GetDeploy::ExecutionResult::Transform::UnbondingPurse;
-
 sub new {
 	my $class = shift,
 	my $self = {

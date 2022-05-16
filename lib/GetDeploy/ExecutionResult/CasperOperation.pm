@@ -1,6 +1,5 @@
 # Class built for storing Operation information
-# This class has two attributes: key and kind
-
+# and handles the change from Json object to CasperOperation object
 package GetDeploy::ExecutionResult::CasperOperation;
 
 sub new {
@@ -14,7 +13,6 @@ sub new {
 }
 
 # get-set method for _key
-
 sub setKey {
 	my ($self,$key) = @_;
 	$self->{_key} = $key if defined($key);
@@ -26,7 +24,6 @@ sub getKey {
 }
 
 # get-set method for _kind
-
 sub setKind {
 	my ($self,$kind) = @_;
 	$self->{_kind} = $kind if defined($kind);

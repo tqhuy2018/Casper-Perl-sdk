@@ -1,5 +1,5 @@
 # Class built for storing Withdraw information
-
+# and handles the change from Json object to Withdraw object
 package GetDeploy::ExecutionResult::Transform::Withdraw;
 use GetDeploy::ExecutionResult::Transform::UnbondingPurse;
 sub new {
@@ -23,6 +23,7 @@ sub getListUnbondingPurse {
 	my @list = @{ $self->{_listUnbondingPurse} };
 	wantarray ? @list :\@list;
 }
+
 # This function parse the JsonArray (taken from server RPC method call) to get the Withdraw object with UnbondingPurse list
 sub fromJsonArrayToWithdraw {
 	my @list = @_;

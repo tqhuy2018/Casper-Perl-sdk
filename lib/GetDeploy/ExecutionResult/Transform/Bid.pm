@@ -1,5 +1,5 @@
 # Class built for storing Bid information
-
+# and handles the change from Json object to Bid object
 package GetDeploy::ExecutionResult::Transform::Bid;
 use GetDeploy::ExecutionResult::Transform::VestingSchedule;
 use GetDeploy::ExecutionResult::Transform::Delegator;

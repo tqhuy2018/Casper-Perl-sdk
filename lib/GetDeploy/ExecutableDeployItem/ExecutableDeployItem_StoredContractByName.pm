@@ -1,9 +1,9 @@
 =comment
-Class built for storing ExecutableDeployItem enum of type StoredContractByName
+Class built for storing ExecutableDeployItem enum of type StoredContractByName 
+and handles the change from JsonObject to ExecutableDeployItem_StoredContractByName object
 =cut
 
 package GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName;
-
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
 sub new {
@@ -17,8 +17,7 @@ sub new {
 	return $self;
 }
 
-#get-set method for _itsName
-
+# get-set method for _itsName
 sub setItsName {
 	my ( $self, $itsName) = @_;
 	$self->{_itsName} = $itsName if defined($itsName);
@@ -30,8 +29,7 @@ sub getItsName {
 	return $self->{_itsName};
 }
 
-#get-set method for entryPoint
-
+# get-set method for entryPoint
 sub setEntryPoint {
 	my ($self,$entryPoint) = @_;
 	$self->{_entryPoint} = $entryPoint if defined ($entryPoint);
@@ -42,8 +40,7 @@ sub getEntryPoint {
 	return $self->{_entryPoint};
 }
 
-#get-set method for args
-
+# get-set method for args
 sub setArgs {
 	my ( $self, $args) = @_;
 	$self->{_args} = $args if defined($args);
@@ -54,7 +51,8 @@ sub getArgs {
 	my ( $self ) = @_;
 	return $self->{_args};
 }
-#This function turn the JsonObject to a ExecutableDeployItem_StoredContractByName object
+
+# This function turn the JsonObject to a ExecutableDeployItem_StoredContractByName object
 sub fromJsonObjectToEDIStoredContractByName {
 	my @list = @_;
 	my $json = $list[1];
@@ -67,5 +65,4 @@ sub fromJsonObjectToEDIStoredContractByName {
     $ret->setArgs($args);
 	return $ret;
 }
-
 1;

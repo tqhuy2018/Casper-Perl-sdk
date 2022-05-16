@@ -1,5 +1,5 @@
 # Class built for storing VestingSchedule information
-
+# and handles the change from Json object to VestingSchedule object
 package GetDeploy::ExecutionResult::Transform::VestingSchedule;
 
 sub new {

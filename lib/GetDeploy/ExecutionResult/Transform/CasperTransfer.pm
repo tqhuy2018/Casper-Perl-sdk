@@ -1,5 +1,5 @@
 # Class built for storing Bid information
-
+# and handles the change from Json object to CasperTransfer object
 package GetDeploy::ExecutionResult::Transform::CasperTransfer;
 use Scalar::Util qw(looks_like_number);
 sub new {

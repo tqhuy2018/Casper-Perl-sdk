@@ -1,7 +1,6 @@
 # Class built for storing TransformEntry information
-
+# and handles the change from Json object to TransformEntry object
 package GetDeploy::ExecutionResult::TransformEntry;
-
 use GetDeploy::ExecutionResult::CasperTransform;
 use GetDeploy::ExecutionResult::Transform::CasperTransfer;
 use GetDeploy::ExecutionResult::Transform::NamedKey;

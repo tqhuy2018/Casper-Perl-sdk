@@ -1,5 +1,5 @@
 # Class built for storing NamedKey information
-
+# and handles the change from Json object to NamedKey object
 package GetDeploy::ExecutionResult::Transform::NamedKey;
 sub new {
 	my $class = shift,

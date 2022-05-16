@@ -1,5 +1,5 @@
 # Class built for storing SeigniorageAllocation information
-
+# and handles the change from Json object to SeigniorageAllocation object
 package GetDeploy::ExecutionResult::Transform::SeigniorageAllocation;
 
 sub new {
@@ -47,7 +47,6 @@ sub getAmount {
 	return $self->{_amount};
 }
 
-
 # get-set method for _delegatorPublicKey
 sub setDelegatorPublicKey {
 	my ($self,$value) = @_;
@@ -58,7 +57,6 @@ sub getDelegatorPublicKey {
 	my ($self)  = @_;
 	return $self->{_delegatorPublicKey};
 }
-
 
 #This function parse the JsonObject (taken from server RPC method call) to get the SeigniorageAllocation object
 sub fromJsonToSeigniorageAllocation {

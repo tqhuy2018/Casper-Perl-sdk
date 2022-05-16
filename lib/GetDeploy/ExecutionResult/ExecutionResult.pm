@@ -1,7 +1,6 @@
 # Class built for storing ExecutionResult information
-
+# and handles the change from Json object to ExecutionResult object
 package GetDeploy::ExecutionResult::ExecutionResult;
-
 use GetDeploy::ExecutionResult::ExecutionEffect;
 
 sub new {

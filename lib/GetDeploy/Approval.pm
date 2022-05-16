@@ -1,5 +1,6 @@
 =comment
-This class is for storing Approval information, which include the two atrributes: signer and signature
+This class is for storing Approval information, which include the two atrributes: signer and signatureis
+This class handles the change from Json object to TransformEntry object
 =cut
 
 package GetDeploy::Approval;
@@ -26,7 +27,6 @@ sub getSigner {
 }
 
 #get-set function for signature
-
 sub setSignature {
 	my ($self, $signature) = @_;
 	$self->{_signature} = $signature if defined($signature);
@@ -37,10 +37,7 @@ sub getSignature {
 	return $self->{_signature};
 }
 
-=comment
-This function turn a json object to an Approval object
-=cut
-
+#This function turn a Json object to an Approval object
 sub fromJsonObjectToApproval {
 	my @list = @_;
 	my $json = $list[1];

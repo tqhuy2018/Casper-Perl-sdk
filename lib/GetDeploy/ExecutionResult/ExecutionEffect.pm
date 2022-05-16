@@ -1,5 +1,5 @@
 # Class built for storing ExecutionEffect information
-
+# and handles the change from Json object to ExecutionEffect object
 package GetDeploy::ExecutionResult::ExecutionEffect;
 use GetDeploy::ExecutionResult::TransformEntry;
 use GetDeploy::ExecutionResult::CasperOperation;

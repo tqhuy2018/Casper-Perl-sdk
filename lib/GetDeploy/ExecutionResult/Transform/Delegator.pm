@@ -1,5 +1,5 @@
 # Class built for storing Delegator information
-
+# and handles the change from Json object to Delegator object
 package GetDeploy::ExecutionResult::Transform::Delegator;
 use GetDeploy::ExecutionResult::Transform::VestingSchedule;
 sub new {

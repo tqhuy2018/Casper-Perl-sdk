@@ -1,13 +1,7 @@
-=comment
-This class is for storing Deploy information
-=cut
+#This class is for storing Deploy information
 
 package GetDeploy::Deploy;
-
 use GetDeploy::Approval;
-
-# use Common::ConstValues;
-
 use JSON qw( decode_json );
 
 sub new {
@@ -81,7 +75,6 @@ sub getApprovals {
 }
 
 # This function turn Json Array to a list of Approval objects
-
 sub fromJsonArrayToApprovalList {
 	my @list = @_;
 	my @json = @{$list[1]};

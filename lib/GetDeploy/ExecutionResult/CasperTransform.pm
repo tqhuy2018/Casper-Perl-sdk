@@ -1,5 +1,4 @@
 # Class built for storing Transform information
-
 package GetDeploy::ExecutionResult::CasperTransform;
 
 sub new {

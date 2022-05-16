@@ -1,7 +1,8 @@
+# Class built for storing NamedArg information 
+# and handles the change from Json object to NamedArg object
 package GetDeploy::ExecutableDeployItem::NamedArg;
 
 use JSON;
-
 use CLValue::CLType;
 use CLValue::CLParse;
 use CLValue::CLValue;
@@ -16,8 +17,7 @@ sub new {
 	return $self;
 }
 
-#get-set method for _itsName
-
+# get-set method for _itsName
 sub setItsName {
 	my ($self,$itsName) = @_;
 	$self->{_itsName} = $itsName if defined ($itsName);
@@ -28,8 +28,7 @@ sub getItsName {
 	return $self->{_itsName};
 }
 
-#get-set method for clValue
-
+# get-set method for clValue
 sub setCLValue {
 	my ($self,$clValue) = @_;
 	$self->{_clValue} = $clValue if defined ($clValue);
@@ -39,6 +38,8 @@ sub getCLValue {
 	my ($self) = @_;
 	return $self->{_clValue};
 }
+
+# This function turn a Json object to an NamedArg object
 sub fromJsonArrayToNamedArg {
 	my @list = @_;
 	my $jsonStr = encode_json($list[1]);

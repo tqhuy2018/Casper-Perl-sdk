@@ -1,5 +1,5 @@
 # Class built for storing DeployInfo information
-
+# and handles the change from Json object to DeployInfo object
 package GetDeploy::ExecutionResult::Transform::DeployInfo;
 
 sub new {

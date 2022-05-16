@@ -1,3 +1,5 @@
+# Class built for storing RuntimeArgs information
+# and handles the change from Json object to RuntimeArgs object
 package GetDeploy::ExecutableDeployItem::RuntimeArgs;
 
 use GetDeploy::ExecutableDeployItem::NamedArg;
@@ -11,8 +13,7 @@ sub new {
 	return $self;
 }
 
-#get-set methods for _listNamedArg
-
+# get-set methods for _listNamedArg
 sub setListNamedArg {
 	my ( $self, @listNamedArg) = @_;
 	$self->{_listNamedArg} = \@listNamedArg;
@@ -25,6 +26,7 @@ sub getListNamedArg {
 	wantarray ? @listNamedArg :\@listNamedArg;
 }
 
+# This function turn a Json object to an RuntimeArgs object
 sub fromJsonListToRuntimeArgs {
 	my @list = @_;
     my @argListJson = @{$list[1]};

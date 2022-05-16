@@ -1,5 +1,6 @@
 =comment
 This class is for storing Deploy header information
+and handles the change from Json object to DeployHeader object
 =cut
 
 package GetDeploy::DeployHeader;
@@ -22,7 +23,6 @@ sub new {
 }
 
 # get-set methods for account
-
 sub setAccount {
 	my ( $self, $account) = @_;
 	$self->{_account} = $account if defined($account);
@@ -35,7 +35,6 @@ sub getAccount {
 }
 
 # get-set methods for body_hash
-
 sub setBodyHash {
 	my ( $self, $bodyHash) = @_;
 	$self->{_bodyHash} = $bodyHash if defined($bodyHash);
@@ -48,7 +47,6 @@ sub getBodyHash {
 }
 
 # get-set methods for chain_name
-
 sub setChainName {
 	my ( $self, $chainName) = @_;
 	$self->{_chainName} = $chainName if defined($chainName);
@@ -61,7 +59,6 @@ sub getChainName {
 }
 
 # get-set methods for timestamp
-
 sub setTimestamp {
 	my ( $self, $timeStamp) = @_;
 	$self->{_timeStamp} = $timeStamp if defined($timeStamp);
@@ -74,7 +71,6 @@ sub getTimestamp {
 }
 
 # get-set methods for ttl
-
 sub setTTL {
 	my ( $self, $ttl) = @_;
 	$self->{_ttl} = $ttl if defined($ttl);
@@ -87,7 +83,6 @@ sub getTTL {
 }
 
 # get-set methods for gas_price
-
 sub setGasPrice {
 	my ( $self, $gasPrice) = @_;
 	$self->{_gasPrice} = $gasPrice if defined($gasPrice);
@@ -110,14 +105,6 @@ sub getDependencies {
 	my ( $self ) = @_;
 	my @dependencies = @{ $self->{_dependencies} };
 	wantarray ? @dependencies :\@dependencies;
-}
-
-=comment
-This function log information of a deploy header
-=cut
-sub logInfo {
-	my ( $self ) = @_;
-	print "\nDeploy header account :".$self->{_account}."\n";
 }
 
 =comment
