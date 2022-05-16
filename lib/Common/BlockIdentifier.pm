@@ -19,6 +19,7 @@ sub new {
 	return $self;
 }
 
+# get-set method for _blockHash
 sub setBlockHash {
 	my ( $self, $blockHash) = @_;
 	$self->{_blockHash} = $blockHash if defined($blockHash);
@@ -30,6 +31,7 @@ sub getBlockHash {
 	return $self->{_blockHash};
 }
 
+# get-set method for _blockType
 sub setBlockType {
 	my ( $self, $blockType) = @_;
 	$self->{_blockType} = $blockType if defined($blockType);
@@ -41,6 +43,7 @@ sub getBlockType {
 	return $self->{_blockType};
 }
 
+# get-set method for _blockHeight
 sub setBlockHeight {
 	my ( $self, $blockHeight) = @_;
 	$self->{_blockHeight} = $blockHeight if defined($blockHeight);
@@ -52,6 +55,17 @@ sub getBlockHeight {
 	return $self->{_blockHeight};
 }
 
+# This function generate the Json string parameter for RPC POST method that use BlockIdentifier as input parameter.
+# This function take the RPC name as input and generate the corresponding Json string base on that such method.
+# For example with the chain_get_state_root_hash RPC method, when call this function
+# simply make the call like this 
+# my $generatedParam = Common::BlockIdentifier->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH)
+# Then you can pass the $generatedParam variable to the Post method for the chain_get_state_root_hash call to get the state root hash
+# Example 2: with the chain_get_block RPC method, when call this function
+# simply make the call like this 
+# my $generatedParam = Common::BlockIdentifier->generatePostParam($Common::ConstValues::RPC_GET_BLOCK)
+# Then you can pass the $generatedParam variable to the Post method for the chain_get_block call to get the block information
+# For the const values for RPC method name, see Common::ConstValues package, which defined in file "ConstValues.pm" under folder "Common"
 sub generatePostParam {
 	my $retStr = "";
 	my ( $self ) = @_;

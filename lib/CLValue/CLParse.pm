@@ -265,9 +265,7 @@ sub getCLParsedCompound {
 	return $ret;
 }
 
-# Generate the CLParse object from JsonObject or String with given information of Type 
-# getCLParsed2 for inner class call
-# getCLParsed for outter class call
+# Generate the CLParse object from JsonObject or String with given information of Type, used for inner class call
 sub getCLParsed2 {
 	my @list = @_;
 	my $json = $list[0];
@@ -285,6 +283,7 @@ sub getCLParsed2 {
 	}
 	return $ret;
 }
+# Generate the CLParse object from JsonObject or String with given information of Type, used for outter class call
 sub getCLParsed {
 	my @list = @_;
 	my $json = $list[1];

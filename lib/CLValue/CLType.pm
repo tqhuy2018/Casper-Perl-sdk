@@ -12,7 +12,6 @@ used to build   recursived CLType,  such as List,  Map,  Tuple,  Result,  Option
  */
 =cut
 package CLValue::CLType;
-
 use feature qw(switch);
 use JSON;
 sub new {
@@ -33,7 +32,6 @@ sub new {
 }
 
 #get-set method for itsTypeStr
-
 sub setItsTypeStr {
 	my ($self,$clTypeStr) = @_;
 	$self->{_itsTypeStr} = "".$clTypeStr if defined ($clTypeStr);
@@ -45,7 +43,6 @@ sub getItsTypeStr {
 }
 
 #get-set method for innerCLType1
-
 sub setInnerCLType1 {
 	my ($self,$clType1) = @_;
 	$self->{_innerCLType1} = $clType1 if defined($clType1);
@@ -58,7 +55,6 @@ sub getInnerCLType1 {
 }
 
 #get-set method for innertType2
-
 sub setInnerCLType2 {
 	my ($self,$clType2) = @_;
 	$self->{_innerCLType2} = $clType2 if defined ($clType2);
@@ -70,7 +66,6 @@ sub getInnerCLType2 {
 }
 
 #get-set method for innerCLType3
-
 sub setInnerCLType3 {
 	my ($self,$clType3) = @_;
 	$self->{_innerCLType3} = $clType3 if defined ($clType3);
@@ -80,15 +75,17 @@ sub getInnerCLType3 {
 	my ($self) = @_;
 	return $self->{_innerCLType3};
 }
+
 # This function does the work of checking if the  input passing to the function is for primitive CLType,  
 # type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
-
 sub isCLTypePrimitive2 {
 	my @list = @_;
 	my $input = $list[1];
 	return isInputPrimitive($input);
 }
 
+# This function does the work of checking if the  input passing to the function is for primitive CLType,  
+# type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
 sub isInputPrimitive {
 	my @list = @_;
 	my $input = $list[0];
@@ -128,14 +125,18 @@ sub isInputPrimitive {
 		return 0;
 	}
 }
+
 # This function does the work of checking if the  CLType itself is primitive,  
 # type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
-
 sub isCLTypePrimitive {
 	my ($self) = @_;
 	my $ret = isInputPrimitive($self->{_itsTypeStr});
 	return $ret;
 }
+
+# This function get the CLType base on the Json input that represent the CLType
+# This function simply check if the input is of type primitive, if yes then getting cltype for primitive is called, otherwise
+# getting cltype for compound is called
 sub getCLType{
 	my @list = @_;
 	my $input = $list[1];
@@ -145,6 +146,9 @@ sub getCLType{
 		return getCLTypeCompound($input);
 	}
 }
+
+# This function does the work of getting the primitive  CLType from the given Json input  
+# Primitive CLType is type that has no recursive CLType inside (such as bool,  i32,  i64,  u8,  u32,  u64,  u128,  u266,  u512,  string,  unit,  publickey,  key,  ...)
 sub getCLTypePrimitive {
 	my @list = @_;
 	my $input = $list[0];
@@ -153,6 +157,9 @@ sub getCLTypePrimitive {
 	return $ret;
 	
 }
+
+# This function does the work of getting the compound  CLType from the given Json input  
+# Primitive CLType is type that does have recursive CLType inside (such as list,  map,  result,  tuple1,  tuple2,  tuple3,  option)
 sub getCLTypeCompound {
 	my @list = @_;
 	my $input = $list[0];

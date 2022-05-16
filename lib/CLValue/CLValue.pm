@@ -8,7 +8,6 @@ Information of a sample CLValue object
 }
 =cut
 package CLValue::CLValue;
-
 use CLValue::CLType;
 use CLValue::CLParse;
 sub new {
@@ -56,7 +55,11 @@ sub getParse {
 	return $self->{_parse};
 }
 
-#Generate the CLValue object  from the JsonObject
+# Generate the CLValue object from the input of a JsonObject
+# To do so, the 3 atrributes are taken: bytes, cl_type and parsed
+# The bytes value can be retrieved directly from the Json object
+# The cl_type is retrieved through the CLValue::CLType class, using function getCLType
+# The parsed is retrieved through the CLValue::CLParse class, using function getCLParsed
 sub fromJsonObjToCLValue {
 	my @list = @_;
 	my $json = $list[1];
