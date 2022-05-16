@@ -9,7 +9,7 @@ sub new {
 	my $self = {
 		_apiVersion => shift,
 		_blockHash => shift,
-		_transfers => [ @_ ], # List of CasperTransfer
+		_transfers => [ @_ ], # List of CasperTransfer object
 	};
 	bless $self, $class;
 	return $self;
