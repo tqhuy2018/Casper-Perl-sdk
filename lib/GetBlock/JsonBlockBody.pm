@@ -64,7 +64,6 @@ sub fromJsonObjectToJsonBlockBody {
 		}
 		$ret->setDeployHashes(@listDH);
 	}
-	
 	# get Transfer Hashes list 
 	my @listTHJson = @{$json->{'transfer_hashes'}};
 	my $totalTH = @listTHJson;

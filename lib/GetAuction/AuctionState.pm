@@ -2,6 +2,7 @@
 package GetAuction::AuctionState;
 use GetAuction::JsonEraValidators;
 use GetAuction::JsonBids;
+
 sub new {
 	my $class = shift;
 	my $self = {

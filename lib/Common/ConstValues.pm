@@ -1,6 +1,11 @@
 =comment
-This class handles error information when call for  RPC method.
-The error can be invalid param, 
+This class hold information of const values defined in the SDK, which are:
+- RPC calling method name
+- RPC posting method URL
+- Null value
+- CLType (23 possible values)
+- Transform (18 possible values)
+- StoredValue (10 possible values)
 =cut
 use strict;
 use warnings;

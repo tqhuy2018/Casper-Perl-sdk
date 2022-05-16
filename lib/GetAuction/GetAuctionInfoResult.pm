@@ -1,4 +1,4 @@
-# Class built for storing GetItemResult information, taken from state_get_item RPC method
+# Class built for storing GetAuctionInfoResult information, taken from state_get_item RPC method
 package GetAuction::GetAuctionInfoResult;
 use GetAuction::AuctionState;
 sub new {

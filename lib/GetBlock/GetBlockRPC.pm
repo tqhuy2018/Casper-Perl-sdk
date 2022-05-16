@@ -6,10 +6,22 @@ use Common::ErrorException;
 use JSON qw( decode_json );
 sub new {
 	my $class = shift;
-	my $self = {};
+	my $self = {_url=>shift}; # This url can be test net, main net or local host for sending the POST method for RPC call
 	bless $self, $class;
 	return $self;
 }
+
+# get-set method for _url
+sub setUrl {
+	my ($self,$value) = @_;
+	$self->{_url} = $value if defined ($value);
+	return $self->{_url};
+}
+sub getUrl {
+	my ($self) = @_;
+	return $self->{_url};
+}
+
 =comment
 	 * This function initiate the process of sending POST request with given parameter in JSON string format
      * The input parameterStr is used to send to server as parameter of the POST request to get the result back.
@@ -28,8 +40,13 @@ sub new {
      * Else the GetBlockResult is taken by parsing the  retrieving JsonObject
 =cut
 sub getBlock {
+	my ($self) = @_;
 	my @list = @_;
-	my $uri = 'https://node-clarity-testnet.make.services/rpc';
+	my $uri = $self->{_url};
+	if($uri) {
+	} else {
+		$uri = $Common::ConstValues::TEST_NET;
+	}
 	my $json = $list[1];
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');

@@ -1,11 +1,11 @@
-# Class built for storing JsonEraEnd information
+# Class built for storing JsonEraReport information
 package GetBlock::JsonEraReport;
 
 sub new {
 	my $class = shift;
 	my $self = {
-		_equivocators => [ @_ ], # list of PublicKey, in type of String
-		_inactiveValidators => [ @_ ], # list of PublicKey, in type of String
+		_equivocators => [ @_ ], # list of PublicKey, in String format
+		_inactiveValidators => [ @_ ], # list of PublicKey, in String format
 		_rewards => [ @_ ], # list of Reward object
 	};
 	bless $self, $class;
@@ -86,3 +86,4 @@ sub fromJsonToJsonEraReport {
 	}
 	return $ret;
 }
+1;
