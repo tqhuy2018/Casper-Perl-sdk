@@ -60,7 +60,7 @@ sub getMerkleProof {
 	my ( $self ) = @_;
 	return $self->{_merkleProof};
 }
-
+ 
 # This function parse the JsonObject (taken from server RPC method call) to generate the GetDictionaryItemResult object
 sub fromJsonToGetDictionaryItemResult {
 	my @list = @_;

@@ -11,6 +11,7 @@ sub new {
 	bless $self, $class;
 	return $self;
 }
+
 # get-set method for _url
 sub setUrl {
 	my ($self,$value) = @_;

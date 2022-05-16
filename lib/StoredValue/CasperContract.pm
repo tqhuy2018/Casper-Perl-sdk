@@ -1,4 +1,5 @@
-#  Class built for storing Contract information
+#  Class built for storing Contract information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the CasperContract object
 package StoredValue::CasperContract;
 use StoredValue::EntryPoint;
 use GetDeploy::ExecutionResult::Transform::NamedKey;

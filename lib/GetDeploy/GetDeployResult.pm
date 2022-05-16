@@ -52,7 +52,7 @@ sub getExecutionResults {
 	wantarray ? @list : \@list;
 }
 
-# This function turn a Json object to a GetDeployResult object
+# This function parse a Json object then return a GetDeployResult object
 sub fromJsonObjectToGetDeployResult {
 	my @list = @_;
 	my $json = $list[1];

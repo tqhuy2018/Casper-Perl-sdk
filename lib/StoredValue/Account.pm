@@ -1,4 +1,5 @@
-# Class built for storing Account information
+# Class built for storing Account information, which used in StoredValue object
+# and handles the work of parsing the JsonObject (taken from server RPC method call) to get the Account object
 package StoredValue::Account;
 use StoredValue::ActionThresholds;
 use StoredValue::AssociatedKey;

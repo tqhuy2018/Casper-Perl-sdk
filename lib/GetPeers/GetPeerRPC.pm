@@ -26,7 +26,7 @@ sub getUrl {
 =comment
 This function does info_get_peers RPC call.
 The procedure for this process is:
-1. Assign the url for the post method, by default the url will be the test net 
+1. Assign the url for the post method, by default the url will be the test net. 
 (url for test net is: https://node-clarity-testnet.make.services/rpc which defined in Common::ConstValues class)
 You can change the url to main net or localhost for the method by calling the function setUrl.
 2. Generate the Post parameter to send along with the Post method. In this method it is

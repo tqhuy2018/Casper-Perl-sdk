@@ -1,5 +1,6 @@
 =comment
-This class handles info_get_peers RPC call
+This class store the information of GetPeersResult, which is the result of the  info_get_peers RPC call
+This class also handles the parse of Json object to GetPeersResult object.
 =cut
 package GetPeers::GetPeersResult;
 use GetPeers::PeerEntry;

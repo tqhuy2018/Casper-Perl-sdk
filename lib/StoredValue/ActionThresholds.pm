@@ -1,5 +1,5 @@
-# Class built for storing ActionThresholds information, , which used in StoredValue object
-# and handles the work of parsing the JsonObject (taken from server RPC method call) to get the ActionThresholds object
+# Class built for storing ActionThresholds information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the ActionThresholds object
 package StoredValue::ActionThresholds;
 sub new {
 	my $class = shift;

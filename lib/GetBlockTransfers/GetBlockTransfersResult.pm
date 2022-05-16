@@ -52,6 +52,7 @@ sub getTransfers {
 	wantarray ? @list : \@list;
 }
 
+# This function parse the JsonObject (taken from server RPC method call) to GetBlockTransfersResult object
 sub fromJsonObjectToGetBlockTransfersResult {
 	my @list = @_;
 	my $json = $list[1];
