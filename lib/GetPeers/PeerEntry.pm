@@ -1,5 +1,5 @@
 =comment
-This class is for storing Deploy information
+This class is for storing PeerEntry information, and handles the work of parsing Json object to a PeerEntry object.
 =cut
 
 package GetPeers::PeerEntry;
@@ -38,7 +38,7 @@ sub getAddress {
 	return $self->{_address};
 }
 
-# This function turn a json object to a PeerEntry object
+# This function parse a Json object to a PeerEntry object
 sub fromJsonObjectToPeerEntry {
 	my @list = @_;
 	my $json = $list[1];

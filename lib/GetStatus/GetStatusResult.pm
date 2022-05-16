@@ -1,5 +1,6 @@
 =comment
-This class hold the information retrieved from the  info_get_peers RPC call
+This class hold the information of GetStatusResult, which retrieved from the  info_get_peers RPC call
+This class also handle the work of parsing Json object to a GetStatusResult object
 =cut
 package GetStatus::GetStatusResult;
 use GetPeers::PeerEntry;
@@ -142,7 +143,7 @@ sub getPeers {
 	wantarray ? @list : \@list;
 }
 
-# This function turn a json object to a GetPeersResult object
+# This function parse a Json object to a GetPeersResult object
 sub fromJsonObjectToGetStatusResult {
 	my @list = @_;
 	my $json = $list[1];

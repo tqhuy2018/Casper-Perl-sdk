@@ -1,5 +1,5 @@
 =comment
-This class hold the information of the MinimalBlockInfo
+This class hold the information of the NextUpgrade and handles the work of parsing Json object to a NextUpgrade object
 =cut
 package GetStatus::NextUpgrade;
 use Scalar::Util qw(looks_like_number);
@@ -50,7 +50,7 @@ sub getActivationPointTimestamp {
 	return $self->{_activationPointTimestamp};
 }
 
-# This function turn a json object to a GetPeersResult object
+# This function parse a Json object to a NextUpgrade object
 sub fromJsonObjectToNextUpgrade {
 	my @list = @_;
 	my $json = $list[1];

@@ -1,10 +1,10 @@
+# This class handles the chain_get_state_root_hash RPC call
 package GetStateRootHash::GetStateRootHashRPC;
 #use lib 'Common/ErrorException';
 use Common::ErrorException;
 use LWP::UserAgent;
 use Data::Dumper;
 use JSON qw( decode_json );
-
 our $VERSION = 0.01;
 
 sub new {

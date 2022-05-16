@@ -1,5 +1,6 @@
 =comment
 This class hold the information of the MinimalBlockInfo
+and handles the work of parsing a Json object to a MinimalBlockInfo object
 =cut
 package GetStatus::MinimalBlockInfo;
 
@@ -89,7 +90,7 @@ sub getTimeStamp {
 	return $self->{_timeStamp};
 }
 
-# This function turn a json object to a GetPeersResult object
+# This function parse a Json object to a MinimalBlockInfo object
 sub fromJsonObjectToMinimalBlockInfo {
 	my @list = @_;
 	my $json = $list[1];

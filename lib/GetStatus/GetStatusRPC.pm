@@ -13,6 +13,9 @@ sub new {
 }
 =comment
 This function does info_get_status RPC call
+ 	 * This function initiate the process of sending POST request with given parameter in JSON string format like this:
+     * {"params" :  [], "id" :  1, "method": "info_get_status", "jsonrpc" :  "2.0"}
+     * Then the GetStatusResult is retrieved by parsing JsonObject result taken from the RPC POST request
 =cut
 sub getStatus {
 	 my( $self ) = @_;
