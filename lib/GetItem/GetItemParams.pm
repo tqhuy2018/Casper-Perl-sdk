@@ -48,7 +48,11 @@ sub getPath {
 	my @list = @{$self->{_path}};
 	wantarray ? @list : \@list;
 }
-# This function generate the parameter for the post method of the state_get_item RPC call
+
+# This function generate the parameter for the post method of the state_get_item RPC call, based on its value of
+# _stateRootHash, _key and _path.
+# the generated Json string from this function is somehow like this:
+# {"method" : "state_get_item","id" : 1,"params" :{"state_root_hash" : "d360e2755f7cee816cce3f0eeb2000dfa03113769743ae5481816f3983d5f228","key":"withdraw-df067278a61946b1b1f784d16e28336ae79f48cf692b13f6e40af9c7eadb2fb1","path":[]},"jsonrpc" : "2.0"}
 sub generateParameterStr {
 	my ($self) = @_;
 	my @listPath = @{$self->{_path}};

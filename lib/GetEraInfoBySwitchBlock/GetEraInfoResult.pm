@@ -1,3 +1,4 @@
+# Class built for storing GetEraInfoResult information, the result of chain_get_era_info_by_switch_block RPC call
 package GetEraInfoBySwitchBlock::GetEraInfoResult;
 use GetEraInfoBySwitchBlock::EraSummary;
 sub new {
@@ -10,6 +11,7 @@ sub new {
 	bless $self, $class;
 	return $self;
 }
+
 # get-set method for _apiVersion
 sub setApiVersion {
 	my ( $self, $value) = @_;
@@ -21,6 +23,7 @@ sub getApiVersion {
 	my ( $self ) = @_;
 	return $self->{_apiVersion};
 }
+
 # get-set method for _eraSummary
 sub setEraSummary {
 	my ( $self, $value) = @_;
@@ -32,6 +35,7 @@ sub getEraSummary {
 	my ( $self ) = @_;
 	return $self->{_eraSummary};
 }
+
 # get-set method for _isEraExists
 sub setIsEraExists {
 	my ( $self, $value) = @_;
@@ -43,6 +47,7 @@ sub getIsEraExists {
 	my ( $self ) = @_;
 	return $self->{_isEraExists};
 }
+
 # This function parse the JsonObject (taken from server RPC method call) to GetEraInfoResult object
 sub fromJsonToGetEraInfoResult {
 	my @list = @_;
