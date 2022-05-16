@@ -3,9 +3,7 @@ This class stored the information of the GetDeployRPC call and encapsulated it
 in the class GetDeployResult
 =cut
 package GetDeploy::GetDeployResult;
-
 use GetDeploy::ExecutionResult::JsonExecutionResult;
-
 use JSON qw( decode_json );
 use JSON qw( encode_json );
 
@@ -54,7 +52,7 @@ sub getExecutionResults {
 	wantarray ? @list : \@list;
 }
 
-# This function turn a json object to a GetDeployResult object
+# This function turn a Json object to a GetDeployResult object
 sub fromJsonObjectToGetDeployResult {
 	my @list = @_;
 	my $json = $list[1];

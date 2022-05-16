@@ -107,9 +107,7 @@ sub getDependencies {
 	wantarray ? @dependencies :\@dependencies;
 }
 
-=comment
-This function turn a json object to a deploy header object
-=cut
+# This function turn a json object to a deploy header object
 sub fromJsonObjectToDeployHeader {
 	my @list = @_;
     #my $json = decode_json($list[1]);
