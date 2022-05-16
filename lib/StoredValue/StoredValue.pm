@@ -14,9 +14,29 @@ In detail, the value can be 1 among these values:
     EraInfo(EraInfo),
     Bid(Box<Bid>),
     Withdraw(Vec<UnbondingPurse>),
-The attribute _itsType in this StoredValue::StoredValue class hold the type of 1 among 10 possible type above,
-The attribute _itsValue in this StoredValue::StoredValue class hold the value of the stored value
-
+This class has 2 attributes: _itsType and _itsValue
+The attribute _itsType hold the type of 1 among 10 possible type above, in String format
+The attribute _itsValue hold the value of the stored value
+For example if the StoredValue is 
+CLValue(bytes":"0400e1f505"
+"parsed":"100000000"
+"cl_type":"U512"
+)
+To store information of such StoredValue, the following work will be called:
+1) Instantiate a StoredValue object and set _itsType to "CLValue":
+my $storedValue = new StoredValue::StoredValue();
+$storedValue->setItsType("CLValue");
+2) Instantiate one CLValue:CLValue object and set this properties like this:
+my $clValue = new CLValue::CLValue();
+$clValue->setBytes("0400e1f505");
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr("U512");
+$clValue->setCLType($clType);
+my $clParse = new CLValue::CLParse();
+$clParse->setItsValueStr("100000000");
+$clValue->setParse($clParse);
+3) Assign the _itsValue of the $storedValue object to the $clValue
+$storedValue->setItsValue($clValue);
 =cut 
 package StoredValue::StoredValue;
 use CLValue::CLValue;

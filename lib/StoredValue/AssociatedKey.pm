@@ -1,4 +1,5 @@
-# Class built for storing AssociatedKey information
+# Class built for storing AssociatedKey information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the AssociatedKey object
 package StoredValue::AssociatedKey;
 sub new {
 	my $class = shift;
@@ -34,7 +35,7 @@ sub getWeight {
 	return $self->{_weight};
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the AssociatedKey object
+# This function parse the Json object (taken from server RPC method call) to get the AssociatedKey object
 sub fromJsonObjectToAssociatedKey {
 	my @list = @_;
 	my $json = $list[1];

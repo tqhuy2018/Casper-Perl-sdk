@@ -1,4 +1,5 @@
-# Class built for storing ContractVersion information
+# Class built for storing ContractVersion information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the ContractVersion object
 package StoredValue::ContractVersion;
 sub new {
 	my $class = shift;
@@ -47,7 +48,7 @@ sub getProtocolVersionMajor {
 	return $self->{_protocolVersionMajor};
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the ContractVersion object
+# This function parse the Json object (taken from server RPC method call) to get the ContractVersion object
 sub fromJsonObjectToContractVersion {
 	my @list = @_;
 	my $json = $list[1];

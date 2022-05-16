@@ -1,4 +1,5 @@
-# Class built for storing EntryPoint information
+# Class built for storing EntryPoint information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the ContractPackage object
 package StoredValue::ContractPackage;
 
 sub new {
@@ -63,7 +64,7 @@ sub getVersions {
 	wantarray ? @list : \@list;
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the ContractPackage object 
+# This function parse the Json object (taken from server RPC method call) to get the ContractPackage object 
 sub fromJsonObjectToContractPackage {
 	my @list = @_;
 	my $json = $list[1];

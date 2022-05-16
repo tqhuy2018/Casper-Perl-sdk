@@ -1,4 +1,5 @@
-# Class built for storing Parameter information
+# Class built for storing Parameter information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the Parameter object
 package StoredValue::Parameter;
 sub new {
 	my $class = shift;
@@ -34,7 +35,7 @@ sub getClType {
 	return $self->{_clType};
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the Parameter object
+# This function parse the Json object (taken from server RPC method call) to get the Parameter object
 sub fromJsonObjectToParameter {
 	my @list = @_;
 	my $json = $list[1];

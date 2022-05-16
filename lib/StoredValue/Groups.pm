@@ -1,4 +1,5 @@
-# Class built for storing Groups information
+# Class built for storing Groups information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the Groups object
 package StoredValue::Groups;
 sub new {
 	my $class = shift;
@@ -35,7 +36,7 @@ sub getKeys {
 	wantarray ? @list : \@list;
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the Groups object
+# This function parse the Json object (taken from server RPC method call) to get the Groups object
 sub fromJsonObjectToGroups {
 	my @list = @_;
 	my $json = $list[1];

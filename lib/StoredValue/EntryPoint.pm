@@ -1,4 +1,5 @@
-# Class built for storing EntryPoint information
+# Class built for storing EntryPoint information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the EntryPoint object
 package StoredValue::EntryPoint;
 use CLValue::CLType;
 use StoredValue::Parameter;
@@ -77,7 +78,7 @@ sub getArgs {
 	wantarray ? @list : \@list;
 }
 
-# This function parse the JsonObject (taken from server RPC method call) to get the EntryPoint object
+# This function parse the Json object (taken from server RPC method call) to get the EntryPoint object
 sub fromJsonObjectToEntryPoint {
 	my @list = @_;
 	my $json = $list[1];

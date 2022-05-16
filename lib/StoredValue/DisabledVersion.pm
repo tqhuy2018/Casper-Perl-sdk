@@ -1,4 +1,5 @@
-# Class built for storing DisabledVersion information
+# Class built for storing DisabledVersion information, which used in StoredValue object
+# and handles the work of parsing the Json object (taken from server RPC method call) to get the DisabledVersion object
 package StoredValue::DisabledVersion;
 sub new {
 	my $class = shift;
@@ -33,7 +34,7 @@ sub getProtocolVersionMajor {
 	my ( $self ) = @_;
 	return $self->{_protocolVersionMajor};
 }
-# This function parse the JsonObject (taken from server RPC method call) to get the DisabledVersion object
+# This function parse the Json object (taken from server RPC method call) to get the DisabledVersion object
 sub fromJsonObjectToDisabledVersion {
 	my @list = @_;
 	my $json = $list[1];
