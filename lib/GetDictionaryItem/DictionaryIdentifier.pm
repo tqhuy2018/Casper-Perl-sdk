@@ -6,10 +6,14 @@
  * Dictionary
  * URef
  * This class has 2 attribute:
- * itsType: is for the type of the enum, which can be 1 among 4 possible values mentioned above
- * itsValue: a mutable list of just 1 element, to hold the real value of each enum type,
- * for example if the DictionaryIdentifier is of type AccountNamedKey, its values of (key, dictionary_name, dictionary_item_key) will be stored
- * in this itsValue variable.
+ * _itsType: is for the type of the enum, which can be 1 among 4 possible values mentioned above,
+ * _itsValue: a mutable list of just 1 element, to hold the real value of each enum type,
+ * - Example 1: if the DictionaryIdentifier is of type AccountNamedKey, its values of (key, dictionary_name, dictionary_item_key) 
+ * will be stored in DIAccountNamedKey class object, and this object is stored 
+ * in this _itsValue variable.
+ * - Example 2: if the DictionaryIdentifier is of type URef, its values of (seed_uref, dictionary_item_key) 
+ * will be stored in DIURef class object, and this object is stored 
+ * in this _itsValue variable.
 =cut
 package GetDictionaryItem::DictionaryIdentifier;
 sub new {

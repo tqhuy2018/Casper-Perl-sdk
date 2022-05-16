@@ -34,8 +34,14 @@ sub getDictionaryIdentifier {
 	return $self->{_dictionaryIdentifier};
 }
 
-
-# This function generate the parameter for the post method of the state_get_dictionary_item RPC call
+=comment
+This function generate the parameter for the post method of the state_get_dictionary_item RPC call
+Base on the type of the DictionaryIdentifier, corresponding Json string will be generate.
+For example if the DictionaryIdentifier is of type Dictionary, the the generated Json string for this function is somehow like this:
+{"method" : "state_get_dictionary_item", "id" :  1, "params" : {"state_root_hash" :  "146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8", "dictionary_identifier": {"Dictionary": "dictionary-5d3e90f064798d54e5e53643c4fce0cbb1024aadcad1586cc4b7c1358a530373"}}, "jsonrpc" :  "2.0"}
+If the DictionaryIdentifier is of type AccountNamedKey, the the generated Json string for this function is somehow like this:
+{"method" : "state_get_dictionary_item","id" : 1,"params" :{"state_root_hash" : "146b860f82359ced6e801cbad31015b5a9f9eb147ab2a449fd5cdb950e961ca8","dictionary_identifier":{"AccountNamedKey":{"dictionary_name":"dict_name","key":"account-hash-ad7e091267d82c3b9ed1987cb780a005a550e6b3d1ca333b743e2dba70680877","dictionary_item_key":"abc_name"}}},"jsonrpc" : "2.0"}
+=cut
 sub generateParameterStr {
 	my ($self) = @_;
 	my $di = $self->{_dictionaryIdentifier};
