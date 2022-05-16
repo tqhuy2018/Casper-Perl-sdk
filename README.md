@@ -10,7 +10,7 @@ SDK  to streamline the 3rd party Perl client integration processes. Such 3rd par
 
 The SDK use Perl 5.30.2. To run the SDK you need to have Perl 5.8.3 or above installed in your system.
 
-## Build and test
+## Run and test
 To run Perl on specific Operating System, please refer to the Perl language main site for how to set up on each Operating System at this address: https://www.perl.org/get.html
 
 The SDK can be built and tested in different IDEs and from command line.
@@ -19,7 +19,7 @@ For Windows user, for fast and easy installation and usage of the command line f
 
  A 100% Open Source Perl for Windows that is exactly the same as Perl everywhere else; this includes using modules from CPAN, without the need for binary packages. 
  
-### Build and test from IDE
+### Run and test from IDE
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
 First you need to install Eclipse from this address:
@@ -66,7 +66,7 @@ To test for each file, just click on each file, for example to test for "GetAuct
 <img width="960" alt="step7" src="https://user-images.githubusercontent.com/94465107/168452870-6e403562-2086-4476-b35b-a7d7aa869547.png">
 Follow the same procedure, click on each test file in the "t" folder to test for RPC call that you wish to do.
 
-### Build and test from command line
+### Run and test from command line
 Download the Source code from Github and put it in your local computer.
 From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of the SDK. Then enter the "t" folder of the SDK.
 Run this command to test for each test file in the "t" folder.
@@ -91,6 +91,59 @@ To test for all file, enter the root folder of the SDK and run this command:
 ```Perl
 make test
 ```
+
+### Run the module of the SDK
+
+The SDK provide functionality in form of module. To use the module in other Perl project, simply copy all file/folders under the "lib" folder of the SDK and copy it under the "lib" folder of other project.
+
+After that, you can call the function directly within the "lib" folder of project or create other file outside of the "lib" folder, for example in the root directory of the project, then call the class/function of the Casper SDK in the "lib" folder.
+
+Detail of how to call the module function of the SDK from other files:
+
+Create 1 simple project in Perl by create 1 folder, for example let call it "SamplePerlProject" and make the same folder "SamplePerlProject" somewhere in your hard disk.
+
+Create a folder with name "lib" under the "SamplePerlProject" folder.
+
+Copy all the file/folder under the "lib" folder of the Casper-Perl-sdk SDK to the "lib" folder under "SamplePerlProject" folder.
+
+Under "SamplePerlProject" folder create 1 Perl file with name "sampleCall.pl" with the following content, just to implement the call for "chain_get_state_root_hash" RPC call.
+
+```Perl
+#!/usr/bin/perl
+$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
+use strict;
+use warnings;
+use FindBin qw( $RealBin );
+use lib "$RealBin/lib";
+use GetStateRootHash::GetStateRootHashRPC;
+use Common::ConstValues;
+use Common::BlockIdentifier;
+sub testFunc {
+	my $bi = new Common::BlockIdentifier();
+	# Test 1: Call with block hash
+	$bi->setBlockType("hash");
+	$bi->setBlockHash("d16cb633eea197fec519aee2cfe050fe9a3b7e390642ccae8366455cc91c822e");
+	my $postParamStr = $bi->generatePostParam($Common::ConstValues::RPC_GET_STATE_ROOT_HASH);
+	my $getStateRootHashRPC = new GetStateRootHash::GetStateRootHashRPC();
+	my $stateRootHash1 = $getStateRootHashRPC->getStateRootHash($postParamStr);
+	print $stateRootHash1;
+}
+testFunc();
+```
+Somehow the structure of the "SamplePerlProject" is like this
+
+<img width="710" alt="Screen Shot 2022-05-15 at 10 35 59" src="https://user-images.githubusercontent.com/94465107/168456059-78df9514-694b-4bd4-b50d-83f3145f9437.png">
+
+To run the "test.pl" file, in Terminal or Command Prompt enter to the folder of the "test.pl" file and run this command
+
+```Perl
+perl test.pl
+```
+
+Or in Eclipse double click the file "test.pl" and then hit "Run->Run" to run the file.
+
+You will see the state root hash value printed in the Terminal or Console Window of Eclipse.
+
 # Documentation for classes and methods
 
 * [List of classes and methods](./docs/Help.md#list-of-rpc-methods)
