@@ -4,7 +4,7 @@ Perl SDK library for interacting with a CSPR node.
 
 ## What is CSPR-Perl-SDK?
 
-SDK  to streamline the 3rd party Perl client integration processes. Such 3rd parties include exchanges & app developers. 
+SDK to streamline the 3rd party Perl client integration processes. Such 3rd parties include exchanges & app developers. 
 
 ## System requirement
 
@@ -17,7 +17,7 @@ The SDK can be built and tested in different IDEs and from command line.
 
 For Windows user, for fast and easy installation and usage of the command line for Perl, please install "Strawberry Perl" - As the document at the Perl main page:
 
- A 100% Open Source Perl for Windows that is exactly the same as Perl everywhere else; this includes using modules from CPAN, without the need for binary packages. 
+A 100% Open Source Perl for Windows that is exactly the same as Perl everywhere else; this includes using modules from CPAN, without the need for binary packages. 
  
 ### Run and test from IDE
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
