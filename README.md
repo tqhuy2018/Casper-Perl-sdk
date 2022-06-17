@@ -106,7 +106,7 @@ Create a folder with name "lib" under the "SamplePerlProject" folder.
 
 Copy all the file/folder under the "lib" folder of the Casper-Perl-sdk SDK to the "lib" folder under "SamplePerlProject" folder.
 
-Under "SamplePerlProject" folder create 1 Perl file with name "sampleCall.pl" with the following content, just to implement the call for "chain_get_state_root_hash" RPC call.
+Under "SamplePerlProject" folder create 1 Perl file with name "test.pl" with the following content, just to implement the call for "chain_get_state_root_hash" RPC call.
 
 ```Perl
 #!/usr/bin/perl
