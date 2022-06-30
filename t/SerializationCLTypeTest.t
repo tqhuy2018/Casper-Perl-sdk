@@ -67,6 +67,16 @@ sub testCLTypeSerialization {
 	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_UREF);
 	$serialization = $serializationCLType->serializeForCLType($clType);
 	ok($serialization eq "0c","Test serialization for CLType UREF passed");
+	
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+	my $innerType1  = new CLValue::CLType();
+	$innerType1->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	print("ineert type 1 is:".$innerType1->getItsTypeStr()."\n");
+	$clType->setInnerCLType1($innerType1);
+	my $clTypeInner1 = $clType->getInnerCLType1();
+	print("clType 1 is: " . $clTypeInner1->getItsTypeStr()."\n");
+	$serialization = $serializationCLType->serializeForCLType($clType);
+	ok($serialization eq "0d08","Test serialization for CLType OPTION passed");
 
 }
 
