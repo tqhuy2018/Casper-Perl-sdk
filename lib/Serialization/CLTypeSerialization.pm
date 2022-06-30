@@ -26,7 +26,6 @@ sub serializeForCLType {
 	#my @clType = $list[1] ;
 	my $clType = new CLValue::CLType();
 	$clType = $list[1];
-	print("CLTYPE: " . $clType->getItsTypeStr());
 	if($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_BOOL) {
 		return "00";
 	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_I32) {
@@ -71,7 +70,8 @@ sub serializeForCLType {
 		my $innerCLTypeSerialization1 = serializeForCLType("0",$clInner1);
 		my $clInner2 = new CLValue::CLType();
 		$clInner2 = $clType->getInnerCLType2();
-		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner1);
+		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner2);
+		print("In result, innerCLTypeSerialization2 is:" .$innerCLTypeSerialization2."\n");
 		return "10".$innerCLTypeSerialization1.$innerCLTypeSerialization2;
 	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP) {
 		my $clInner1 = new CLValue::CLType();
@@ -79,8 +79,36 @@ sub serializeForCLType {
 		my $innerCLTypeSerialization1 = serializeForCLType("0",$clInner1);
 		my $clInner2 = new CLValue::CLType();
 		$clInner2 = $clType->getInnerCLType2();
-		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner1);
+		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner2);
 		return "11".$innerCLTypeSerialization1.$innerCLTypeSerialization2;
+	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE1) {
+		my $clInner1 = new CLValue::CLType();
+		$clInner1 = $clType->getInnerCLType1();
+		my $innerCLTypeSerialization = serializeForCLType("0",$clInner1);
+		return "12".$innerCLTypeSerialization;
+	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE2) {
+		my $clInner1 = new CLValue::CLType();
+		$clInner1 = $clType->getInnerCLType1();
+		my $innerCLTypeSerialization1 = serializeForCLType("0",$clInner1);
+		my $clInner2 = new CLValue::CLType();
+		$clInner2 = $clType->getInnerCLType2();
+		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner2);
+		return "13".$innerCLTypeSerialization1.$innerCLTypeSerialization2;
+	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE3) {
+		my $clInner1 = new CLValue::CLType();
+		$clInner1 = $clType->getInnerCLType1();
+		my $innerCLTypeSerialization1 = serializeForCLType("0",$clInner1);
+		my $clInner2 = new CLValue::CLType();
+		$clInner2 = $clType->getInnerCLType2();
+		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner2);
+		my $clInner3 = new CLValue::CLType();
+		$clInner3 = $clType->getInnerCLType3();
+		my $innerCLTypeSerialization3 = serializeForCLType("0",$clInner3);
+		return "14".$innerCLTypeSerialization1.$innerCLTypeSerialization2.$innerCLTypeSerialization3;
+	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_ANY) {
+		return "15";
+	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLIC_KEY) {
+		return "16";
 	}
 	return "---00---";
 }

@@ -292,7 +292,7 @@ sub getDeploy11 {
 					my $clValue = $oneT->getItsValue();
 					ok($clValue->getBytes() eq "01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa901030000006162630102","Test 32nd transform of type WriteCLValue and CLValue bytes, Passed");
 					ok($clValue->getCLType()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE3,"Test 37th transform of type WriteCLValue and CLValue clType of Tuple2, Passed");
-					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLICKEY,"Test 37th transform of type WriteCLValue and CLValue clType of PublicKey, Passed");
+					ok($clValue->getCLType()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLIC_KEY,"Test 37th transform of type WriteCLValue and CLValue clType of PublicKey, Passed");
 					ok($clValue->getCLType()->getInnerCLType2()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_OPTION,"Test 37th transform of type WriteCLValue and CLValue clType of Option, Passed");
 					ok($clValue->getCLType()->getInnerCLType2()->getInnerCLType1()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_STRING,"Test 37th transform of type WriteCLValue and CLValue clType of Option(String), Passed");
 					ok($clValue->getCLType()->getInnerCLType3()->getItsTypeStr() eq $Common::ConstValues::CLTYPE_U512,"Test 37th transform of type WriteCLValue and CLValue clType of U512, Passed");
