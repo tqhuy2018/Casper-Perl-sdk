@@ -23,7 +23,6 @@ sub new {
  
 sub serializeForCLType {
 	my @list = @_;
-	#my @clType = $list[1] ;
 	my $clType = new CLValue::CLType();
 	$clType = $list[1];
 	if($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_BOOL) {

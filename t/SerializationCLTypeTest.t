@@ -2,7 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-use Test::Simple tests => 76;
+use Test::Simple tests => 34;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 
