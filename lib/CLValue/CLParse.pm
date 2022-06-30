@@ -12,7 +12,6 @@ its value in String for later handle in serialization or show the information, a
 =cut
 
 package CLValue::CLParse;
-
 use Common::ConstValues;
 #constructor
 sub new {
