@@ -71,7 +71,6 @@ sub serializeForCLType {
 		my $clInner2 = new CLValue::CLType();
 		$clInner2 = $clType->getInnerCLType2();
 		my $innerCLTypeSerialization2 = serializeForCLType("0",$clInner2);
-		print("In result, innerCLTypeSerialization2 is:" .$innerCLTypeSerialization2."\n");
 		return "10".$innerCLTypeSerialization1.$innerCLTypeSerialization2;
 	} elsif($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP) {
 		my $clInner1 = new CLValue::CLType();

@@ -178,6 +178,130 @@ sub testCLTypeSerialization {
 	$clType2->setInnerCLType2($innerType2);
 	$serialization = $serializationCLType->serializeForCLType($clType2);
 	ok($serialization eq "100d070d04","Test serialization for CLType Result(Ok(Option(U256),Err(Option(U32)) passed");
+	
+	# Tuple1 CLType assertion
+	
+	# Tuple1(Any) assertion
+	my $clType3 = new CLValue::CLType();
+	$clType3->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE1);
+	my $innerType31 = new CLValue::CLType();
+	$innerType31->setItsTypeStr($Common::ConstValues::CLTYPE_ANY);
+	$clType3->setInnerCLType1($innerType31);
+	$serialization = $serializationCLType->serializeForCLType($clType3);
+	ok($serialization eq "1215","Test serialization for CLType Tuple1(Any) passed");
+	
+	# Tuple1(Key) assertion
+	$innerType31->setItsTypeStr($Common::ConstValues::CLTYPE_KEY);
+	$clType3->setInnerCLType1($innerType31);
+	$serialization = $serializationCLType->serializeForCLType($clType3);
+	ok($serialization eq "120b","Test serialization for CLType Tuple1(Any) passed");
+	
+	# Tuple1(Option(String)) assertion
+	$innerType31->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+	my $innerType31Inner = new CLValue::CLType();
+	$innerType31Inner->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$innerType31->setInnerCLType1($innerType31Inner);
+	$clType3->setInnerCLType1($innerType31);
+	$serialization = $serializationCLType->serializeForCLType($clType3);
+	ok($serialization eq "120d0a","Test serialization for CLType Tuple1(Any) passed");
+	
+	# Tuple2 CLType assertion
+	
+	# Tuple2(I32,I64) assertion
+	my $clType4 = new CLValue::CLType();
+	$clType4->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE2);
+	my $innerType41 = new CLValue::CLType();
+	$innerType41->setItsTypeStr($Common::ConstValues::CLTYPE_I32);
+	$clType4->setInnerCLType1($innerType41);
+	my $innerType42 = new CLValue::CLType();
+	$innerType42->setItsTypeStr($Common::ConstValues::CLTYPE_I64);
+	$clType4->setInnerCLType2($innerType42);
+	$serialization = $serializationCLType->serializeForCLType($clType4);
+	ok($serialization eq "130102","Test serialization for CLType Tuple2(I32,I64) passed");
+	
+	# Tuple2(U64,String) assertion
+	$innerType41->setItsTypeStr($Common::ConstValues::CLTYPE_U64);
+	$clType4->setInnerCLType1($innerType41);
+	$innerType42->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clType4->setInnerCLType2($innerType42);
+	$serialization = $serializationCLType->serializeForCLType($clType4);
+	ok($serialization eq "13050a","Test serialization for CLType  Tuple2(U64,String) passed");
+	
+	# Tuple2(Result(Ok(U8),Err(Unit)),URef) assertion
+	$innerType41->setItsTypeStr($Common::ConstValues::CLTYPE_RESULT);
+	my $innerResult4OK  = new CLValue::CLType();
+	$innerResult4OK->setItsTypeStr($Common::ConstValues::CLTYPE_U8);
+	$innerType41->setInnerCLType1($innerResult4OK);
+	my $innerResult4Err  = new CLValue::CLType();
+	$innerResult4Err->setItsTypeStr($Common::ConstValues::CLTYPE_UNIT);
+	$innerType41->setInnerCLType2($innerResult4Err);
+	$clType4->setInnerCLType1($innerType41);
+	$innerType42->setItsTypeStr($Common::ConstValues::CLTYPE_UREF);
+	$clType4->setInnerCLType2($innerType42);
+	$serialization = $serializationCLType->serializeForCLType($clType4);
+	ok($serialization eq "131003090c","Test serialization for CLType Tuple2(Result(Ok(U8),Err(Unit)),URef) passed");
+	
+	# Tuple3 CLType assertion
+	
+    # Tuple3(Bool,I32,I64) assertion
+    
+    my $clType5 = new CLValue::CLType();
+	$clType5->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE3);
+	my $innerType51 = new CLValue::CLType();
+	$innerType51->setItsTypeStr($Common::ConstValues::CLTYPE_BOOL);
+	$clType5->setInnerCLType1($innerType51);
+	my $innerType52 = new CLValue::CLType();
+	$innerType52->setItsTypeStr($Common::ConstValues::CLTYPE_I32);
+	$clType5->setInnerCLType2($innerType52);
+	my $innerType53 = new CLValue::CLType();
+	$innerType53->setItsTypeStr($Common::ConstValues::CLTYPE_I64);
+	$clType5->setInnerCLType3($innerType53);
+	$serialization = $serializationCLType->serializeForCLType($clType5);
+	ok($serialization eq "14000102","Test serialization for CLType  Tuple3(Bool,I32,I64) passed");
+	
+	# Tuple3 (String,Key,PublicKey)
+	$innerType51->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clType5->setInnerCLType1($innerType51);
+	$innerType52->setItsTypeStr($Common::ConstValues::CLTYPE_KEY);
+	$clType5->setInnerCLType2($innerType52);
+	$innerType53->setItsTypeStr($Common::ConstValues::CLTYPE_PUBLIC_KEY);
+	$clType5->setInnerCLType3($innerType53);
+	$serialization = $serializationCLType->serializeForCLType($clType5);
+	ok($serialization eq "140a0b16","Test serialization for CLType  Tuple3 (String,Key,PublicKey) passed");
+	
+	# Tuple3(List(Any),Map(U8,I32),Result(String))
+	# List(Any) setup
+	$innerType51->setItsTypeStr($Common::ConstValues::CLTYPE_LIST);
+	my $inner51List = new CLValue::CLType();
+	$inner51List->setItsTypeStr($Common::ConstValues::CLTYPE_ANY);
+	$innerType51->setInnerCLType1($inner51List);
+	$clType5->setInnerCLType1($innerType51);
+	# Map(U8,I32) setup
+	
+	$innerType52->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+	# Key setup
+	my $inner52Key = new CLValue::CLType();
+	$inner52Key->setItsTypeStr($Common::ConstValues::CLTYPE_U8);
+	$innerType52->setInnerCLType1($inner52Key);
+	# Value setup
+	my $inner52Value = new CLValue::CLType();
+	$inner52Value->setItsTypeStr($Common::ConstValues::CLTYPE_I32);
+	$innerType52->setInnerCLType2($inner52Value);
+	$clType5->setInnerCLType2($innerType52);
+	# Result(String,U512) setup
+	
+	$innerType53->setItsTypeStr($Common::ConstValues::CLTYPE_RESULT);
+	# Ok setup
+	my $inner53Ok = new CLValue::CLType();
+	$inner53Ok->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$innerType53->setInnerCLType1($inner53Ok);
+	# Err setup
+	my $inner53Err = new CLValue::CLType();
+	$inner53Err->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	$innerType53->setInnerCLType2($inner53Err);
+	$clType5->setInnerCLType3($innerType53);
+	$serialization = $serializationCLType->serializeForCLType($clType5);
+	ok($serialization eq "140e15110301100a08","Test serialization for CLType  Tuple3(List(Any),Map(U8,I32),Result(String)) passed");
 }
 
 testCLTypeSerialization();
