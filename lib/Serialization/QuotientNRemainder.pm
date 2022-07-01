@@ -34,3 +34,4 @@ sub getQuotient {
 	my ($self) = @_;
 	return $self->{_quotient};
 }
+1;
