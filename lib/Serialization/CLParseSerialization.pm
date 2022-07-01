@@ -4,6 +4,7 @@ This class provides the serialization for CLType object
 
 use CLValue::CLParse;
 use Common::ConstValues;
+use Serialization::NumberSerialize;
 
 package Serialization::CLParseSerialization;
 
@@ -31,5 +32,12 @@ sub new {
 	} else {
 		return $Common::ConstValues::INVALID_VALUE;
 	}
+ }
+ sub serializeFromCLParseU8 {
+ 	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[1];
+	my $numberSerialize = new Serialization::NumberSerialize();
+	return $numberSerialize->serializeForU8($clParsed->getItsValueStr());
  }
  1;
