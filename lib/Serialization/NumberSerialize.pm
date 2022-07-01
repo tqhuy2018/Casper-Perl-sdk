@@ -45,11 +45,10 @@ sub serializeForU32 {
 		print("In number sserialization, U32 value is: ".$valueInStr."\n");
 	}
 	my $ret = fromDecimalStringToHexaString($valueInStr);
-	
 	my $retLength = length($ret);
 	print("serializeForU32, ret is:".$ret." and length:".$retLength."\n");
 	if($retLength < 8) {
-		my $total0Added = 8 - $retLength;
+		my $total0Added = 8 - $retLength - 1;
 		my $prefix0 = "";
 		my @sequence = (0..$total0Added);
 		for my $i (@sequence) {
@@ -86,14 +85,11 @@ sub fromDecimalStringToHexaString {
 	my @list = @_;
 	my $fromNumberInStr = $list[0];
 	my $ret = "";
-	print("in FromDecimal to Hexa, fromNumberInStr:" . $fromNumberInStr."\n");
 	my $ret1 = findQuotientAndRemainderOfStringNumber($fromNumberInStr);
 	my $bigNumber = $ret1->getQuotient();
-	print("in FromDecimal to Hexa, bigNumber:".$bigNumber."\n");
+	print("big number is:".$bigNumber."\n");
 	my $numberLength = length($bigNumber);
-	print("in FromDecimal to Hexa, bigNumber length:".$numberLength."\n");
 	my $remainderStr = from10To16("0",$ret1->getRemainder());
-	print("in FromDecimal to Hexa, remainderStr:".$remainderStr."\n");
 	$ret = $remainderStr;
 	my $lastQuotient = "";
 	if($numberLength < 2) {
@@ -104,6 +100,7 @@ sub fromDecimalStringToHexaString {
 		$retN = findQuotientAndRemainderOfStringNumber($bigNumber);
 		$numberLength = length($retN->getQuotient());
 		$bigNumber = $retN->getQuotient();
+		print("Big number is:".$bigNumber."\n");
 		$remainderStr = from10To16("0",$retN->getRemainder());
 		$ret = $ret.$remainderStr;
 		$lastQuotient = $retN->getQuotient();
@@ -113,24 +110,15 @@ sub fromDecimalStringToHexaString {
 	} else {
 		$ret = $ret.$lastQuotient;
 	}
-	my $realRet = stringReversed($ret);
-	print("in FromDecimal to Hexa, ret is:".$ret." and realRet is:".$realRet."\n");
+	# my $realRet = stringReversed($ret);
+	my $realRet = reverse($ret);
+	#my $retLength = length($realRet);
+	#if($retLength % 2 == 1) {
+	#	$realRet = "0".$realRet;
+	#}
 	return $realRet;
 }
-sub stringReversed {
-	my @list = @_;
-	my $fromString = $list[0];
-	my $ret = "";
-	print("IN string reversed, from string is:".$fromString."\n");
-	my $charIndex = length($fromString);
-	while($charIndex > 0) {
-		$charIndex --;
-		my $subStr = substr $fromString, $charIndex,$charIndex + 1;
-		$ret = $ret.$subStr;
-		print("subString is:".$subStr." and ret is:".$ret."\n");
-	}
-	return $ret;
-}
+
 sub stringReversed2Digit {
 	my @list = @_;
 	my $fromString = $list[0];
@@ -138,7 +126,7 @@ sub stringReversed2Digit {
 	my $charIndex = length($fromString);
 	while($charIndex > 0) {
 		$charIndex = $charIndex - 2;
-		my $subStr = substr $fromString, $charIndex,$charIndex + 2;
+		my $subStr = substr $fromString, $charIndex,2;
 		$ret = $ret.$subStr;
 	}
 	return $ret;
@@ -181,12 +169,12 @@ sub findQuotientAndRemainderOfStringNumber {
 			$ret = from10To16("0",$quotient);
 		}
 		while($startIndex < $strLength) {
-			my $nextChar =  substr $fromNumberInStr, $startIndex, $startIndex + 1;
+			my $nextChar =  substr $fromNumberInStr, $startIndex,  1;
 			my $nextValue = $remainder * 10 +  int($nextChar);
 			if($nextValue < 16) {
 				if($startIndex < $strLength + 2) {
 					$ret = $ret."0";
-					my $nextChar2 = substr $fromNumberInStr, $startIndex, $startIndex + 2;
+					my $nextChar2 = substr $fromNumberInStr, $startIndex,  2;
 					$nextValue = $remainder  * 100 + int($nextChar2);
 					$remainder = $nextValue % 16;
 					my $quotient2 = ($nextValue - $remainder) / 16;

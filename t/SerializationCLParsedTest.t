@@ -54,8 +54,11 @@ sub testCLParsedSerialization {
 	$clParsed->setItsCLType($clType);
 	$clParsed->setItsValueStr("1024");
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
-	print("u32 serialization is: ".$serialization."\n");
 	ok($serialization eq "00040000","Test serialization for CLParsed U32(1024) value passed");
+	
+	$clParsed->setItsValueStr("5531024");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "90655400","Test serialization for CLParsed U32(5531024) value passed");
 	
 	
 }
