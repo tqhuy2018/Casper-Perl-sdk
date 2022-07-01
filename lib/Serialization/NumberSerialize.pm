@@ -153,6 +153,7 @@ sub findQuotientAndRemainderOfStringNumber {
 		$retQNR->setQuotient("$quotient");
 		return $retQNR;
 	} else {
+		$startIndex = 2;
 		my $first2Char = substr $fromNumberInStr,0,2;
 		my $value2 = int($first2Char);
 		if($value2 < 16) {
