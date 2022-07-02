@@ -259,7 +259,11 @@ sub serializeFromCLParseOption {
 	print("Serialize for Option not null\n");
 	my $clParsedInner1 = new CLValue::CLParse();
 	$clParsedInner1 = $clParsed->getInnerParse1();
-	my $innerParsedSerialization = serializeFromCLParse($clParsedInner1);
+	print("clParseINner 1 vlaue:".$clParsedInner1->getItsValueStr()."\n");
+	$clTypeInner1 = new CLValue::CLType();
+	$clTypeInner1 = $clParsedInner1->getItsCLType();
+	print("Cltype inner 1:".$clTypeInner1->getItsTypeStr()."\n");
+	my $innerParsedSerialization = serializeFromCLParse("0",$clParsedInner1);
 	print("In Option, Serialize inner:".$innerParsedSerialization."\n");
 	return "01".$innerParsedSerialization;
 }
