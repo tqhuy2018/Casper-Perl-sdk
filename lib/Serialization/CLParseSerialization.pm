@@ -298,6 +298,41 @@ sub serializeFromCLParseList {
 	}
 	return $ret;
 }
+=comment
+This function serialize  CLValue of type  Map, the rule for serialization:
+If the map is empty return "00000000"
+else
+First get the size of the map, then get the U32.serialize of the map size, let call it lengthSerialization
+For 1 pair (key,value) the serialization is key.serialization + value.serialization
+map.serialization = lengthSerialization +  concatenation of all pair(key,value)
+=cut
+sub serializeFromCLParseMap {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my @listKey = $clParsed->getInnerParse1()->getItsValueList();
+	my @listValue = $clParsed->getInnerParse2()->getItsValueList();
+	my $totalElement = @listKey;
+	if($totalElement == 0) {
+		return "00000000";
+	}
+	my $numberSerialize = new Serialization::NumberSerialize();
+	my $ret = $numberSerialize->serializeForU32("$totalElement");
+	my @sequence = (0..$totalElement-1);
+	for my $i (@sequence) {
+		my $clParseI = new CLValue::CLParse();
+		$clParseKey = @listKey[$i];
+		my $clParseKey = new CLValue::CLType();
+		$clTypeKey = $clParseKey->getItsCLType();
+		my $oneParsedSerialization = serializeFromCLParse("0",$clParseKey);
+		my $clParseValue = new CLValue::CLType();
+		$clParseValue = @listValue[i];
+		$clTypeValue = $clParseValue->getItsCLType();
+		my $keySerialization = serializeFromCLParse("0",$clParseKey);
+		my $valueSerialization = serializeFromCLParse("0",$clParseValue);
+		$ret = $ret.$keySerialization.$valueSerialization;
+	}
+}
  # Function for the serialization of  CLParse primitive in type with no recursive CLValue inside, such as Bool, U8, U32, I32, String, ....
  # input: a clParse object
  # output: String represents the serialization of the clParse
@@ -350,6 +385,8 @@ sub serializeFromCLParseCompound {
 		return serializeFromCLParseOption($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_LIST) {
 		return serializeFromCLParseList($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP) {
+		return serializeFromCLParseMap($clParsed);
 	} 
 }
 sub serializeFromCLParse {

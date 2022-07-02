@@ -379,5 +379,30 @@ sub testCLParsedSerialization {
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed2);
 	ok($serialization eq "030000000d00000048656c6c6f2c20576f726c642110000000426f6e6a6f7572206c65206d6f6e64650a000000486f6c61204d756e646f","Test serialization for CLParsed List(String) value passed");
 	
+	# List of 3 CLParse U8 assertion
+	
+	$clTypeList1->setItsTypeStr($Common::ConstValues::CLTYPE_U8);
+	$clParseList1->setItsCLType($clTypeList1);
+	$clParseList1->setItsValueStr("100");
+	# Second U32
+	$clParseList2->setItsCLType($clTypeList1);
+	$clParseList2->setItsValueStr("0");
+	# Third U32 
+	$clParseList3->setItsCLType($clTypeList1);
+	$clParseList3->setItsValueStr("255");
+	@listValue = ();
+	@listValue = ($clParseList1,$clParseList2,$clParseList3);
+	$clParsed2->setItsValueList(@listValue);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed2);
+	ok($serialization eq "030000006400ff","Test serialization for CLParsed List(U8) value passed");
+	
+=comment
+List(Map(String,String) assertion
+base on the deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a37Bc9386020609aa1CabaD895c3E2E104d877B936C6Ffa2302268
+refer to session section of the deploy, args item number 2
+=cut 
+
+
+	
 }
 testCLParsedSerialization();
