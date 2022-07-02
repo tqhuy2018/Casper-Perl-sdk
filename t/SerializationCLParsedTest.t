@@ -201,5 +201,46 @@ sub testCLParsedSerialization {
 	$clParsed->setItsValueStr("0");
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
 	ok($serialization eq "00","Test serialization for CLParsed U512(0) value passed");
+	
+	# CLParse String assertion
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParsed->setItsCLType($clType);
+	$clParsed->setItsValueStr("Hello, World!");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "0d00000048656c6c6f2c20576f726c6421","Test serialization for CLParsed String(Hello, World!) value passed");
+	
+	$clParsed->setItsValueStr("lWJWKdZUEudSakJzw1tn");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "140000006c574a574b645a5545756453616b4a7a7731746e","Test serialization for CLParsed String(lWJWKdZUEudSakJzw1tn) value passed");
+
+	$clParsed->setItsValueStr("S1cXRT3E1jyFlWBAIVQ8");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "140000005331635852543345316a79466c57424149565138","Test serialization for CLParsed String(S1cXRT3E1jyFlWBAIVQ8) value passed");
+
+	$clParsed->setItsValueStr("123456789123456789123456789123456789123456789123456789");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "36000000313233343536373839313233343536373839313233343536373839313233343536373839313233343536373839313233343536373839","Test serialization for CLParsed String(123456789123456789123456789123456789123456789123456789) value passed");
+
+	$clParsed->setItsValueStr("target");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "06000000746172676574","Test serialization for CLParsed String(target) value passed");
+	
+	$clParsed->setItsValueStr("Weather");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "0700000057656174686572","Test serialization for CLParsed String(Weather) value passed");
+	
+	$clParsed->setItsValueStr("aa");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "020000006161","Test serialization for CLParsed String(aa) value passed");
+	
+	$clParsed->setItsValueStr("I want to know, really!");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "17000000492077616e7420746f206b6e6f772c207265616c6c7921","Test serialization for CLParsed String(I want to know, really!) value passed");
+	
+	# Unit assertion
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_UNIT);
+	$clParsed->setItsCLType($clType);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "","Test serialization for CLParsed Unit value passed");
 }
 testCLParsedSerialization();

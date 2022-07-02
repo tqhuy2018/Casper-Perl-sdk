@@ -41,7 +41,7 @@ sub serializeForU32 {
 	my $valueInStr = $list[1];
 	if($valueInStr eq "0") {
 		return "00000000";
-	} 
+	}
 	my $ret = fromDecimalStringToHexaString($valueInStr);
 	my $retLength = length($ret);
 	if($retLength < 8) {
@@ -88,14 +88,12 @@ sub serializeForI32 {
 	my $numberInStr = $list[1];
 	my $firstChar = substr $numberInStr,0,1;
 	if($firstChar eq "-") {
-		print("I32 for minus number".$numberInStr."\n");
 		my $strLength = length($numberInStr);
 		my $numberValueStr = substr $numberInStr,1,$strLength-1;
 		my $numberValue = int($numberValueStr);
 		my $remain = 4294967295 - $numberValue + 1;
 		return serializeForU32("0",$remain);
 	} else {
-		print("Serialize I32 for ".$numberInStr."\n");
 		return serializeForU32("0",$numberInStr);
 	}
 }
@@ -202,8 +200,8 @@ sub findQuotientAndRemainderOfStringNumber {
 	my $remainder = 0;
 	my $quotient = 0;
 	if($strLength < 2) {
-		$retQNR->setRemainder("0");
-		$retQNR->setQuotient("$value");
+		$retQNR->setQuotient("0");
+		$retQNR->setRemainder("$value");
 		return $retQNR;
 	} elsif($strLength == 2) {
 		$remainder = $value % 16;
