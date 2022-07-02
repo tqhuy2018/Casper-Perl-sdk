@@ -256,9 +256,11 @@ sub serializeFromCLParseOption {
 	if($clParsed->getItsValueStr() eq $Common::ConstValues::NULL_VALUE) {
 		return "00";
 	}
+	print("Serialize for Option not null\n");
 	my $clParsedInner1 = new CLValue::CLParse();
 	$clParsedInner1 = $clParsed->getInnerParse1();
 	my $innerParsedSerialization = serializeFromCLParse($clParsedInner1);
+	print("In Option, Serialize inner:".$innerParsedSerialization."\n");
 	return "01".$innerParsedSerialization;
 }
 =comment
