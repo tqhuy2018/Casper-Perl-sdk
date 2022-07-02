@@ -312,5 +312,72 @@ sub testCLParsedSerialization {
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
 	ok($serialization eq "010a000000","Test serialization for CLParsed Option(U32(10)) value passed");
 	
+	# Option(U64(123456)) assertion
+	$clTypeInner1->setItsTypeStr($Common::ConstValues::CLTYPE_U64);
+	$clType->setInnerCLType1($clTypeInner1);
+	$clParsed->setItsCLType($clType);
+	$clParsedInner1->setItsCLType($clTypeInner1);
+	$clParsedInner1->setItsValueStr("123456");
+	$clParsed->setInnerParse1($clParsedInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "0140e2010000000000","Test serialization for CLParsed Option(U64(123456)) value passed");
+	
+	# Option(String("Hello, World!")) assertion
+	$clTypeInner1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clType->setInnerCLType1($clTypeInner1);
+	$clParsed->setItsCLType($clType);
+	$clParsedInner1->setItsCLType($clTypeInner1);
+	$clParsedInner1->setItsValueStr("Hello, World!");
+	$clParsed->setInnerParse1($clParsedInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "010d00000048656c6c6f2c20576f726c6421","Test serialization for CLParsed Option(String(Hello, World!)) value passed");
+	
+	# List assertion
+	# Empty list assertion
+	my $clParsed2 = new CLValue::CLParse();
+	my $clType2 = new CLValue::CLType();
+	$clType2->setItsTypeStr($Common::ConstValues::CLTYPE_LIST);
+	$clParsed2->setItsCLType($clType2);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed2);
+	ok($serialization eq "","Test serialization for CLParsed List(empty) value passed");
+	
+	# List of 3 CLParse U32 number assertion
+	# First U32 
+	my $clParseList1 = new CLValue::CLParse();
+	my $clTypeList1 = new CLValue::CLType();
+	$clTypeList1->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	$clParseList1->setItsCLType($clTypeList1);
+	$clParseList1->setItsValueStr("1");
+	# Second U32
+	my $clParseList2 = new CLValue::CLParse();
+	$clParseList2->setItsCLType($clTypeList1);
+	$clParseList2->setItsValueStr("2");
+	# Third U32 
+	my $clParseList3 = new CLValue::CLParse();
+	$clParseList3->setItsCLType($clTypeList1);
+	$clParseList3->setItsValueStr("3");
+	
+	my @listValue = ($clParseList1,$clParseList2,$clParseList3);
+	$clParsed2->setItsValueList(@listValue);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed2);
+	ok($serialization eq "03000000010000000200000003000000","Test serialization for CLParsed List(U32) value passed");
+	
+	# List of 3 CLParse String assertion
+	
+	$clTypeList1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParseList1->setItsCLType($clTypeList1);
+	$clParseList1->setItsValueStr("Hello, World!");
+	# Second U32
+	$clParseList2->setItsCLType($clTypeList1);
+	$clParseList2->setItsValueStr("Bonjour le monde");
+	# Third U32 
+	$clParseList3->setItsCLType($clTypeList1);
+	$clParseList3->setItsValueStr("Hola Mundo");
+	@listValue = ();
+	@listValue = ($clParseList1,$clParseList2,$clParseList3);
+	$clParsed2->setItsValueList(@listValue);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed2);
+	ok($serialization eq "030000000d00000048656c6c6f2c20576f726c642110000000426f6e6a6f7572206c65206d6f6e64650a000000486f6c61204d756e646f","Test serialization for CLParsed List(String) value passed");
+	
 }
 testCLParsedSerialization();

@@ -287,11 +287,13 @@ sub serializeFromCLParseList {
 	}
 	my $numberSerialize = new Serialization::NumberSerialize();
 	my $ret = $numberSerialize->serializeForU32("$totalElement");
-	my @sequence = (0..$totalElement);
+	my @sequence = (0..$totalElement-1);
 	for my $i (@sequence) {
 		my $clParseI = new CLValue::CLParse();
-		$clParseI = @listValue[i];
-		my $oneParsedSerialization = serializeFromCLParse($clParseI);
+		$clParseI = @listValue[$i];
+		my $clTypeI = new CLValue::CLType();
+		$clTypeI = $clParseI->getItsCLType();
+		my $oneParsedSerialization = serializeFromCLParse("0",$clParseI);
 		$ret = $ret.$oneParsedSerialization;
 	}
 	return $ret;
@@ -357,10 +359,8 @@ sub serializeFromCLParse {
 	my $clType = new CLValue::CLType();
 	$clType = $clParsed->getItsCLType();
 	if($clType->isCLTypePrimitive()) {
-		print("Serialize for cltype primitive\n");
 		return serializeFromCLParsePrimitive($clParsed);
 	} else {
-		print("Serialize for cltype compound\n");
 		serializeFromCLParseCompound($clParsed);
 	}
 	 
