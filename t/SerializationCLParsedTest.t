@@ -244,7 +244,6 @@ sub testCLParsedSerialization {
 	ok($serialization eq "","Test serialization for CLParsed Unit value passed");
 	
 	# Key assertion
-	
 	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_KEY);
 	$clParsed->setItsCLType($clType);
 	$clParsed->setItsValueStr("account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269");
@@ -258,6 +257,59 @@ sub testCLParsedSerialization {
 	$clParsed->setItsValueStr("uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007");
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
 	ok($serialization eq "02be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c607","Test serialization for CLParsed Key(URef) value passed");
+	
+	$clParsed->setItsValueStr("abcdef");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq $Common::ConstValues::INVALID_VALUE,"Test negative serialization for CLParsed Key(abcdef) value passed");
+	
+	# URef assertion	
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_UREF);
+	$clParsed->setItsCLType($clType);
+	$clParsed->setItsValueStr("uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "02be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c607","Test serialization for CLParsed URef value passed");
+	
+	$clParsed->setItsValueStr("uref-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401-007");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "028cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae440107","Test serialization for CLParsed URef value passed");
+	
+	$clParsed->setItsValueStr("hash-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401-007");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq $Common::ConstValues::INVALID_VALUE,"Test negative serialization for CLParsed URef value passed");
+	
+	# PublicKey assertion
+	
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_PUBLIC_KEY);
+	$clParsed->setItsCLType($clType);
+	$clParsed->setItsValueStr("01394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "01394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b","Test serialization for CLParsed PublicKey value passed");
+	
+	$clParsed->setItsValueStr("abc8de76bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fcec");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "abc8de76bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fcec","Test serialization for CLParsed PublicKey value passed");
+	
+	# Option assertion
+	
+	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+	$clParsed->setItsCLType($clType);
+	
+	# Option(Null) assertion
+	$clParsed->setItsValueStr($Common::ConstValues::NULL_VALUE);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "00","Test serialization for CLParsed Option(NULL) value passed");
+	
+	# Option(U32(10)) assertion
+	my $clParsedInner1 = new CLValue::CLParse();
+	my $clTypeInner1 = new CLValue::CLType();
+	$clTypeInner1->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	$clType->setInnerCLType1($clTypeInner1);
+	$clParsed->setItsCLType($clType);
+	$clParsedInner1->setItsCLType($clTypeInner1);
+	$clParsedInner1->setItsValueStr("10");
+	$clParsed->setInnerParse1($clParsedInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsed);
+	ok($serialization eq "010a000000","Test serialization for CLParsed Option(U32(10)) value passed");
 	
 }
 testCLParsedSerialization();

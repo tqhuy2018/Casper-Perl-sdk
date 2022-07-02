@@ -204,7 +204,7 @@ sub serializeFromCLParseKey {
 		$ret = "02".$ret.$suffix;
 		return $ret;
 	}
-	return "Key".$Common::ConstValues::INVALID_VALUE;
+	return $Common::ConstValues::INVALID_VALUE;
 }
 =comment
 This function serialize  CLValue of type  URef
@@ -212,7 +212,83 @@ Sample serialization for value : uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9
 Return result will be be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c607
 =cut
 sub serializeFromCLParseURef {
-	
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $value = $clParsed->getItsValueStr();
+	my $littlestring = "uref-";
+	my @matches3 = $value =~ /($littlestring)/g;
+	$count = @matches3;
+	if($count == 1) {
+		my $strLength = length($value) - 9;
+		my $suffix = substr $value,$strLength + 7,2;
+		my $ret = substr $value,5, $strLength;
+		$ret = "02".$ret.$suffix;
+		return $ret;
+	}
+	return $Common::ConstValues::INVALID_VALUE;
+}
+
+# This function serialize  CLValue of type  PublicKey, just return the PublicKey value
+sub serializeFromCLParsePublicKey {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	return $clParsed->getItsValueStr();
+}
+# This function serialize  CLValue of type  ByteArray,, simply return the ByteArray value
+sub serializeFromCLParseByteArray {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	return $clParsed->getItsValueStr();
+}
+=comment
+This function serialize  CLValue of type  Option
+Rule for Option serialization:
+If the value inside the Option is Null, return "00"
+else return "01" + (Option.inner parse value).serialization
+=cut
+sub serializeFromCLParseOption {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	if($clParsed->getItsValueStr() eq $Common::ConstValues::NULL_VALUE) {
+		return "00";
+	}
+	my $clParsedInner1 = new CLValue::CLParse();
+	$clParsedInner1 = $clParsed->getInnerParse1();
+	my $innerParsedSerialization = serializeFromCLParse($clParsedInner1);
+	return "01".$innerParsedSerialization;
+}
+=comment
+This function serialize  CLValue of type  List
+The rule is:
+If the List is empty, just return empty string ""
+If the List is not empty, then first take the length of the List, let say it totalElement
+Get the prefix as U32 Serialization for totalElement: prefix = U32.serialization(totalElement)
+Get through the List element from one to one, get the Serialization of each element and concatenate them
+Add the prefix to the concatenation from the List element serialization, that the result need to return.
+=cut
+sub serializeFromCLParseList {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my @listValue = $clParsed->getItsValueList();
+	my $totalElement = @listValue;
+	if($totalElement == 0) {
+		return "";
+	}
+	my $numberSerialize = new Serialization::NumberSerialize();
+	my $ret = $numberSerialize->serializeForU32("$totalElement");
+	my @sequence = (0..$totalElement);
+	for my $i (@sequence) {
+		my $clParseI = new CLValue::CLParse();
+		$clParseI = @listValue[i];
+		my $oneParsedSerialization = serializeFromCLParse($clParseI);
+		$ret = $ret.$oneParsedSerialization;
+	}
+	return $ret;
 }
  # Function for the serialization of  CLParse primitive in type with no recursive CLValue inside, such as Bool, U8, U32, I32, String, ....
  # input: a clParse object
@@ -250,14 +326,25 @@ sub serializeFromCLParseURef {
 		return serializeFromCLParseKey($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_UREF) {
 		return serializeFromCLParseURef($clParsed);
-	} 
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLIC_KEY) {
+		return serializeFromCLParsePublicKey($clParsed);
+	}
 	return $Common::ConstValues::INVALID_VALUE;
- }
+}
 
- sub serializeFromCLParseCompound {
- 	
- }
- sub serializeFromCLParse {
+sub serializeFromCLParseCompound {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $clType = new CLValue::CLType();
+	$clType = $clParsed->getItsCLType();
+ 	if($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_OPTION) {
+		return serializeFromCLParseOption($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_LIST) {
+		return serializeFromCLParseList($clParsed);
+	} 
+}
+sub serializeFromCLParse {
  	my @list = @_;
 	my $clParsed = new CLValue::CLParse();
 	$clParsed = $list[1];
@@ -267,9 +354,9 @@ sub serializeFromCLParseURef {
 		print("Serialize for cltype primitive\n");
 		return serializeFromCLParsePrimitive($clParsed);
 	} else {
-		print("Serialize for cltype compound");
+		print("Serialize for cltype compound\n");
 		serializeFromCLParseCompound($clParsed);
 	}
 	 
- }
- 1;
+}
+1;
