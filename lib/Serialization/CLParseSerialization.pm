@@ -163,21 +163,48 @@ For type URef: same like CLValue of CLType URef serialization
 Sample value and serialization:
 For URef
 "uref-be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c6-007" will has the serialization with value
-"be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c607"
+"02be1dc0fd639a3255c1e3e5e2aa699df66171e40fa9450688c5d718b470e057c607"
 For Account
 "account-hash-d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269" will has the serialization with value
-"d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269"
+"00d0bc9cA1353597c4004B8F881b397a89c1779004F5E547e04b57c2e7967c6269"
 For Hash
 "hash-8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401" will has the serialization with value
-"8cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401"
+"018cf5e4acf51f54eb59291599187838dc3bc234089c46fc6ca8ad17e762ae4401"
 =cut
 sub serializeFromCLParseKey {
 	my @list = @_;
 	my $clParsed = new CLValue::CLParse();
 	$clParsed = $list[0];
-	if($clParsed->getItsValueStr() eq "") {
-		return "00000000";
+	my $value = $clParsed->getItsValueStr();
+	my $littlestring = "account-hash-";
+	my @matches = $value =~ /($littlestring)/g;
+	my $count = @matches;
+	if($count == 1) {
+		my $strLength = length($value) - 13;
+		my $ret = substr $value,13, $strLength;
+		$ret = "00".$ret;
+		return $ret;
 	}
+ 	$littlestring = "hash-";
+	my @matches2 = $value =~ /($littlestring)/g;
+	$count = @matches2;
+	if($count == 1) {
+		my $strLength = length($value) - 5;
+		my $ret = substr $value,5, $strLength;
+		$ret = "01".$ret;
+		return $ret;
+	}
+	$littlestring = "uref-";
+	my @matches3 = $value =~ /($littlestring)/g;
+	$count = @matches3;
+	if($count == 1) {
+		my $strLength = length($value) - 9;
+		my $suffix = substr $value,$strLength + 7,2;
+		my $ret = substr $value,5, $strLength;
+		$ret = "02".$ret.$suffix;
+		return $ret;
+	}
+	return "Key".$Common::ConstValues::INVALID_VALUE;
 }
 =comment
 This function serialize  CLValue of type  URef
@@ -219,6 +246,7 @@ sub serializeFromCLParseURef {
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_UNIT) {
 		return serializeFromCLParseUnit($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_KEY) {
+		print("ABout to serialize of tyep Key");
 		return serializeFromCLParseKey($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_UREF) {
 		return serializeFromCLParseURef($clParsed);
