@@ -42,8 +42,18 @@ sub serializeForHeader {
 	my $parseSerialization = new Serialization::CLParseSerialization();
 	$timeStampSerialization = $parseSerialization->serializeFromCLParse($clParse64);
 	print("Time stamp serialization is:".$timeStampSerialization."\n");
+	# Serialization for Header.ttl
 	print("TTL is:".$header->getTTL()."\n");
-	my $ttlSerialization = fromTTLToMiliseconds($header->getTTL());
+	my $ttlMiliseconds = fromTTLToMiliseconds($header->getTTL());
+	$clParse64->setItsValueStr("$ttlMiliseconds");
+	my $ttlSerialization = $parseSerialization->serializeFromCLParse($clParse64);
+	print("ttlMiliseconds:".$ttlMiliseconds." and serialization:".$ttlSerialization."\n");
+	# Serialization for Header.gasPrice
+	my $gasPrice = $header->getGasPrice();
+	$clParse64->setItsValueStr("$gasPrice");
+	my $gasPriceSerialization = $parseSerialization->serializeFromCLParse($clParse64);
+	print("gas price:".$gasPrice." and serialization:".$gasPriceSerialization."\n");
+	# Serialization for Header.dependency
 	my $ret = "";
 	return $ret;
 }
@@ -61,7 +71,7 @@ sub fromTTLToMiliseconds {
 	if($count > 0) {
 		my @sequence =(0..$count-1);
 		for my $i (@sequence) {
-			my $ret1 = fromTTLToMiliseconds(@matches[$i]);
+			my $ret1 = fromTTLToMiliseconds($matches[$i]);
 			$ret = $ret + $ret1;
 		}
 		return $ret;
@@ -314,6 +324,7 @@ sub fromTTLToMiliseconds {
 			$numValue = int($numStr);
 			return $numValue * 24 * 3600 * 1000;
 		}
+	}
 	return $ret;
 }
 1;
