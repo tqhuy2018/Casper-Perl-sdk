@@ -151,7 +151,34 @@ sub serializeForExecutableDeployItem {
 		my $entryPointSerialization = $parseSerialization->serializeFromCLParse($parseString);
 		my $runtimeArgsSerialization = serializeForRuntimeArgs("0",$realItem->getArgs());
 		$ret = $ret.$realItem->getItsHash().$entryPointSerialization.$runtimeArgsSerialization;
-		return $ret;
-            
+		return $ret;    
+	}
+	# Serialization for ExecutableDeployItem of type StoredVersionedContractByHash
+	elsif($ediType eq $Common::ConstValues::$EDI_STORED_VERSIONED_CONTRACT_BY_HASH) {
+		my $realItem = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash();
+		$realItem = $input->getItsValue();
+		# prefix 03 for ExecutableDeployItem as type StoredVersionedContractByHash
+        # the result = "03" + hash + Option(U32).Serialize(version) + String.Serialize(entry_point) + Args.Serialized
+          $ret = "03";
+        # Option(U32).Serialize(version) 
+        my $parseOption = new CLValue::CLParse();
+        my $typeOption = new CLValue::CLType();
+        $typeOption->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+        $parseOption->setItsCLType($typeOption);
+        
+        
+        
+        # String.Serialize(entry_point)
+        my $parseString = new CLValue::CLParse();
+		my $typeString = new CLValue::CLType();
+		$typeString->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+		$parseString->setItsCLType($typeString);
+		$parseString->setItsValueStr($realItem->getEntryPoint());
+		my $parseSerialization = new Serialization::CLParseSerialization();
+		my $entryPointSerialization = $parseSerialization->serializeFromCLParse($parseString);
+		# Args.Serialized
+		my $runtimeArgsSerialization = serializeForRuntimeArgs("0",$realItem->getArgs());
+		$ret = $ret.$realItem->getItsHash().$entryPointSerialization.$runtimeArgsSerialization;
+		return $ret;    
 	}
 }
