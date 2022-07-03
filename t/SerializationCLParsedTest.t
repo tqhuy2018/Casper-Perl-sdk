@@ -582,6 +582,99 @@ in execution_results item 21
 
 	# CLValue Tuple1 serialization
 	
+	my $clParsedTuple1 = new CLValue::CLParse();
+	my $clTypeTuple1 = new CLValue::CLType();
+	$clTypeTuple1->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE1);
+	$clParsedTuple1->setItsCLType($clTypeTuple1);
+	
+	# CLParse Tuple1(I32(1000)) assertion
+	my $clParsedTuple1Inner1 = new CLValue::CLParse();
+	my $clTypeTuple1Inner1 = new CLValue::CLType();
+	$clTypeTuple1Inner1->setItsTypeStr($Common::ConstValues::CLTYPE_I32);
+	$clParsedTuple1Inner1->setItsCLType($clTypeTuple1Inner1);
+	$clParsedTuple1Inner1->setItsValueStr("1000");
+	$clParsedTuple1->setInnerParse1($clParsedTuple1Inner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedTuple1);
+	ok($serialization eq "e8030000","Test serialization for CLParsed Tuple1(I32) value passed");
+	
+	# CLParse Tuple1(String("Hello, World!")) assertion
+	$clTypeTuple1Inner1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParsedTuple1Inner1->setItsCLType($clTypeTuple1Inner1);
+	$clParsedTuple1Inner1->setItsValueStr("Hello, World!");
+	$clParsedTuple1->setInnerParse1($clParsedTuple1Inner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedTuple1);
+	ok($serialization eq "0d00000048656c6c6f2c20576f726c6421","Test serialization for CLParsed Tuple1(String) value passed");
+	
+	# CLParse Tuple2 assertion
+=comment
+CLParse Tuple2 assertion
+Tuple2(String("abc"),U512(1)) assertion
+Take this deploy address https://testnet.cspr.live/deploy/2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61
+in execution_results item 31
+=cut
+	my $clParsedTuple2 = new CLValue::CLParse();
+	my $clTypeTuple2 = new CLValue::CLType();
+	$clTypeTuple2->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE2);
+	$clParsedTuple2->setItsCLType($clTypeTuple2);
+	
+	my $clParsedTuple2Inner1 = new CLValue::CLParse();
+	my $clTypeTuple2Inner1 = new CLValue::CLType();
+	$clTypeTuple2Inner1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParsedTuple2Inner1->setItsCLType($clTypeTuple2Inner1);
+	$clParsedTuple2Inner1->setItsValueStr("abc");
+	$clParsedTuple2->setInnerParse1($clParsedTuple2Inner1);
+	
+	my $clParsedTuple2Inner2 = new CLValue::CLParse();
+	my $clTypeTuple2Inner2 = new CLValue::CLType();
+	$clTypeTuple2Inner2->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	$clParsedTuple2Inner2->setItsCLType($clTypeTuple2Inner2);
+	$clParsedTuple2Inner2->setItsValueStr("1");
+	$clParsedTuple2->setInnerParse2($clParsedTuple2Inner2);
+	
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedTuple2);
+	ok($serialization eq "030000006162630101","Test serialization for CLParsed Tuple2(String,U512) value passed");
+	
+	# CLParse Tuple3 assertion
+=comment
+CLParse Tuple3 assertion
+Tuple3(PublicKey,Option,U512) assertion
+Take this deploy address https://testnet.cspr.live/deploy/2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61
+in execution_results item 36
+=cut
+	my $clParsedTuple3 = new CLValue::CLParse();
+	my $clTypeTuple3 = new CLValue::CLType();
+	$clTypeTuple3->setItsTypeStr($Common::ConstValues::CLTYPE_TUPLE3);
+	$clParsedTuple3->setItsCLType($clTypeTuple3);
+	
+	my $clParsedTuple3Inner1 = new CLValue::CLParse();
+	my $clTypeTuple3Inner1 = new CLValue::CLType();
+	$clTypeTuple3Inner1->setItsTypeStr($Common::ConstValues::CLTYPE_PUBLIC_KEY);
+	$clParsedTuple3Inner1->setItsCLType($clTypeTuple3Inner1);
+	$clParsedTuple3Inner1->setItsValueStr("01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9");
+	$clParsedTuple3->setInnerParse1($clParsedTuple3Inner1);
+	
+	my $clParsedTuple3Inner2 = new CLValue::CLParse();
+	my $clTypeTuple3Inner2 = new CLValue::CLType();
+	$clTypeTuple3Inner2->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+	$clParsedTuple3Inner2->setItsCLType($clTypeTuple3Inner2);
+	$clParsedTuple3Inner2->setItsValueStr("ok");
+	my $clParseTuple3OptionInner = new CLValue::CLParse();
+	my $clTypeTuple3OptionInner = new CLValue::CLType();
+	$clTypeTuple3OptionInner->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParseTuple3OptionInner->setItsCLType($clTypeTuple3OptionInner);
+	$clParseTuple3OptionInner->setItsValueStr("abc");
+	$clParsedTuple3Inner2->setInnerParse1($clParseTuple3OptionInner);
+	$clParsedTuple3->setInnerParse2($clParsedTuple3Inner2);
+	
+	my $clParsedTuple3Inner3 = new CLValue::CLParse();
+	my $clTypeTuple3Inner3 = new CLValue::CLType();
+	$clTypeTuple3Inner3->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	$clParsedTuple3Inner3->setItsCLType($clTypeTuple3Inner3);
+	$clParsedTuple3Inner3->setItsValueStr("2");
+	$clParsedTuple3->setInnerParse3($clParsedTuple3Inner3);
+	
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedTuple3);
+	ok($serialization eq "01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa901030000006162630102","Test serialization for CLParsed Tuple3(PublicKey,Option(String),U512) value passed");
 }
 
 testCLParsedSerialization();

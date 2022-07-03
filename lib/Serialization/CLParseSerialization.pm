@@ -349,6 +349,50 @@ sub serializeFromCLParseResult {
 	my $innerParsedSerialization = serializeFromCLParse("0",$clParsedInner1);
 	return $prefix.$innerParsedSerialization;
 }
+
+# This function serialize  CLValue of type  Tuple1, the result is the serialization of the CLParse inner value in the Tuple1
+sub serializeFromCLParseTuple1 {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $clParsedInner1 = new CLValue::CLParse();
+	$clParsedInner1 = $clParsed->getInnerParse1();
+	my $innerParsedSerialization = serializeFromCLParse("0",$clParsedInner1);
+	return $innerParsedSerialization;
+}
+
+# This function serialize  CLValue of type  Tuple2,  the result is the concatenation of 2 inner CLParse values in the Tuple2
+
+sub serializeFromCLParseTuple2 {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $clParsedInner1 = new CLValue::CLParse();
+	$clParsedInner1 = $clParsed->getInnerParse1();
+	my $innerParsedSerialization1 = serializeFromCLParse("0",$clParsedInner1);
+	my $clParsedInner2 = new CLValue::CLParse();
+	$clParsedInner2 = $clParsed->getInnerParse2();
+	my $innerParsedSerialization2 = serializeFromCLParse("0",$clParsedInner2);
+	return $innerParsedSerialization1.$innerParsedSerialization2;
+}
+
+# This function serialize  CLValue of type  Tuple3, the result is the concatenation of 3 inner CLParse values in the Tuple3
+   
+sub serializeFromCLParseTuple3 {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $clParsedInner1 = new CLValue::CLParse();
+	$clParsedInner1 = $clParsed->getInnerParse1();
+	my $innerParsedSerialization1 = serializeFromCLParse("0",$clParsedInner1);
+	my $clParsedInner2 = new CLValue::CLParse();
+	$clParsedInner2 = $clParsed->getInnerParse2();
+	my $innerParsedSerialization2 = serializeFromCLParse("0",$clParsedInner2);
+	my $clParsedInner3 = new CLValue::CLParse();
+	$clParsedInner3 = $clParsed->getInnerParse3();
+	my $innerParsedSerialization3 = serializeFromCLParse("0",$clParsedInner3);
+	return $innerParsedSerialization1.$innerParsedSerialization2.$innerParsedSerialization3;
+}
  # Function for the serialization of  CLParse primitive in type with no recursive CLValue inside, such as Bool, U8, U32, I32, String, ....
  # input: a clParse object
  # output: String represents the serialization of the clParse
@@ -407,8 +451,14 @@ sub serializeFromCLParseCompound {
 		return serializeFromCLParseList($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP) {
 		return serializeFromCLParseMap($clParsed);
-	}  elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT) {
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT) {
 		return serializeFromCLParseResult($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE1) {
+		return serializeFromCLParseTuple1($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE2) {
+		return serializeFromCLParseTuple2($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_TUPLE3) {
+		return serializeFromCLParseTuple3($clParsed);
 	}
 }
 sub serializeFromCLParse {
