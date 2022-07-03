@@ -284,7 +284,7 @@ sub serializeFromCLParseList {
 	my @sequence = (0..$totalElement-1);
 	for my $i (@sequence) {
 		my $clParseI = new CLValue::CLParse();
-		$clParseI = @listValue[$i];
+		$clParseI = $listValue[$i];
 		my $clTypeI = new CLValue::CLType();
 		$clTypeI = $clParseI->getItsCLType();
 		my $oneParsedSerialization = serializeFromCLParse("0",$clParseI);
@@ -316,11 +316,11 @@ sub serializeFromCLParseMap {
 	for my $i (@sequence) {
 		my $clParseI = new CLValue::CLParse();
 		my $clParseKey = new CLValue::CLType();
-		$clParseKey = @listKey[$i];
+		$clParseKey = $listKey[$i];
 		$clTypeKey = $clParseKey->getItsCLType();
 		my $oneParsedSerialization = serializeFromCLParse("0",$clParseKey);
 		my $clParseValue = new CLValue::CLType();
-		$clParseValue = @listValue[$i];
+		$clParseValue = $listValue[$i];
 		$clTypeValue = $clParseValue->getItsCLType();
 		my $keySerialization = serializeFromCLParse("0",$clParseKey);
 		my $valueSerialization = serializeFromCLParse("0",$clParseValue);

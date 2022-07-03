@@ -460,7 +460,8 @@ refer to session section of the deploy, args item number 2
 	$clParseMapValue4->setItsCLType($clTypeMapValue);
 	$clParseMapValue4->setItsValueStr("991717147268569848142418");
 	# Map Key assignment
-	my @listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4);
+	@listValue = ();
+	@listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4);
 	my $innerParseValue = new CLValue::CLParse();
 	$innerParseValue->setItsValueList(@listValue);
 	$clParsedMap->setInnerParse2($innerParseValue);	
@@ -516,7 +517,6 @@ Key generation
 	# Map Key assignment
 	@listValue = ();
 	@listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4,$clParseMapValue5,$clParseMapValue6);
-	my $innerParseValue = new CLValue::CLParse();
 	$innerParseValue->setItsValueList(@listValue);
 	$clParsedMap->setInnerParse2($innerParseValue);	
 	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedMap);
