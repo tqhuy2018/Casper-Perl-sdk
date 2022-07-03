@@ -305,6 +305,15 @@ sub fromTTLToMiliseconds {
 			$numValue = int($numStr);
 			return $numValue * 3600 * 1000;
 		}
+		# if ttl is in format "1d"
+		$findStr = "d";
+		@matches2 = $ttl =~ /($findStr)/g;
+		$count = @matches2;
+		if($count > 0) {
+			$numStr = substr $ttl,0, $ttlStrLength-1;
+			$numValue = int($numStr);
+			return $numValue * 24 * 3600 * 1000;
+		}
 	return $ret;
 }
 1;
