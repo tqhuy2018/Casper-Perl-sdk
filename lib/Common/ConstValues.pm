@@ -102,6 +102,12 @@ our $STORED_VALUE_ERA_INFO                 = "EraInfo";
 our $STORED_VALUE_BID                      = "Bid";
 our $STORED_VALUE_WITHDRAW                 = "Withdraw";
 
+# ExecutableDeployItem
 
-
+our $EDI_MODULE_BYTES 						= "ModuleBytes";
+our $EDI_STORED_CONTRACT_BY_HASH			= "StoredContractByHash";
+our $EDI_STORED_CONTRACT_BY_NAME			= "StoredContractByName";
+our $EDI_STORED_VERSIONED_CONTRACT_BY_NAME  = "StoredVersionedContractByName";
+our $EDI_STORED_VERSIONED_CONTRACT_BY_HASH  = "StoredVersionedContractByHash";
+our $EDI_TRANSFER							= "Transfer";
 1;

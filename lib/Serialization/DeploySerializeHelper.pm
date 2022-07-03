@@ -7,6 +7,8 @@ use CLValue::CLParse;
 use Common::ConstValues; 
 use GetDeploy::DeployHeader;
 use Serialization::CLParseSerialization;
+use GetDeploy::Approval;
+use GetDeploy::Deploy;
 package Serialization::DeploySerializeHelper;
 use Date::Parse;
 
@@ -54,8 +56,72 @@ sub serializeForHeader {
 	my $gasPriceSerialization = $parseSerialization->serializeFromCLParse($clParse64);
 	print("gas price:".$gasPrice." and serialization:".$gasPriceSerialization."\n");
 	# Serialization for Header.dependency
-	my $ret = "";
+	my @dependencies = $header->getDependencies();
+	my $totalDependency = @dependencies;
+	my $clParse32 = new CLValue::CLParse();
+	my $clType32 = new CLValue::CLType();
+	$clType32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	$clParse32->setItsCLType($clType32);
+	$clParse32->setItsValueStr("$totalDependency");
+	my $dependencySerialization = $parseSerialization->serializeFromCLParse($clParse32);
+	if($totalDependency>0) {
+		my @sequenceD = (0..$totalDependency-1);
+		for my $i (@sequenceD) {
+			$dependencySerialization = $dependencySerialization.$dependencies[$i];
+		}
+	}
+	print("dependencySerialization:".$dependencySerialization."\n");
+	# Serialization for Header.chainName
+	my $clParseString = new CLValue::CLParse();
+	my $clTypeString = new CLValue::CLType();
+	$clTypeString->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParseString->setItsCLType($clTypeString);
+	$clParseString->setItsValueStr($header->getChainName());
+	my $chainNameSerialization = $parseSerialization->serializeFromCLParse($clParseString);
+	
+	return $header->getAccount().$timeStampSerialization.$ttlSerialization.$gasPriceSerialization.$header->getBodyHash().$dependencySerialization.$chainNameSerialization;
+}
+=comment
+Serialization for the Deploy Approvals
+Rule for serialization:
+If the approval list is empty, just return "00000000", which is equals to U32.serialize(0)
+If the approval list is not empty, then first get the approval list length, then take the prefixStr = U32.serialize(approvalList.length)
+Then concatenate all the elements in the approval list with rule for each element:
+1 element serialization = singer + signature
+Final result = prefix + (list.serialize)
+=cut
+sub serializeForDeployApproval {
+	my @list = @_;
+	my @listApprovals = $list[1];
+	my $totalA = @listApprovals;
+	my $parse32 = new CLValue::CLParse();
+	my $type32 = new CLValue::CLType();
+	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	$parse32->setItsCLType($type32);
+	$parse32->setItsValueStr("$totalA");
+	my $parseSerialization = new Serialization::CLParseSerialization();
+	my $ret = $parseSerialization->serializeFromCLParse($parse32);
+	if($totalA>0) {
+		my @sequence = (0..$totalA-1);
+		for my $i (@sequence) {
+			my $oneA = new GetDeploy::Approval();
+			$oneA = $listApprovals[$i];
+			$ret = $ret.$oneA->getSigner().$oneA->getSignature();
+		}
+	}
 	return $ret;
+}
+=comment
+ This function do the serialization for the whole deploy object.
+Input: a deploy object
+Output: the serialization of the deploy, built with the rule: header serialization + deploy.hash + payment serialization + session serialization + approval serialization
+=cut
+sub serializeForDeploy {
+	my $deploy = new GetDeploy::Deploy();
+	my @list = @_;
+	$deploy = $list[1];
+	my $ret = serializeForHeader("0",$deploy->getHeader());
+	$ret = $ret.$deploy->getDeployHash();
 }
 sub fromTTLToMiliseconds {
 	my @list = @_;

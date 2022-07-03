@@ -22,7 +22,7 @@ use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName;
-
+use Common:ConstValues;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -62,46 +62,46 @@ sub fromJsonToExecutableDeployItem {
     my $json = $list[1];
     my $ret = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
     # get ExecutableDeployItem of type ModuleBytes
-    my $ediMBJson = $json->{'ModuleBytes'};
+    my $ediMBJson = $json->{$Common::ConstValues::EDI_MODULE_BYTES};
     if($ediMBJson) {
     	my $ediMB = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes->fromJsonObjectToEDIModuleBytes($ediMBJson);
     	$ret->setItsValue($ediMB);
-    	$ret->setItsType("ModuleBytes");
+    	$ret->setItsType($Common::ConstValues::EDI_MODULE_BYTES);
     }
     # get ExecutableDeployItem of type StoredContractByHash
-    my $ediHashJson = $json->{'StoredContractByHash'};
+    my $ediHashJson = $json->{$Common::ConstValues::EDI_STORED_CONTRACT_BY_HASH};
     if($ediHashJson) {
     	my $ediHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash->fromJsonObjectToEDIStoredContractByHash($ediHashJson);
     	$ret->setItsValue($ediHash);
-    	$ret->setItsType("StoredContractByHash");
+    	$ret->setItsType($Common::ConstValues::EDI_STORED_CONTRACT_BY_HASH);
     }
     # get ExecutableDeployItem of type StoredContractByName
-    my $ediNameJson = $json->{'StoredContractByName'};
+    my $ediNameJson = $json->{$Common::ConstValues::EDI_STORED_CONTRACT_BY_NAME};
     if($ediNameJson) {
     	my $ediName = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName->fromJsonObjectToEDIStoredContractByName($ediNameJson);
     	$ret->setItsValue($ediName);
-    	$ret->setItsType("StoredContractByHash");
+    	$ret->setItsType($Common::ConstValues::EDI_STORED_CONTRACT_BY_NAME);
     }
     # get ExecutableDeployItem of type StoredVersionedContractByName
-    my $ediVersionedNameJson = $json->{'StoredVersionedContractByName'};
+    my $ediVersionedNameJson = $json->{$Common::ConstValues::EDI_STORED_VERSIONED_CONTRACT_BY_NAME};
     if($ediVersionedNameJson) {
     	my $ediVName = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName->fromJsonObjectToEDIStoredContractVersionedByName($ediVersionedNameJson);
     	$ret->setItsValue($ediVName);
-    	$ret->setItsType("StoredVersionedContractByName");
+    	$ret->setItsType($Common::ConstValues::EDI_STORED_VERSIONED_CONTRACT_BY_NAME);
     }
     # get ExecutableDeployItem of type StoredVersionedContractByHash
-    my $ediVersionedHashJson = $json->{'StoredVersionedContractByHash'};
+    my $ediVersionedHashJson = $json->{$Common::ConstValues::EDI_STORED_VERSIONED_CONTRACT_BY_HASH};
     if($ediVersionedHashJson) {
     	my $ediVHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash->fromJsonObjectToEDIStoredContractVersionedByHash($ediVersionedHashJson);
     	$ret->setItsValue($ediVHash);
-    	$ret->setItsType("StoredVersionedContractByHash");
+    	$ret->setItsType($Common::ConstValues::EDI_STORED_VERSIONED_CONTRACT_BY_HASH);
     }
     # get ExecutableDeployItem of type Transfer    
-    my $ediTransfer = $json->{'Transfer'};
+    my $ediTransfer = $json->{$Common::ConstValues::EDI_TRANSFER};
     if($ediTransfer) {
     	my $ediVHash = GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer->fromJsonObjectToEDITransfer($ediTransfer);
     	$ret->setItsValue($ediVHash);
-    	$ret->setItsType("Transfer");
+    	$ret->setItsType($Common::ConstValues::EDI_TRANSFER);
     }
     return $ret;
 }
