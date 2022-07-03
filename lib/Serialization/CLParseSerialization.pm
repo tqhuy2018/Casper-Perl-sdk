@@ -256,15 +256,9 @@ sub serializeFromCLParseOption {
 	if($clParsed->getItsValueStr() eq $Common::ConstValues::NULL_VALUE) {
 		return "00";
 	}
-	print("Serialize for Option not null\n");
 	my $clParsedInner1 = new CLValue::CLParse();
 	$clParsedInner1 = $clParsed->getInnerParse1();
-	print("clParseINner 1 vlaue:".$clParsedInner1->getItsValueStr()."\n");
-	$clTypeInner1 = new CLValue::CLType();
-	$clTypeInner1 = $clParsedInner1->getItsCLType();
-	print("Cltype inner 1:".$clTypeInner1->getItsTypeStr()."\n");
 	my $innerParsedSerialization = serializeFromCLParse("0",$clParsedInner1);
-	print("In Option, Serialize inner:".$innerParsedSerialization."\n");
 	return "01".$innerParsedSerialization;
 }
 =comment
@@ -321,17 +315,39 @@ sub serializeFromCLParseMap {
 	my @sequence = (0..$totalElement-1);
 	for my $i (@sequence) {
 		my $clParseI = new CLValue::CLParse();
-		$clParseKey = @listKey[$i];
 		my $clParseKey = new CLValue::CLType();
+		$clParseKey = @listKey[$i];
 		$clTypeKey = $clParseKey->getItsCLType();
 		my $oneParsedSerialization = serializeFromCLParse("0",$clParseKey);
 		my $clParseValue = new CLValue::CLType();
-		$clParseValue = @listValue[i];
+		$clParseValue = @listValue[$i];
 		$clTypeValue = $clParseValue->getItsCLType();
 		my $keySerialization = serializeFromCLParse("0",$clParseKey);
 		my $valueSerialization = serializeFromCLParse("0",$clParseValue);
 		$ret = $ret.$keySerialization.$valueSerialization;
 	}
+	return $ret;
+}
+=comment
+This function serialize  CLValue of type  Result, the rule is:
+If the result is Ok, then the prefix = "01"
+If the result is Err, then the prefix = "00"
+result = prefix + (inner CLParse value).serialized
+=cut
+sub serializeFromCLParseResult {
+	my @list = @_;
+	my $clParsed = new CLValue::CLParse();
+	$clParsed = $list[0];
+	my $prefix = "";
+	if($clParsed->getItsValueStr() eq $Common::ConstValues::CLPARSED_RESULT_OK) {
+		$prefix =  "01";
+	} elsif($clParsed->getItsValueStr() eq $Common::ConstValues::CLPARSED_RESULT_ERR) {
+		$prefix =  "00";
+	}
+	my $clParsedInner1 = new CLValue::CLParse();
+	$clParsedInner1 = $clParsed->getInnerParse1();
+	my $innerParsedSerialization = serializeFromCLParse("0",$clParsedInner1);
+	return $prefix.$innerParsedSerialization;
 }
  # Function for the serialization of  CLParse primitive in type with no recursive CLValue inside, such as Bool, U8, U32, I32, String, ....
  # input: a clParse object
@@ -371,6 +387,10 @@ sub serializeFromCLParseMap {
 		return serializeFromCLParseURef($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_PUBLIC_KEY) {
 		return serializeFromCLParsePublicKey($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_BYTEARRAY) {
+		return serializeFromCLParseByteArray($clParsed);
+	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_ANY) {
+		return $Common::ConstValues::PURE_NULL;
 	}
 	return $Common::ConstValues::INVALID_VALUE;
 }
@@ -387,7 +407,9 @@ sub serializeFromCLParseCompound {
 		return serializeFromCLParseList($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_MAP) {
 		return serializeFromCLParseMap($clParsed);
-	} 
+	}  elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_RESULT) {
+		return serializeFromCLParseResult($clParsed);
+	}
 }
 sub serializeFromCLParse {
  	my @list = @_;

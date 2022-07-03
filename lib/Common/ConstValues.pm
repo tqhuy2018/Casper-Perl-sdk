@@ -30,9 +30,10 @@ our $RPC_PUT_DEPLOY 			= "account_put_deploy";
 our $TEST_NET = "https://node-clarity-testnet.make.services/rpc";
 our $MAIN_NET = "https://node-clarity-mainnet.make.services/rpc";
 
-# NULL or INVALID value
+# NULL, INVALID, PURE_NULL value
 our $NULL_VALUE = "NULL_VALUE";
 our $INVALID_VALUE = "INVALID_VALUE";
+our $PURE_NULL = "NULL";
 
 # For CLParse to Json, used for account_put_deploy RPC call
 
@@ -65,6 +66,9 @@ our $CLTYPE_ANY		 	= "Any";
 
 our $CLTYPE_RESULT_OK	 	= "Result_Ok";
 our $CLTYPE_RESULT_ERR	 	= "Result_Err";
+
+our $CLPARSED_RESULT_OK	 	= "Ok";
+our $CLPARSED_RESULT_ERR	= "Err";
 
 # Transform
 our $TRANSFORM_IDENTITY 				=  "Identity";

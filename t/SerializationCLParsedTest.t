@@ -403,6 +403,185 @@ refer to session section of the deploy, args item number 2
 =cut 
 
 
+	# CLParse Map assertion
+=comment
+	CLParse Map(String,String) assertion
+	Test based on the deploy at this address
+	https://testnet.cspr.live/deploy/430df377ae04726de907f115bb06c52e40f6cd716b4b475a10e4cd9226d1317e
+	please refer to execution_results item 86 to see the real data
+=cut
+	my $clParsedMap = new CLValue::CLParse();
+	my $clTypeMap = new CLValue::CLType();
+	$clTypeMap->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+	$clParsedMap->setItsCLType($clTypeMap);
+	# Key generation
+	# Key CLType declaration
+	my $clTypeMapKey = new CLValue::CLType();
+	$clTypeMapKey->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	# First key
+	my $clParseMapKey1 = new CLValue::CLParse();
+	$clParseMapKey1->setItsCLType($clTypeMapKey);
+	$clParseMapKey1->setItsValueStr("contract_package_hash");
+	# Second key
+	my $clParseMapKey2 = new CLValue::CLParse();
+	$clParseMapKey2->setItsCLType($clTypeMapKey);
+	$clParseMapKey2->setItsValueStr("event_type");
+	# Third key
+	my $clParseMapKey3 = new CLValue::CLParse();
+	$clParseMapKey3->setItsCLType($clTypeMapKey);
+	$clParseMapKey3->setItsValueStr("reserve0");
+	# Fourth key
+	my $clParseMapKey4 = new CLValue::CLParse();
+	$clParseMapKey4->setItsCLType($clTypeMapKey);
+	$clParseMapKey4->setItsValueStr("reserve1");
+	# Map Key assignment
+	my @listKey = ($clParseMapKey1,$clParseMapKey2,$clParseMapKey3,$clParseMapKey4);
+	my $innerParseKey = new CLValue::CLParse();
+	$innerParseKey->setItsValueList(@listKey);
+	$clParsedMap->setInnerParse1($innerParseKey);
+	# Value generation
+	# Value CLType declaration
+	my $clTypeMapValue = new CLValue::CLType();
+	$clTypeMapValue->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	# First value
+	my $clParseMapValue1 = new CLValue::CLParse();
+	$clParseMapValue1->setItsCLType($clTypeMapValue);
+	$clParseMapValue1->setItsValueStr("d32DE152c0bBFDcAFf5b2a6070Cd729Fc0F3eaCF300a6b5e2abAB035027C49bc");
+	# Second value
+	my $clParseMapValue2 = new CLValue::CLParse();
+	$clParseMapValue2->setItsCLType($clTypeMapValue);
+	$clParseMapValue2->setItsValueStr("sync");
+	# Third value
+	my $clParseMapValue3 = new CLValue::CLParse();
+	$clParseMapValue3->setItsCLType($clTypeMapValue);
+	$clParseMapValue3->setItsValueStr("412949147973569321536747");
+	# Fourth value
+	my $clParseMapValue4 = new CLValue::CLParse();
+	$clParseMapValue4->setItsCLType($clTypeMapValue);
+	$clParseMapValue4->setItsValueStr("991717147268569848142418");
+	# Map Key assignment
+	my @listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4);
+	my $innerParseValue = new CLValue::CLParse();
+	$innerParseValue->setItsValueList(@listValue);
+	$clParsedMap->setInnerParse2($innerParseValue);	
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedMap);
+	ok($serialization eq "0400000015000000636f6e74726163745f7061636b6167655f6861736840000000643332444531353263306242464463414666356232613630373043643732394663304633656143463330306136623565326162414230333530323743343962630a0000006576656e745f747970650400000073796e630800000072657365727665301800000034313239343931343739373335363933323135333637343708000000726573657276653118000000393931373137313437323638353639383438313432343138","Test serialization for CLParsed Map(String,String) value passed");
+
+=comment
+Map(String,String) 2
+Test based on the deploy at this address
+https://testnet.cspr.live/deploy/93b24bf34eba63a157b60b696eae83424904263679dff1cd1c8d6d3f3d73afaa
+please refer to execution_results item 30 to see the real data
+Key generation
+=cut 
+	# Key generation
+	# First key
+	$clParseMapKey1->setItsValueStr("contract_package_hash");
+	# Second key
+	$clParseMapKey2->setItsValueStr("event_type");
+	# Third key
+	$clParseMapKey3->setItsValueStr("from");
+	# Fourth key
+	$clParseMapKey4->setItsValueStr("pair");
+	# Fifth key
+	my $clParseMapKey5 = new CLValue::CLParse();
+	$clParseMapKey5->setItsCLType($clTypeMapKey);
+	$clParseMapKey5->setItsValueStr("to");
+	# Sixth key
+	my $clParseMapKey6 = new CLValue::CLParse();
+	$clParseMapKey6->setItsCLType($clTypeMapKey);
+	$clParseMapKey6->setItsValueStr("value");
+	# Map Key assignment
+	@listKey = ();
+	@listKey = ($clParseMapKey1,$clParseMapKey2,$clParseMapKey3,$clParseMapKey4,$clParseMapKey5,$clParseMapKey6);
+	$innerParseKey->setItsValueList(@listKey);
+	$clParsedMap->setInnerParse1($innerParseKey);
+	# Value generation
+	# First value
+	$clParseMapValue1->setItsValueStr("26526c30383e5c02d684ac68d7845e576a87166926f7500bdaa303cdab52aea7");
+	# Second value
+	$clParseMapValue2->setItsValueStr("transfer");
+	# Third value
+	$clParseMapValue3->setItsValueStr("Key::Account(8b217a09296d5ce360847a7d20f623476157c5f022333c4e988a464035cadd80)");
+	# Fourth value
+	$clParseMapValue4->setItsValueStr("Key::Hash(53a8121f219ad2c6420f007a2016ed320c519579112b81d505cb15715404b264)");
+	# Fifth value
+	my $clParseMapValue5 = new CLValue::CLParse();
+	$clParseMapValue5->setItsCLType($clTypeMapValue);
+	$clParseMapValue5->setItsValueStr("Key::Hash(26526c30383e5c02d684ac68d7845e576a87166926f7500bdaa303cdab52aea7)");
+	# Sixth value
+	my $clParseMapValue6 = new CLValue::CLParse();
+	$clParseMapValue6->setItsCLType($clTypeMapValue);
+	$clParseMapValue6->setItsValueStr("1763589511");
+	# Map Key assignment
+	@listValue = ();
+	@listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4,$clParseMapValue5,$clParseMapValue6);
+	my $innerParseValue = new CLValue::CLParse();
+	$innerParseValue->setItsValueList(@listValue);
+	$clParsedMap->setInnerParse2($innerParseValue);	
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParsedMap);
+	ok($serialization eq "0600000015000000636f6e74726163745f7061636b6167655f6861736840000000323635323663333033383365356330326436383461633638643738343565353736613837313636393236663735303062646161333033636461623532616561370a0000006576656e745f74797065080000007472616e736665720400000066726f6d4e0000004b65793a3a4163636f756e7428386232313761303932393664356365333630383437613764323066363233343736313537633566303232333333633465393838613436343033356361646438302904000000706169724b0000004b65793a3a4861736828353361383132316632313961643263363432306630303761323031366564333230633531393537393131326238316435303563623135373135343034623236342902000000746f4b0000004b65793a3a486173682832363532366333303338336535633032643638346163363864373834356535373661383731363639323666373530306264616133303363646162353261656137290500000076616c75650a00000031373633353839353131","Test serialization for CLParsed Map(String,String) 2 value passed");
+	
+	# CLParse ByteArray assertion
+	my $clParseByteArray = new CLValue::CLParse();
+	my $clTypeByteArray = new CLValue::CLType();
+	$clTypeByteArray->setItsTypeStr($Common::ConstValues::CLTYPE_BYTEARRAY);
+	$clParseByteArray->setItsCLType($clTypeByteArray);
+	$clParseByteArray->setItsValueStr("006d0be2fb64bcc8d170443fbadc885378fdd1c71975e2ddd349281dd9cc59cc");
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParseByteArray);
+	ok($serialization eq "006d0be2fb64bcc8d170443fbadc885378fdd1c71975e2ddd349281dd9cc59cc","Test serialization for CLParsed ByteArray value passed");
+	
+	# Test for CLValue Any serialization
+	my $clParseAny = new CLValue::CLParse();
+	my $clTypeAny = new CLValue::CLType();
+	$clTypeAny->setItsTypeStr($Common::ConstValues::CLTYPE_ANY);
+	$clParseAny->setItsCLType($clTypeAny);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParseAny);
+	ok($serialization eq $Common::ConstValues::PURE_NULL,"Test serialization for CLParsed Any value passed");
+	
+	# Test for CLValue Result serialization
+	my $clParseResult = new CLValue::CLParse();
+	my $clTypeResult = new CLValue::CLType();
+	$clTypeResult->setItsTypeStr($Common::ConstValues::CLTYPE_RESULT);
+	$clParseResult->setItsCLType($clTypeResult);
+=comment
+For Result Ok(String)
+Take this deploy address https://testnet.cspr.live/deploy/2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61
+in execution_results item 16
+=cut
+	$clParseResult->setItsValueStr($Common::ConstValues::CLPARSED_RESULT_OK);
+	my $clParseResultInner1 = new CLValue::CLParse();
+	my $clTypeResultInner1 = new CLValue::CLType();
+	$clTypeResultInner1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParseResultInner1->setItsCLType($clTypeResultInner1);
+	$clParseResultInner1->setItsValueStr("goodresult");
+	$clParseResult->setInnerParse1($clParseResultInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParseResult);
+	ok($serialization eq "010a000000676f6f64726573756c74","Test serialization for CLParsed Result(Ok(String)) value passed");
+	
+	# For Result Err(U512)
+	$clParseResult->setItsValueStr($Common::ConstValues::CLPARSED_RESULT_ERR);
+	$clTypeResultInner1->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	$clParseResultInner1->setItsCLType($clTypeResultInner1);
+	$clParseResultInner1->setItsValueStr("999888666555444999887988887777666655556666777888999666999");
+	$clParseResult->setInnerParse1($clParseResultInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParseResult);
+	ok($serialization eq "001837f578fca55492f299ea354eaca52b6e9de47d592453c728","Test serialization for CLParsed Result(Err(U512)) value passed");
+=comment
+For Result Err2
+Take this deploy address https://testnet.cspr.live/deploy/2ad794272a1a805082f171f96f1ea0e71fcac3ae6dd0c525343199b553be8a61
+in execution_results item 21
+=cut
+	$clParseResult->setItsValueStr($Common::ConstValues::CLPARSED_RESULT_ERR);
+	$clTypeResultInner1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+	$clParseResultInner1->setItsCLType($clTypeResultInner1);
+	$clParseResultInner1->setItsValueStr("badresult");
+	$clParseResult->setInnerParse1($clParseResultInner1);
+	$serialization = $serializationCLParsed->serializeFromCLParse($clParseResult);
+	ok($serialization eq "0009000000626164726573756c74","Test serialization for CLParsed Result(Err(String)) value passed");
+
+	# CLValue Tuple1 serialization
 	
 }
+
 testCLParsedSerialization();
