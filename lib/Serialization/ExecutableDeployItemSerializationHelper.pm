@@ -174,11 +174,15 @@ sub serializeForExecutableDeployItem {
         $parseOption->setItsCLType($typeOption);
         my $version = $realItem->getVersion();
         if(defined $version) {
-        	my $parse32 = new CLValue::CLParse();
-        	my $type32 = new CLValue::CLType();
-        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
-        	$parse32->setItsCLType($type32);
-        	$parseOption->setInnerParse1($parse32);
+        	if($version eq $Common::ConstValues::NULL_VALUE) {
+        		$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
+        	} else {
+	        	my $parse32 = new CLValue::CLParse();
+	        	my $type32 = new CLValue::CLType();
+	        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	        	$parse32->setItsCLType($type32);
+	        	$parseOption->setInnerParse1($parse32);
+       		}
         } else {
         	$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
         }
@@ -211,16 +215,19 @@ sub serializeForExecutableDeployItem {
         $parseOption->setItsCLType($typeOption);
         my $version = $realItem->getVersion();
         if(defined $version) {
-        	my $parse32 = new CLValue::CLParse();
-        	my $type32 = new CLValue::CLType();
-        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
-        	$parse32->setItsCLType($type32);
-        	$parseOption->setInnerParse1($parse32);
+        	if($version eq $Common::ConstValues::NULL_VALUE) {
+        		$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
+        	} else {
+	        	my $parse32 = new CLValue::CLParse();
+	        	my $type32 = new CLValue::CLType();
+	        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+	        	$parse32->setItsCLType($type32);
+	        	$parseOption->setInnerParse1($parse32);
+       		}
         } else {
         	$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
         }
         my $versionSerialization = $parseSerialization->serializeFromCLParse($parseOption);
-        
         # get String.Serialize(name)
         my $parseString = new CLValue::CLParse();
 		my $typeString = new CLValue::CLType();
