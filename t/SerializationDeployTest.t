@@ -25,7 +25,6 @@ use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 use Serialization::ExecutableDeployItemSerializationHelper;
 
 sub testAll {
-	print("Deploy serialization test all called\n");
 	testDeployHeaderSerialization();
 	testDeployApprovalSerialization();
 	testForExecutableDeployItemTransfer();

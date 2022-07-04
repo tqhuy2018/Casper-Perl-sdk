@@ -11,6 +11,7 @@ There are some more attributes in the object to store more information in its va
 used to build   recursived CLType,  such as List,  Map,  Tuple,  Result,  Option
  */
 =cut
+use Common:ConstValues;
 package CLValue::CLType;
 use feature qw(switch);
 use JSON;
@@ -267,5 +268,197 @@ sub getCLTypeCompound {
 		}
 	}
 	return $ret;
+}
+# This function turn a CLType object to a Json string
+sub toJsonString {
+	if(isCLTypePrimitive()) {
+		my $ret = clTypePrimitiveToJsonString();
+		return "\"".$ret."\"";
+	} else {
+		return clTypeCompoundToJsonString();
+	}
+}
+
+# This function generate the Json String represent the CLType primitive, such as Bool, I32, I64 , U32 , ...
+# CLType that does not contain recursive declaration inside its body*/
+sub clTypePrimitiveToJsonString {
+	my ($self) = @_;
+	my $type =  $self->{_itsTypeStr};
+	if($type eq $Common::ConstValues::CLTYPE_BOOL) {
+		return "Bool";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_I32) {
+		return "I32";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_I64) {
+		return "I64";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U8) {
+		return "U8";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U32) {
+		return "U32";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U64) {
+		return "U64";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U128) {
+		return "U128";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U256) {
+		return "U256";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_U512) {
+		return "U512";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_UNIT) {
+		return "Unit";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_STRING) {
+		return "String";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_KEY) {
+		return "Key";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_UREF) {
+		return "URef";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_PUBLIC_KEY) {
+		return "PublicKey";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_ANY) {
+		return "Any";
+	}
+	return $Common::ConstValues::INVALID_VALUE;
+}
+# This function generate the Json String represent the CLType compound, such as List, Map, Option, Result, Tuple1, Tuple2, Tuple3 ...
+# CLType that contains recursive declaration inside its body
+sub clTypeCompoundToJsonString {
+	my ($self) = @_;
+	my $type =  $self->{_itsTypeStr};
+	if($type eq $Common::ConstValues::CLTYPE_BYTEARRAY) {
+		return "{\"ByteArray\": 32}";
+	} elsif ($type eq $Common::ConstValues::CLTYPE_TUPLE1) {
+		my $inner1 = new CLValue::CLType();
+		$inner1 = $self->{_innerCLType1};
+		if($inner1->isCLTypePrimitive()) {
+			my $clTypeStr = $inner1->clTypePrimitiveToJsonString();
+			return "{\"Tuple1\": \"".$clTypeStr."\"}";
+		} else {
+			my $clTypeStr = $inner1->clTypeCompoundToJsonString();
+			return "{\"Tuple1\": ".$clTypeStr."}"
+		}
+	} elsif ($type eq $Common::ConstValues::CLTYPE_TUPLE2) {
+		 my $ret = "{\"Tuple2\": [";
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 if($inner1->isCLTypePrimitive()) {
+			my $clTypeStr = "\"".$inner1->clTypePrimitiveToJsonString()."\"";
+			$ret = $ret.$clTypeStr.",";
+		} else {
+			my $clTypeStr = $inner1->clTypeCompoundToJsonString();
+			$ret = $ret.$clType1Str.",";
+		}
+		 my $inner2 = new CLValue::CLType();
+		 $inner2 = $self->{_innerCLType2};
+		 if($inner2->isCLTypePrimitive()) {
+			my $clTypeStr2 = "\"".$inner2->clTypePrimitiveToJsonString()."\"";
+			$ret = $ret.$clTypeStr2."]";
+		} else {
+			my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+			$ret = $ret.$clType1Str2."]";
+		}
+	} elsif ($type eq $Common::ConstValues::CLTYPE_TUPLE3) {
+		 my $ret = "{\"Tuple3\": [";
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 if($inner1->isCLTypePrimitive()) {
+			my $clTypeStr = "\"".$inner1->clTypePrimitiveToJsonString()."\"";
+			$ret = $ret.$clTypeStr.",";
+		} else {
+			my $clTypeStr = $inner1->clTypeCompoundToJsonString();
+			$ret = $ret.$clType1Str.",";
+		}
+		 my $inner2 = new CLValue::CLType();
+		 $inner2 = $self->{_innerCLType2};
+		 if($inner2->isCLTypePrimitive()) {
+			my $clTypeStr2 = "\"".$inner2->clTypePrimitiveToJsonString()."\"";
+			$ret = $ret.$clTypeStr2.",";
+		} else {
+			my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+			$ret = $ret.$clType1Str2.",";
+		}
+		
+		my $inner3 = new CLValue::CLType();
+		$inner3 = $self->{_innerCLType2};
+		if($inner3->isCLTypePrimitive()) {
+			my $clTypeStr3 = "\"".$inner3->clTypePrimitiveToJsonString()."\"";
+			$ret = $ret.$clTypeStr3."]";
+		} else {
+			my $clTypeStr3 = $inner3->clTypeCompoundToJsonString();
+			$ret = $ret.$clType1Str3."]";
+		}
+	}
+	elsif ($type eq $Common::ConstValues::CLTYPE_MAP) {
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 my $inner2 = new CLValue::CLType();
+		 $inner2 = $self->{_innerCLType2};
+		 if($inner1->isCLTypePrimitive()) {
+			my $clTypeStr1 = $inner1->clTypePrimitiveToJsonString();
+			if($inner2->isCLTypePrimitive()) {
+				my $clTypeStr2 = $inner2->clTypePrimitiveToJsonString();
+				return "{\"Map\": {\"key\":\"".$clTypeStr1."\", \"value\":\"".$clTypeStr2."\")}}";
+			} else {
+				my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+				return "{\"Map\": {\"key\":".$clTypeStr1.", \"value\":".$clTypeStr2.")}}";
+			}
+			
+		} else {
+			my $clTypeStr1 = $inner1->clTypeCompoundToJsonString();
+			if($inner2->isCLTypePrimitive()) {
+				my $clTypeStr2 = $inner2->clTypePrimitiveToJsonString();
+				return "{\"Map\": {\"key\":".$clTypeStr1.", \"value\":\"".$clTypeStr2."\")}}";
+			} else {
+				my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+				return "{\"Map\": {\"key\":".$clTypeStr1.", \"value\":".$clTypeStr2.")}}";
+			}
+		}
+	}
+	elsif ($type eq $Common::ConstValues::CLTYPE_LIST) {
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 if($inner1->isCLTypePrimitive()) {
+		 	my $clTypeStr1 = $inner1->clTypePrimitiveToJsonString();
+		 	return "{\"List\": \"".$clTypeStr1."\"}"
+		 } else {
+		 	my $clTypeStr1 = $inner1->clTypeCompoundToJsonString();
+		 	return "{\"List\": ".$clTypeStr1."}"
+		 }
+	} elsif ($type eq $Common::ConstValues::CLTYPE_OPTION) {
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 if($inner1->isCLTypePrimitive()) {
+		 	my $clTypeStr1 = $inner1->clTypePrimitiveToJsonString();
+		 	return "{\"Option\": \"".$clTypeStr1."\"}"
+		 } else {
+		 	my $clTypeStr1 = $inner1->clTypeCompoundToJsonString();
+		 	return "{\"Option\": ".$clTypeStr1."}"
+		 }
+	} elsif ($type eq $Common::ConstValues::CLTYPE_RESULT) {
+		 my $inner1 = new CLValue::CLType();
+		 $inner1 = $self->{_innerCLType1};
+		 my $inner2 = new CLValue::CLType();
+		 $inner2 = $self->{_innerCLType2};
+		 if($inner1->isCLTypePrimitive()) {
+			my $clTypeStr1 = $inner1->clTypePrimitiveToJsonString();
+			if($inner2->isCLTypePrimitive()) {
+				my $clTypeStr2 = $inner2->clTypePrimitiveToJsonString();
+				return "{\"Result\": {\"ok\":\"".$clTypeStr1."\", \"err\":\"".$clTypeStr2."\")}}";
+			} else {
+				my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+				return "{\"Result\": {\"ok\":".$clTypeStr1.", \"err\":".$clTypeStr2.")}}";
+			}
+			
+		} else {
+			my $clTypeStr1 = $inner1->clTypeCompoundToJsonString();
+			if($inner2->isCLTypePrimitive()) {
+				my $clTypeStr2 = $inner2->clTypePrimitiveToJsonString();
+				return "{\"Result\": {\"ok\":".$clTypeStr1.", \"err\":\"".$clTypeStr2."\")}}";
+			} else {
+				my $clTypeStr2 = $inner2->clTypeCompoundToJsonString();
+				return "{\"Result\": {\"ok\":".$clTypeStr1.", \"err\":".$clTypeStr2.")}}";
+			}
+		}
+	} else {
+        return $Common::ConstValues::INVALID_VALUE;
+    }
+	
 }
 1;

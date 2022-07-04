@@ -13,6 +13,7 @@ its value in String for later handle in serialization or show the information, a
 
 package CLValue::CLParse;
 use Common::ConstValues;
+use CLValue::CLType;
 #constructor
 sub new {
 	my $class = shift;
@@ -289,5 +290,283 @@ sub getCLParsed {
 	my $clType = $list[2];
 	my $ret = getCLParsed2($json,$clType);
 	return $ret;
+}
+
+# This function turn a CLParsed to a Json String that represents that CLParsed. It is used to generate the
+# Json string for account_put_deploy RPC call
+sub toJsonString {
+	my ($self) = @_;
+	my $clType = new CLValue::CLType();
+	$clType = $self->{_itsCLType};
+	if($clType->isCLTypePrimitive()) {
+		return parsedPrimitiveToJsonString();
+	} else {
+		return parsedCompoundToJsonString();
+	}
+}
+# This function turn a CLParsed of type primitive to a Json String that represents that CLParsed. It is used to generate the
+# Json string for account_put_deploy RPC call
+sub parsedPrimitiveToJsonString {
+	my ($self) = @_;
+	my $clType = new CLValue::CLType();
+	$clType = $self->{_itsCLType};
+	my $clTypeStr = $clType->setItsTypeStr();
+	my $ret = "";
+	if($clTypeStr eq  $Common::ConstValues::CLTYPE_BOOL) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_I32) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_I64) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U8) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U32) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U64) {
+		return $Common::ConstValues::PARSED_FIXED_STRING.":".$self->{_itsValueStr};
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U128) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U256) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_U512) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_STRING) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_UNIT) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_UREF) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_PUBLIC_KEY) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_BYTEARRAY) {
+		return "\"".$self->{_itsValueStr}."\""
+	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_KEY) {
+		my $findStr = "-";
+		my @matches = $clTypeStr =~ /($findStr)/g;
+		my $firstPrefix = @matches[0];
+		if($firstPrefix eq "account") {
+			return "{\"Account\":\"".$clTypeStr."\"}"
+		} elsif ($firstPrefix eq "hash") {
+			return "{\"Hash\":\"".$clTypeStr."\"}"
+		} elsif ($firstPrefix eq "uref") {
+			return "{\"URef\":\"".$clTypeStr."\"}"
+		} else {
+		    return $Common::ConstValues::INVALID_VALUE;
+		}
+	} else {
+		return $Common::ConstValues::INVALID_VALUE;
+	}
+}
+sub parsedCompoundToJsonString {
+	my ($self) = @_;
+	my $clType = new CLValue::CLType();
+	$clType = $self->{_itsCLType};
+	my $clTypeStr = $clType->setItsTypeStr();
+	my $ret = "";
+	# CLParse Option to Json String
+	if($clTypeStr eq  $Common::ConstValues::CLTYPE_OPTION) {
+		if($self->{_itsValueStr} eq $Common::ConstValues::NULL_VALUE) {
+			return $Common::ConstValues::PURE_NULL;
+		} else {
+			my $clParseInner1 = new CLValue::CLParse();
+			my $clTypeInner1 = new CLValue::CLType();
+			$clParseInner1 = $self->{_innerParsed1};
+			$clTypeInner1 = $clParseInner1->getItsCLType();
+			if($clTypeInner1->isCLTypePrimitive()) {
+				return $clParseInner1->parsedPrimitiveToJsonString();
+			} else {
+				return $clParseInner1->parsedCompoundToJsonString();
+			}
+		}
+	}
+	# CLParse List to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_LIST) {
+		my $ret = "[";
+		my $elementStr = "";
+		my $counter = 0;
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		my @listElement = $clParseInner1->getItsValueList();
+		my $totalElement = @listElement;
+		my @sequence = (0..$totalElement-1);
+		for my $i (@sequence) {
+			my $oneParse = new CLValue::CLParse();
+			my $oneKey = new CLValue::CLType();
+			$oneParse = @listElement[$i];
+			$oneKey = $oneParse->getItsCLType();
+			if($oneKey->isCLTypePrimitive()) {
+				$elementStr = $oneParse->parsedPrimitiveToJsonString();
+			} else {
+				$elementStr = $oneParse->parsedCompoundToJsonString();
+			}
+			if($counter < $totalElement) {
+				$ret = $ret.$elementStr.",";
+			} else {
+				$ret = $ret.$elementStr."]";
+			}
+			$counter ++;
+		}
+		return $ret;
+	}
+	# CLParse Result to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_RESULT) {
+		my $okErrStr = $self->{_itsValueStr}; # this will take the value of "Ok" or "Err"
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		my $resultStr = "";
+		if($clTypeInner1->isCLTypePrimitive()) {
+			$resultStr = $clParseInner1->parsedPrimitiveToJsonString();
+		} else {
+			$resultStr = $clParseInner1->parsedCompoundToJsonString();
+		}
+		return "{".$okErrStr.":".$resultStr."}";
+	}
+	# CLParse Map to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_MAP) {
+		# get the key list of the map
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		# get the value list of the map
+		my $clParseInner2 = new CLValue::CLParse();
+		my $clTypeInner2 = new CLValue::CLType();
+		$clParseInner2 = $self->{_innerParsed2};
+		$clTypeInner2 = $clParseInner2->getItsCLType();
+		
+		my @listKey = $clTypeInner1->getItsValueList();
+		my @listValue = $clTypeInner2->getItsValueList();
+		
+		my $totalKey = @listKey;
+		if($totalKey == 0) {
+			return "[]";
+		}
+		my $ret = "[";
+		my $keyStr = "";
+		my $valueStr = "";
+		my $counter = 0;
+		my @sequence = (0..$totalKey-1);
+		for my $i (@sequence) {
+			# get key json
+			my $keyParseElement = new CLValue::CLParse();
+			my $keyType = new CLValue::CLType();
+			$keyParseElement = @listKey[$i];
+			$keyType = $keyParseElement->getItsCLType();
+			if($keyType->isCLTypePrimitive()) {
+				$keyStr = $keyParseElement->parsedPrimitiveToJsonString();
+			} else {
+				$keyStr = $keyParseElement->parsedCompoundToJsonString();
+			}
+			# get value json
+			my $valueParseElement = new CLValue::CLParse();
+			my $valueType = new CLValue::CLType();
+			$valueParseElement = @listValue[$i];
+			$valueType = $valueParseElement->getItsCLType();
+			if($valueType->isCLTypePrimitive()) {
+				$valueStr = $valueParseElement->parsedPrimitiveToJsonString();
+			} else {
+				$valueStr = $valueParseElement->parsedCompoundToJsonString();
+			}
+			if($counter < $totalKey) {
+				 $ret = $ret."{\"key\": ".$keyStr.",\"value\":".$valueStr."},";
+			} else {
+				 $ret = $ret."{\"key\": ".$keyStr.",\"value\":".$valueStr."}]";
+			}
+			$counter ++;
+		}
+		return $ret;
+	}
+	# CLParse Tuple1 to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_TUPLE1) {
+		my $ret = "[";
+		my $tupleStr = "";
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		if($clTypeInner1->isCLTypePrimitive()) {
+			$tupleStr = $clParseInner1->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr = $clParseInner1->parsedCompoundToJsonString();
+		}
+		$ret = $ret.$tupleStr."]";
+		return $ret;
+	}
+	# CLParse Tuple2 to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_TUPLE1) {
+		my $ret = "[";
+		# get tuple 1 string
+		my $tupleStr1 = "";
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		if($clTypeInner1->isCLTypePrimitive()) {
+			$tupleStr1 = $clParseInner1->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr1 = $clParseInner1->parsedCompoundToJsonString();
+		}
+		
+		# get tuple 2 string
+		my $tupleStr2 = "";
+		my $clParseInner2 = new CLValue::CLParse();
+		my $clTypeInner2 = new CLValue::CLType();
+		$clParseInner2 = $self->{_innerParsed2};
+		$clTypeInner2 = $clParseInner2->getItsCLType();
+		if($clTypeInner2->isCLTypePrimitive()) {
+			$tupleStr2 = $clParseInner2->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr2 = $clParseInner2->parsedCompoundToJsonString();
+		}
+		$ret = "[".$tupleStr1.",". $tupleStr2."]";
+		return $ret;
+	}
+	# CLParse Tuple3 to Json String
+	elsif($clTypeStr eq  $Common::ConstValues::CLTYPE_TUPLE3) {
+		my $ret = "[";
+		# get tuple 1 string
+		my $tupleStr1 = "";
+		my $clParseInner1 = new CLValue::CLParse();
+		my $clTypeInner1 = new CLValue::CLType();
+		$clParseInner1 = $self->{_innerParsed1};
+		$clTypeInner1 = $clParseInner1->getItsCLType();
+		if($clTypeInner1->isCLTypePrimitive()) {
+			$tupleStr1 = $clParseInner1->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr1 = $clParseInner1->parsedCompoundToJsonString();
+		}
+		
+		#get tuple 2 string
+		my $tupleStr2 = "";
+		my $clParseInner2 = new CLValue::CLParse();
+		my $clTypeInner2 = new CLValue::CLType();
+		$clParseInner2 = $self->{_innerParsed2};
+		$clTypeInner2 = $clParseInner2->getItsCLType();
+		if($clTypeInner2->isCLTypePrimitive()) {
+			$tupleStr2 = $clParseInner2->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr2 = $clParseInner2->parsedCompoundToJsonString();
+		}
+		
+		#get tuple 3 string
+		my $tupleStr3 = "";
+		my $clParseInner3 = new CLValue::CLParse();
+		my $clTypeInner3 = new CLValue::CLType();
+		$clParseInner3 = $self->{_innerParsed3};
+		$clTypeInner3 = $clParseInner3->getItsCLType();
+		if($clTypeInner3->isCLTypePrimitive()) {
+			$tupleStr3 = $clParseInner3->parsedPrimitiveToJsonString();
+		} else {
+			$tupleStr3 = $clParseInner3->parsedCompoundToJsonString();
+		}
+		$ret = "[".$tupleStr1.",". $tupleStr2.",".$tupleStr3."]";
+		return $ret;
+	} else {
+	 	return $Common::ConstValues::INVALID_VALUE;
+	}
 }
 1;

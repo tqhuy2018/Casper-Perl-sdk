@@ -7,7 +7,7 @@ use JSON qw( decode_json );
 use GetStatus::GetStatusResult;
 sub new {
 	my $class = shift;
-	my $self = {};
+	my $self = {_url=>shift};
 	bless $self, $class;
 	return $self;
 }
@@ -18,8 +18,12 @@ This function does info_get_status RPC call
  * Then the GetStatusResult is retrieved by parsing JsonObject result taken from the RPC POST request
 =cut
 sub getStatus {
-	 my( $self ) = @_;
-	my $uri = 'https://node-clarity-testnet.make.services/rpc';
+	my( $self ) = @_;
+	my $uri = $self->{_url};
+	if($uri) {
+	} else {
+		$uri = $Common::ConstValues::TEST_NET;
+	}
 	my $json = '{"params" :  [], "id" :  1, "method": "info_get_status", "jsonrpc" :  "2.0"}';
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');

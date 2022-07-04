@@ -71,4 +71,17 @@ sub fromJsonObjToCLValue {
 	$ret->setParse($clParse);
 	return $ret;
 }
+
+# This function turn a CLValue object to a Json string, used for account_put_deploy RPC call
+sub toJsonString {
+	my ($self) = @_;
+	my $clType = new CLValue::CLType();
+	my $clParse = new CLValue::CLParse();
+	$clType = $self->{_clType};
+	$clParse = $self->{_parse};
+	my $ret = "";
+	my $clTypeStr = $clType->toJsonString();
+	my $clParseStr = $clParse->toJsonString();
+	return "";
+}
 1;
