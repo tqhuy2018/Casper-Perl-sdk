@@ -10,6 +10,7 @@ Information of a sample CLValue object
 package CLValue::CLValue;
 use CLValue::CLType;
 use CLValue::CLParse;
+use Serialization::CLParseSerialization;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -82,6 +83,17 @@ sub toJsonString {
 	my $ret = "";
 	my $clTypeStr = $clType->toJsonString();
 	my $clParseStr = $clParse->toJsonString();
-	return "";
+	my $findStr = $Common::ConstValues::PARSED_FIXED_STRING;
+	my @matches = $clParseStr =~ /($findStr)/g;
+	my $count = @matches;
+	if($count > 0) {
+		$clParseStr =~ s/($findStr)//ig;
+	}
+	my $parseSerialization = new Serialization::CLParseSerialization();
+	my $bytesStr = $parseSerialization->serializeFromCLParse($clParse);
+	$bytesStr = "\"bytes\": \"".$bytesStr."\"";
+	$clTypeStr = "\"cl_type\":".$clTypeStr;
+	$clParseStr = "\"parsed\":".$clParseStr;
+	return  "{".$bytesStr.",".$clTypeStr.",".$clParseStr."}";
 }
 1;
