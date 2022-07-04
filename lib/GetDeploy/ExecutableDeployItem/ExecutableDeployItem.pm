@@ -22,7 +22,7 @@ use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_Transfer;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName;
-use Common:ConstValues;
+use Common::ConstValues;
 sub new {
 	my $class = shift;
 	my $self = {

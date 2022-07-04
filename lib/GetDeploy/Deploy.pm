@@ -70,7 +70,7 @@ sub setApprovals {
 }
 sub getApprovals {
 	my ($self) = @_;
-	my @approvals = $self->{_approvals};
+	my @approvals = @{ $self->{_approvals} };#$self->{_approvals};
 	wantarray ? @approvals : \@approvals;
 }
 

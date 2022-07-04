@@ -9,6 +9,7 @@ use GetDeploy::DeployHeader;
 use Serialization::CLParseSerialization;
 use GetDeploy::Approval;
 use GetDeploy::Deploy;
+use Serialization::ExecutableDeployItemSerializationHelper;
 package Serialization::DeploySerializeHelper;
 use Date::Parse;
 
@@ -35,7 +36,6 @@ sub serializeForHeader {
 	my $timeStamp = $header->getTimestamp();
 	my $miliseconds = str2time($timeStamp);
 	$miliseconds = $miliseconds * 1000;
-	print("Milisecond:".$miliseconds."\n");
 	my $clParse64 = new CLValue::CLParse();
 	my $clType64 = new CLValue::CLType();
 	$clType64->setItsTypeStr($Common::ConstValues::CLTYPE_U64);
@@ -43,18 +43,14 @@ sub serializeForHeader {
 	$clParse64->setItsValueStr("$miliseconds");
 	my $parseSerialization = new Serialization::CLParseSerialization();
 	$timeStampSerialization = $parseSerialization->serializeFromCLParse($clParse64);
-	print("Time stamp serialization is:".$timeStampSerialization."\n");
 	# Serialization for Header.ttl
-	print("TTL is:".$header->getTTL()."\n");
 	my $ttlMiliseconds = fromTTLToMiliseconds($header->getTTL());
 	$clParse64->setItsValueStr("$ttlMiliseconds");
 	my $ttlSerialization = $parseSerialization->serializeFromCLParse($clParse64);
-	print("ttlMiliseconds:".$ttlMiliseconds." and serialization:".$ttlSerialization."\n");
 	# Serialization for Header.gasPrice
 	my $gasPrice = $header->getGasPrice();
 	$clParse64->setItsValueStr("$gasPrice");
 	my $gasPriceSerialization = $parseSerialization->serializeFromCLParse($clParse64);
-	print("gas price:".$gasPrice." and serialization:".$gasPriceSerialization."\n");
 	# Serialization for Header.dependency
 	my @dependencies = $header->getDependencies();
 	my $totalDependency = @dependencies;
@@ -70,7 +66,6 @@ sub serializeForHeader {
 			$dependencySerialization = $dependencySerialization.$dependencies[$i];
 		}
 	}
-	print("dependencySerialization:".$dependencySerialization."\n");
 	# Serialization for Header.chainName
 	my $clParseString = new CLValue::CLParse();
 	my $clTypeString = new CLValue::CLType();
@@ -78,7 +73,6 @@ sub serializeForHeader {
 	$clParseString->setItsCLType($clTypeString);
 	$clParseString->setItsValueStr($header->getChainName());
 	my $chainNameSerialization = $parseSerialization->serializeFromCLParse($clParseString);
-	
 	return $header->getAccount().$timeStampSerialization.$ttlSerialization.$gasPriceSerialization.$header->getBodyHash().$dependencySerialization.$chainNameSerialization;
 }
 =comment
@@ -122,12 +116,17 @@ sub serializeForDeploy {
 	$deploy = $list[1];
 	my $ret = serializeForHeader("0",$deploy->getHeader());
 	$ret = $ret.$deploy->getDeployHash();
+	my $ediSerializeHelper = new Serialization::ExecutableDeployItemSerializationHelper();
+	my $paymentSerialization = $ediSerializeHelper->serializeForExecutableDeployItem($deploy->getPayment());
+	my $sessionSerialization = $ediSerializeHelper->serializeForExecutableDeployItem($deploy->getSession());
+	my $approvalSerialization = serializeForDeployApproval("0",$deploy->getApprovals());
+	$ret = $ret.$paymentSerialization.$sessionSerialization.$approvalSerialization;
+	return $ret;
 	
 }
 sub fromTTLToMiliseconds {
 	my @list = @_;
 	$ttl = $list[0];
-	print("Get milisecond for ttl:".$ttl."\n");
 	my $findStr = " ";
 	my @matches = $ttl =~ /($findStr)/g;
 	my $count = @matches;
