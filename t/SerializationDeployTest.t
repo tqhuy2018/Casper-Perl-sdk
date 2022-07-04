@@ -2,7 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-use Test::Simple tests => 10;
+use Test::Simple tests => 8;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 
@@ -234,7 +234,7 @@ sub testForExecutableDeployItemStoredContractByHash {
 	$ediHash->setItsValue($ediHashIn);
 	my $ediSerializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
 	my $serializationStoredByHash = $ediSerializationHelper->serializeForExecutableDeployItem($ediHash);
-	ok($serializationStoredByHash eq "0133fb5db59a34a95bd8ebf1feb0c09f4aa580d951e2666d1c656e73b675ee2c4a130000006578616d706c652d656e7472792d706f696e7401000000080000007175616e746974790600000005002cd6e21508","Test serialization for ExecutableDeployItem_StoredContractByName passed");
+	ok($serializationStoredByHash eq "0133fb5db59a34a95bd8ebf1feb0c09f4aa580d951e2666d1c656e73b675ee2c4a130000006578616d706c652d656e7472792d706f696e7401000000080000007175616e746974790600000005002cd6e21508","Test serialization for ExecutableDeployItem_StoredContractByHash passed");
 }
 
 # EDI_STORE_VERSIONED_CONTRACT_BY_HASH assertion
@@ -266,7 +266,7 @@ sub testForExecutableDeployItemStoredVersionedContractByHash {
 	my $ediSerializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
 	my $serializationStoredByHash = $ediSerializationHelper->serializeForExecutableDeployItem($ediHash);
 	#print($serializationStoredByHash."\n");
-	ok($serializationStoredByHash eq "039571c94fac8598c5e3669c3f3ae6e4e517488b88b45588c3fec6ac613aca9baa000300000072657301000000060000007461726765742100000001394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b16","Test serialization for ExecutableDeployItem_StoredContractByName passed");
+	ok($serializationStoredByHash eq "039571c94fac8598c5e3669c3f3ae6e4e517488b88b45588c3fec6ac613aca9baa000300000072657301000000060000007461726765742100000001394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b16","Test serialization for ExecutableDeployItem_StoredVersionedContractByHash passed");
 }
 
 # EDI_STORE_VERSIONED_CONTRACT_BY_NAME assertion
@@ -274,7 +274,7 @@ sub testForExecutableDeployItemStoredVersionedContractByName {
 	my $ediHash = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
 	$ediHash->setItsType($Common::ConstValues::EDI_STORED_VERSIONED_CONTRACT_BY_NAME);
 	my $ediHashIn = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName();
-	$ediHashIn->setItsName("Hello World!");
+	$ediHashIn->setItsName("Hello, World!");
 	$ediHashIn->setEntryPoint("res");
 	$ediHashIn->setVersion("1234");
 	# set up RuntimeArgs with 1 element of NamedArg only
@@ -287,7 +287,7 @@ sub testForExecutableDeployItemStoredVersionedContractByName {
 	$oneCLType->setItsTypeStr($Common::ConstValues::CLTYPE_U64);
 	$oneCLValue->setCLType($oneCLType);
 	$oneCLParse->setItsCLType($oneCLType);
-	$oneCLParse->setItsValueStr("1656910697155");
+	$oneCLParse->setItsValueStr("1642167289561");
 	$oneCLValue->setParse($oneCLParse);
 	$oneA->setCLValue($oneCLValue);
 	my $ra = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
@@ -297,8 +297,7 @@ sub testForExecutableDeployItemStoredVersionedContractByName {
 	$ediHash->setItsValue($ediHashIn);
 	my $ediSerializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
 	my $serializationStoredByHash = $ediSerializationHelper->serializeForExecutableDeployItem($ediHash);
-	print($serializationStoredByHash."\n");
-	ok($serializationStoredByHash eq "039571c94fac8598c5e3669c3f3ae6e4e517488b88b45588c3fec6ac613aca9baa000300000072657301000000060000007461726765742100000001394476bd8202887ac0e42ae9d8f96d7e02d81cc204533506f1fd199e95b1fd2b16","Test serialization for ExecutableDeployItem_StoredContractByName passed");
+	ok($serializationStoredByHash eq "040d00000048656c6c6f2c20576f726c642101d204000003000000726573010000000600000074617267657408000000d946cc587e01000005","Test serialization for ExecutableDeployItem_StoredVersionedContractByName passed");
 }
 testAll();
 1;

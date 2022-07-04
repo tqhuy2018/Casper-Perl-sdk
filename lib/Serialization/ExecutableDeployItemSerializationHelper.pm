@@ -181,7 +181,9 @@ sub serializeForExecutableDeployItem {
 	        	my $type32 = new CLValue::CLType();
 	        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
 	        	$parse32->setItsCLType($type32);
+	        	$parse32->setItsValueStr($version);
 	        	$parseOption->setInnerParse1($parse32);
+	        	$parseOption->setItsValueStr("not null");
        		}
         } else {
         	$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
@@ -222,7 +224,9 @@ sub serializeForExecutableDeployItem {
 	        	my $type32 = new CLValue::CLType();
 	        	$type32->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
 	        	$parse32->setItsCLType($type32);
+	        	$parse32->setItsValueStr($version);
 	        	$parseOption->setInnerParse1($parse32);
+	        	$parseOption->setItsValueStr("not null");
        		}
         } else {
         	$parseOption->setItsValueStr($Common::ConstValues::NULL_VALUE);
@@ -237,7 +241,6 @@ sub serializeForExecutableDeployItem {
 		my $nameSerialization = $parseSerialization->serializeFromCLParse($parseString);
         
         # get String.Serialize(entry_point)
-        
 		$parseString->setItsValueStr($realItem->getEntryPoint());
 		my $entryPointSerialization = $parseSerialization->serializeFromCLParse($parseString);
 		# get Args.Serialized
