@@ -122,6 +122,7 @@ sub serializeForDeploy {
 	$deploy = $list[1];
 	my $ret = serializeForHeader("0",$deploy->getHeader());
 	$ret = $ret.$deploy->getDeployHash();
+	
 }
 sub fromTTLToMiliseconds {
 	my @list = @_;
