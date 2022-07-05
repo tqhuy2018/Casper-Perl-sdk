@@ -35,7 +35,7 @@ sub getDeployHash {
 }
 
 # This function parse a Json object to a PutDeployResult object
-sub fromJsonObjectToGetStatusResult {
+sub fromJsonObjectToPutDeployResult {
 	my @list = @_;
 	my $json = $list[1];
 	my $ret = new PutDeploy::PutDeployResult();

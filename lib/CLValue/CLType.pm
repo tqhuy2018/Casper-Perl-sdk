@@ -11,7 +11,7 @@ There are some more attributes in the object to store more information in its va
 used to build   recursived CLType,  such as List,  Map,  Tuple,  Result,  Option
  */
 =cut
-use Common:ConstValues;
+use Common::ConstValues;
 package CLValue::CLType;
 use feature qw(switch);
 use JSON;

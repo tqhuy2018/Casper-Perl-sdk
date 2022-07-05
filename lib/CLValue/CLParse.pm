@@ -343,7 +343,7 @@ sub parsedPrimitiveToJsonString {
 	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_KEY) {
 		my $findStr = "-";
 		my @matches = $clTypeStr =~ /($findStr)/g;
-		my $firstPrefix = @matches[0];
+		my $firstPrefix = $matches[0];
 		if($firstPrefix eq "account") {
 			return "{\"Account\":\"".$clTypeStr."\"}"
 		} elsif ($firstPrefix eq "hash") {
@@ -394,7 +394,7 @@ sub parsedCompoundToJsonString {
 		for my $i (@sequence) {
 			my $oneParse = new CLValue::CLParse();
 			my $oneKey = new CLValue::CLType();
-			$oneParse = @listElement[$i];
+			$oneParse = $listElement[$i];
 			$oneKey = $oneParse->getItsCLType();
 			if($oneKey->isCLTypePrimitive()) {
 				$elementStr = $oneParse->parsedPrimitiveToJsonString();
@@ -454,7 +454,7 @@ sub parsedCompoundToJsonString {
 			# get key json
 			my $keyParseElement = new CLValue::CLParse();
 			my $keyType = new CLValue::CLType();
-			$keyParseElement = @listKey[$i];
+			$keyParseElement = $listKey[$i];
 			$keyType = $keyParseElement->getItsCLType();
 			if($keyType->isCLTypePrimitive()) {
 				$keyStr = $keyParseElement->parsedPrimitiveToJsonString();
@@ -464,7 +464,7 @@ sub parsedCompoundToJsonString {
 			# get value json
 			my $valueParseElement = new CLValue::CLParse();
 			my $valueType = new CLValue::CLType();
-			$valueParseElement = @listValue[$i];
+			$valueParseElement = $listValue[$i];
 			$valueType = $valueParseElement->getItsCLType();
 			if($valueType->isCLTypePrimitive()) {
 				$valueStr = $valueParseElement->parsedPrimitiveToJsonString();

@@ -5,7 +5,7 @@ use warnings;
 use Test::Simple tests => 8;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
-
+#use Digest::BLAKE2 qw(blake2b blake2b_hex blake2b_base64 blake2b_base64url blake2b_ascii85);
 use Serialization::CLTypeSerialization;
 use CLValue::CLType;
 use CLValue::CLValue;
@@ -25,6 +25,9 @@ use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 use Serialization::ExecutableDeployItemSerializationHelper;
 
 sub testAll {
+	# blake2b
+#print blake2b('Japan Break Industries');
+#print blake2b_hex('Japan Break Industries');
 	testDeployHeaderSerialization();
 	testDeployApprovalSerialization();
 	testForExecutableDeployItemTransfer();
