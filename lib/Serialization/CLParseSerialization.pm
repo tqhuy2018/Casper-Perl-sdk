@@ -425,7 +425,6 @@ sub serializeFromCLParseTuple3 {
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_UNIT) {
 		return serializeFromCLParseUnit($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_KEY) {
-		print("ABout to serialize of tyep Key");
 		return serializeFromCLParseKey($clParsed);
 	} elsif ($clType->getItsTypeStr() eq $Common::ConstValues::CLTYPE_UREF) {
 		return serializeFromCLParseURef($clParsed);

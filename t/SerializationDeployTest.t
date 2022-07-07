@@ -3,7 +3,7 @@ $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 #use Java;
 use warnings;
-use Test::Simple tests => 8;
+use Test::Simple tests => 9;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 
@@ -13,14 +13,11 @@ use CLValue::CLValue;
 use CLValue::CLParse;
 use Common::ConstValues;
 use Serialization::DeploySerializeHelper;
-#use Digest::BLAKE2 qw(blake2b blake2b_hex blake2b_base64 blake2b_base64url blake2b_ascii85);
-### Functional interface:
-use Crypt::Digest::BLAKE2b_256 qw( blake2b_256 blake2b_256_hex blake2b_256_b64 blake2b_256_b64u
-                             blake2b_256_file blake2b_256_file_hex blake2b_256_file_b64 blake2b_256_file_b64u );
 use GetDeploy::DeployHeader;
 use GetDeploy::Approval;
 use GetDeploy::Deploy;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByName;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByHash;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredVersionedContractByName;
@@ -30,18 +27,9 @@ use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 use Serialization::ExecutableDeployItemSerializationHelper;
 
 sub testAll {
-
-my @list = (0,0,0,0,0,1,0,0,0,6,0,0,0,97,109,111,117,110,116,5,0,0,0,4,0,202,154,59,8,5,4,0,0,0,6,0,0,0,97,109,111,117,110,116,5,0,0,0,4,0,94,208,178,8,6,0,0,0,116,97,114,103,101,116,33,0,0,0,1,95,18,181,119,108,102,210,120,42,68,8,211,145,15,100,72,93,212,4,116,72,4,9,85,87,58,160,38,37,108,250,10,22,2,0,0,0,105,100,9,0,0,0,1,0,0,0,0,0,0,0,0,13,5,7,0,0,0,115,112,101,110,100,101,114,33,0,0,0,1,221,231,71,38,57,5,135,23,164,46,34,210,151,214,207,62,7,144,107,181,123,194,142,252,234,195,103,127,138,61,200,59,11);
-my $total = @list;
-my @sequence = (0..$total-1);
-my $str = "";
-for my $i (@sequence) {
-	my $oneChar = chr($list[$i]);
-	$str = $str.$oneChar;
-}
-print "blake2b256 is: ". blake2b_256_hex($str)."\n";
 	testDeployHeaderSerialization();
 	testDeployApprovalSerialization();
+	testForExecutableDeployItemModuleBytes();
 	testForExecutableDeployItemTransfer();
 	testForExecutableDeployItemStoredContractByName();
 	testForExecutableDeployItemStoredContractByHash();
@@ -161,6 +149,34 @@ sub testDeploySerialization {
 	my $serializationHelper = new Serialization::DeploySerializeHelper();
 	my $deploySerialization = $serializationHelper->serializeForDeploy($deploy);
 	ok($deploySerialization eq "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900ca856a4d37501000080ee36000000000001000000000000004811966d37fe5674a8af4001884ea0d9042d1c06668da0c963769c3a01ebd08f0100000001010101010101010101010101010101010101010101010101010101010101010e0000006361737065722d6578616d706c6501da3c604f71e0e7df83ff1ab4ef15bb04de64ca02e3d2b78de6950e8b5ee187020e0000006361737065722d6578616d706c65130000006578616d706c652d656e7472792d706f696e7401000000080000007175616e7469747904000000e803000001050100000006000000616d6f756e7404000000e8030000010100000001d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c012dbf03817a51794a8e19e0724884075e6d1fbec326b766ecfa6658b41f81290da85e23b24e88b1c8d9761185c961daee1adab0649912a6477bcd2e69bd91bd08","Test serialization for Deploy Serialization passed");
+}
+# EDI_MODULE_BYTES assertion
+sub testForExecutableDeployItemModuleBytes {
+	my $session = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
+	$session->setItsType($Common::ConstValues::EDI_MODULE_BYTES);
+	my $ediSession = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes();
+	$ediSession->setModuleBytes("");
+	# set up RuntimeArgs with 1 element of NamedArg only
+    # setup 1 NamedArgs
+    my $oneNASession = new  GetDeploy::ExecutableDeployItem::NamedArg();
+	$oneNASession->setItsName("amount");
+	my $oneCLValueSession = new CLValue::CLValue();
+	my $oneCLTypeSession = new CLValue::CLType();
+	my $oneCLParseSession = new CLValue::CLParse();
+	$oneCLTypeSession->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+	$oneCLValueSession->setCLType($oneCLTypeSession);
+	$oneCLParseSession->setItsCLType($oneCLTypeSession);
+	$oneCLParseSession->setItsValueStr("100000000");
+	$oneCLValueSession->setParse($oneCLParseSession);
+	$oneNASession->setCLValue($oneCLValueSession);
+	my $raSession = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
+	my @listASession = ($oneNASession);
+	$raSession->setListNamedArg($oneNASession);
+	$ediSession->setArgs($raSession);
+	$session->setItsValue($ediSession);
+	my $ediSerializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
+	my $serializationModuleBytes = $ediSerializationHelper->serializeForExecutableDeployItem($session);
+	ok($serializationModuleBytes eq "00000000000100000006000000616d6f756e74050000000400e1f50508","Test serialization for ExecutableDeployItem_Transfer passed");
 }
 
 # EDI_TRANSFER assertion

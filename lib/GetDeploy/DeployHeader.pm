@@ -124,4 +124,11 @@ sub fromJsonObjectToDeployHeader {
 	$retDeployHeader->setDependencies(@dependencies);
 	return $retDeployHeader;
 }
+
+# This function counts the deploy hash based on the the Deploy header serialization
+# Just take the serialization of the deploy header, then use blake2b256 over the deploy header serialization.
+sub getDeployHash {
+	my ( $self ) = @_;
+	my $headerSerialization = 
+}
 1;

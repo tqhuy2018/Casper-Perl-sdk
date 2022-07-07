@@ -2,8 +2,11 @@
 
 package GetDeploy::Deploy;
 use GetDeploy::Approval;
+use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
+use Serialization::ExecutableDeployItemSerializationHelper;
 use JSON qw( decode_json );
-
+use Crypt::Digest::BLAKE2b_256 qw( blake2b_256 blake2b_256_hex blake2b_256_b64 blake2b_256_b64u
+                             blake2b_256_file blake2b_256_file_hex blake2b_256_file_b64 blake2b_256_file_b64u );
 sub new {
 	my $class = shift;
 	my $self = {
@@ -85,6 +88,45 @@ sub fromJsonArrayToApprovalList {
 		push(@approvalList,$oneApproval);
 	}
 	return @approvalList;
+}
+
+# This function counts the deploy body hash based on the serialization of the deploy payment and session
+# The flow is:
+# 1. take the deploy payment serialization
+# 2. take the deploy session serialization
+# 3. make the concatenation of deploy payment serialization and deploy session serialization
+# 4. take the blake2b256 hash over the concatenation string.
+sub getBodyHash {
+	my ($self) = @_;
+	my $payment = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
+ 	$payment = $self->{_payment};
+ 	my $serializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
+ 	my $paymentSerialization = $serializationHelper->serializeForExecutableDeployItem($payment);
+ 	print "Payment serialization:".$paymentSerialization."\n";
+ 	my $session = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
+ 	$session = $self->{_session};
+ 	my $sessionSerialization = $serializationHelper->serializeForExecutableDeployItem($session);
+ 	print "Session serialization:".$sessionSerialization."\n";
+ 	my $bodySerialization = $paymentSerialization.$sessionSerialization;
+ 	print "Body serialization:".$bodySerialization."\n";
+ 	my $length = length($bodySerialization)/2;
+ 	my @sequence = (0..$length-1);
+ 	my @list = ();
+ 	for my $i (@sequence) {
+ 		my $twoChar = substr $bodySerialization, $i * 2,2;
+ 		my $firstChar = substr $twoChar,0,1;
+ 		my $secondChar = substr $twoChar,1,1;
+ 		my $valueHex = hex($firstChar) * 16 + hex($secondChar);
+ 		push(@list,$valueHex);
+ 	}
+ 	my $total = @list;
+	my @sequence2 = (0..$total-1);
+	my $str = "";
+	for my $i (@sequence2) {
+		my $oneChar = chr($list[$i]);
+		$str = $str.$oneChar;
+	}
+	return blake2b_256_hex($str);
 }
 
 1;
