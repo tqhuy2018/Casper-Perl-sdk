@@ -22,6 +22,7 @@ use  GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use GetDeploy::Approval;
 use Crypt::Secp256k1Handle;
+use Crypt::Ed25519Handle;
 use PutDeploy::PutDeployRPC;
 # test put deploy with input isEd25519 = int, 1 then use Ed25519 account, 0 then use Secp256k1 account
 sub testPutDeploy {
@@ -166,7 +167,12 @@ sub testPutDeploy {
 	my $oneApproval = new GetDeploy::Approval();
 	if ($isEd25519 == 1) {
 		$oneApproval->setSigner($accountEd25519);
-		$oneApproval->setSignature("");
+		my $ed25519 = new Crypt::Ed25519Handle();
+		my $hashAnscii = fromDeployHashToAnscii($deployHash);
+		my $signature = $ed25519->signMessage($hashAnscii);
+		$signature = "01".$signature;
+		print "Signature is:".$signature."\n";
+		$oneApproval->setSignature($signature);
 	} else {
 		$oneApproval->setSigner($accountSecp256k1);
 		my $secp256k1 = new Crypt::Secp256k1Handle();
@@ -198,4 +204,5 @@ sub fromDeployHashToAnscii {
 	print "Hash in anscii is:".$ret."\n";
 	return $ret;
 }
-testPutDeploy(0);
+#testPutDeploy(0);
+testPutDeploy(1);

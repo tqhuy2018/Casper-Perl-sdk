@@ -8,5 +8,6 @@ use lib "$RealBin/../lib";
 use Crypt::Ed25519Handle;
 sub testKeyGeneration {
 	my $ed25519 = new Crypt::Ed25519Handle();
+	$ed25519->keyGeneration();
 }
 testKeyGeneration();
