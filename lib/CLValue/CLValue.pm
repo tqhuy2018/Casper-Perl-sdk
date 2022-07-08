@@ -83,7 +83,7 @@ sub toJsonString {
 	my $ret = "";
 	my $clTypeStr = $clType->toJsonString();
 	my $clParseStr = $clParse->toJsonString();
-	my $findStr = $Common::ConstValues::PARSED_FIXED_STRING;
+	my $findStr = $Common::ConstValues::PARSED_FIXED_STRING.":";
 	my @matches = $clParseStr =~ /($findStr)/g;
 	my $count = @matches;
 	if($count > 0) {

@@ -299,9 +299,9 @@ sub toJsonString {
 	my $clType = new CLValue::CLType();
 	$clType = $self->{_itsCLType};
 	if($clType->isCLTypePrimitive()) {
-		return parsedPrimitiveToJsonString();
+		return $self->parsedPrimitiveToJsonString();
 	} else {
-		return parsedCompoundToJsonString();
+		return $self->parsedCompoundToJsonString();
 	}
 }
 # This function turn a CLParsed of type primitive to a Json String that represents that CLParsed. It is used to generate the
@@ -342,14 +342,15 @@ sub parsedPrimitiveToJsonString {
 		return "\"".$self->{_itsValueStr}."\""
 	} elsif ($clTypeStr eq  $Common::ConstValues::CLTYPE_KEY) {
 		my $findStr = "-";
-		my @matches = $clTypeStr =~ /($findStr)/g;
+		my $itsValueStr = $self->{_itsValueStr};
+		my @matches = split($findStr,$itsValueStr);
 		my $firstPrefix = $matches[0];
 		if($firstPrefix eq "account") {
-			return "{\"Account\":\"".$clTypeStr."\"}"
+			return "{\"Account\":\"".$itsValueStr."\"}"
 		} elsif ($firstPrefix eq "hash") {
-			return "{\"Hash\":\"".$clTypeStr."\"}"
+			return "{\"Hash\":\"".$itsValueStr."\"}"
 		} elsif ($firstPrefix eq "uref") {
-			return "{\"URef\":\"".$clTypeStr."\"}"
+			return "{\"URef\":\"".$itsValueStr."\"}"
 		} else {
 		    return $Common::ConstValues::INVALID_VALUE;
 		}

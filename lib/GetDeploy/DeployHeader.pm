@@ -6,7 +6,8 @@ and handles the change from Json object to DeployHeader object
 package GetDeploy::DeployHeader;
 
 use JSON qw( decode_json );
-
+use Serialization::DeploySerializeHelper;
+use Crypt::Blake2b256Helper();
 sub new {
 	my $class = shift;
 	my $self = {
@@ -129,6 +130,10 @@ sub fromJsonObjectToDeployHeader {
 # Just take the serialization of the deploy header, then use blake2b256 over the deploy header serialization.
 sub getDeployHash {
 	my ( $self ) = @_;
-	my $headerSerialization = 
+	my $serializationHelper = new  Serialization::DeploySerializeHelper();
+	my $headerSerialization = $serializationHelper->serializeForHeader($self);
+	print "Header serialization is:".$headerSerialization."\n";
+	my $blake2b = new Crypt::Blake2b256Helper();
+	return $blake2b->getBlake2b256($headerSerialization);
 }
 1;

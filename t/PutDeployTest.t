@@ -20,12 +20,18 @@ use GetDeploy::ExecutableDeployItem::NamedArg;
 use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 use  GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
+use GetDeploy::Approval;
+use Crypt::Secp256k1Handle;
+use PutDeploy::PutDeployRPC;
 # test put deploy with input isEd25519 = int, 1 then use Ed25519 account, 0 then use Secp256k1 account
 sub testPutDeploy {
 	my @list = @_;
 	my $isEd25519 = int($list[0]);
 	my $accountEd25519 = "011e22df016929612d5670e20a625124561c5c06c3a2587f0ec10489c35fc8a2b4";
 	my $accountSecp256k1 = "0203b32877c189197706bd62b27690a1857661ab8e53ea07146f1450c9ca59e2d499";
+	# These accounts are from Swift
+	#my $accountEd25519 = "0152a685e0edd9060da4a0d52e500d65e21789df3cbfcb878c91ffeaea756d1c53";
+	#my $accountSecp256k1 = "0202572ee4c44b925477dc7cd252f678e8cc407da31b2257e70e11cf6bcb278eb04b";
 	my $deploy = new GetDeploy::Deploy();
 	my $deployHeader = new GetDeploy::DeployHeader();
 	if ($isEd25519 == 1) {
@@ -39,7 +45,7 @@ sub testPutDeploy {
 	$date .= sprintf ".%03d", ($t-int($t))*1000;
 	$date = $date."Z";
 	print $date, "\n";
-	$date = "2022-06-14T09:58:16.223Z";
+	#$date = "2022-07-08T08:11:27.149Z";
 	$deployHeader->setTimestamp($date);
 	$deployHeader->setChainName("casper-test");
 	$deployHeader->setTTL("1h 30m");
@@ -69,6 +75,7 @@ sub testPutDeploy {
 	$ediPayment->setModuleBytes("");
 	$ediPayment->setArgs($runTimeArgs);
 	$payment->setItsValue($ediPayment);
+	$deploy->setPayment($payment);
 	
 	# Setup for deploy session of type ExecutableDeployItem_Transfer
 	
@@ -147,10 +154,48 @@ sub testPutDeploy {
 	$ediSession->setArgs($runTimeArgsSession);
 	$session->setItsValue($ediSession);
 	$deploy->setHeader($deployHeader);
-	$deploy->setPayment($payment);
+	
 	$deploy->setSession($session);
 	my $deployBodyHash = $deploy->getBodyHash();
+	$deployHeader->setBodyHash($deployBodyHash);
 	print "Deploy hash is:".$deployBodyHash."\n";
-	
+	my $deployHash = $deployHeader->getDeployHash();
+	print("Deploy hash is:".$deployHash."\n");
+	$deploy->setDeployHash($deployHash);
+	# Setup approvals
+	my $oneApproval = new GetDeploy::Approval();
+	if ($isEd25519 == 1) {
+		$oneApproval->setSigner($accountEd25519);
+		$oneApproval->setSignature("");
+	} else {
+		$oneApproval->setSigner($accountSecp256k1);
+		my $secp256k1 = new Crypt::Secp256k1Handle();
+		my $hashAnscii = fromDeployHashToAnscii($deployHash);
+		my $signature = $secp256k1->signMessage($hashAnscii);
+		$signature = "02".$signature;
+		print "Signature is:".$signature."\n";
+		$oneApproval->setSignature($signature);
+	}
+	my @listApprovals = ($oneApproval);
+	$deploy->setApprovals(@listApprovals);
+	my $putDeployRPC = new PutDeploy::PutDeployRPC();
+	$putDeployRPC->putDeploy($deploy);
 }
-testPutDeploy(1);
+sub fromDeployHashToAnscii {
+	my @vars = @_;
+	my $deployHash = $vars[0];
+	my $length = length($deployHash)/2;
+	my @sequence = (0..$length-1);
+	my $ret = "";
+	for my $i (@sequence)  {
+		my $twoChar = substr $deployHash,$i*2,2;
+		my $firstChar = substr $twoChar,0,1;
+		my $secondChar = substr $twoChar,1,1;
+		my $value = hex($firstChar) * 16 + hex($secondChar);
+		my $char = chr($value);
+		$ret = $ret.$char;
+	}
+	print "Hash in anscii is:".$ret."\n";
+	return $ret;
+}
+testPutDeploy(0);

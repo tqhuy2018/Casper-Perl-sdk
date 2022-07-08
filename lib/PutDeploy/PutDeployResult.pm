@@ -43,3 +43,4 @@ sub fromJsonObjectToPutDeployResult {
 	$ret->setDeployHash($json->{'deploy_hash'});
 	return $ret;
 }
+1;

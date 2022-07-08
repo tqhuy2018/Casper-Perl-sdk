@@ -271,19 +271,27 @@ sub getCLTypeCompound {
 }
 # This function turn a CLType object to a Json string
 sub toJsonString {
-	if(isCLTypePrimitive()) {
-		my $ret = clTypePrimitiveToJsonString();
+	my ($self) = @_;
+	print "To json String call for CLType:".$self->{_itsTypeStr}."\n";
+	my $ret = isInputPrimitive($self->{_itsTypeStr});
+	print "Ret is :".$ret."\n";
+	if($ret == 1) {
+		my $ret = $self->clTypePrimitiveToJsonString($self->{_itsTypeStr});
+		print "Cltype string is:".$ret."\n";
 		return "\"".$ret."\"";
 	} else {
-		return clTypeCompoundToJsonString();
+		return $self->clTypeCompoundToJsonString();
 	}
 }
 
 # This function generate the Json String represent the CLType primitive, such as Bool, I32, I64 , U32 , ...
 # CLType that does not contain recursive declaration inside its body*/
 sub clTypePrimitiveToJsonString {
+	#my @vars = @_;
+	#my $type =  $vars[0];
 	my ($self) = @_;
-	my $type =  $self->{_itsTypeStr};
+	my $type = $self->{_itsTypeStr};
+	print "primitive cltype, Type is".$type."\n";
 	if($type eq $Common::ConstValues::CLTYPE_BOOL) {
 		return "Bool";
 	} elsif ($type eq $Common::ConstValues::CLTYPE_I32) {

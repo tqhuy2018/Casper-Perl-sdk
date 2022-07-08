@@ -13,8 +13,6 @@ use Serialization::ExecutableDeployItemSerializationHelper;
 package Serialization::DeploySerializeHelper;
 use Date::Parse;
 
-
-
 #constructor
 sub new {
 	my $class = shift;
@@ -124,27 +122,15 @@ sub serializeForDeploy {
 	return $ret;
 	
 }
-sub fromTTLToMiliseconds {
+sub fromTTLToMilisecondsMultiple {
 	my @list = @_;
 	$ttl = $list[0];
-	my $findStr = " ";
-	my @matches = $ttl =~ /($findStr)/g;
-	my $count = @matches;
-	my $ret = 0;
-	my $numStr = "";
-	my $numValue = 0;
-	# if ttl is in form of "1h 2m 30s" or "2days 1hour 3minutes 15s"
-	if($count > 0) {
-		my @sequence =(0..$count-1);
-		for my $i (@sequence) {
-			my $ret1 = fromTTLToMiliseconds($matches[$i]);
-			$ret = $ret + $ret1;
-		}
-		return $ret;
-	} 
-	# if ttl is in form of single date time such as "1h", "30" or "2days"
-	else {
-		my $ttlStrLength = length($ttl);
+}
+sub fromTTLToMilisecondsSingle {
+	my $ret = "";
+	my @list = @_;
+	$ttl = $list[0];
+	my $ttlStrLength = length($ttl);
 		# if ttl is in format "3days" or "10days"
 		$findStr = "days";
 		my @matches2 = $ttl =~ /($findStr)/g;
@@ -390,7 +376,36 @@ sub fromTTLToMiliseconds {
 			$numValue = int($numStr);
 			return $numValue * 24 * 3600 * 1000;
 		}
-	}
 	return $ret;
+}
+sub fromTTLToMiliseconds {
+	my @list = @_;
+	$ttl = $list[0];
+	my $findStr = " ";
+	my @matches = split($findStr,$ttl);
+	my $count = @matches;
+	my $ret = 0;
+	my $numStr = "";
+	my $numValue = 0;
+	# if ttl is in form of "1h 2m 30s" or "2days 1hour 3minutes 15s"
+	print "Get millisecond for str:".$ttl."\n";
+	if($count > 0) {
+		print "Total element in time is:".$count."\n";
+		my @sequence =(0..$count-1);
+		for my $i (@sequence) {
+			print "Get milisecond for time:".$matches[$i]."_a\n";
+			my $ret1 =  fromTTLToMilisecondsSingle($matches[$i]);
+			print "Ret 1 is:".$ret1."\n";
+			$ret = $ret + $ret1;
+		}
+		return $ret;
+	} 
+	# if ttl is in form of single date time such as "1h", "30" or "2days"
+	else {
+		$ret = fromTTLToMilisecondsSingle($ttl);
+		print("Single time, milisecond is:".$ret."\n");
+		return $ret;
+	}
+		
 }
 1;

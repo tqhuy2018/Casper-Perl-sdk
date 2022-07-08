@@ -4,7 +4,12 @@ use LWP::UserAgent;
 use Data::Dumper;
 use JSON qw( decode_json );
 
-use PutDeploy::PutDeployResult;
+use  PutDeploy::PutDeployResult;
+use GetDeploy::Deploy;
+use GetDeploy::DeployHeader;
+use PutDeploy::ExecutableDeployItemToJsonHelper;
+use GetDeploy::Approval;
+use  Common::ErrorException;
 sub new {
 	my $class = shift;
 	my $self = {_url=>shift};
@@ -47,7 +52,9 @@ sub putDeploy {
 	} else {
 		$uri = $Common::ConstValues::TEST_NET;
 	}
-	my $json = $list[1];
+	my $deploy = $list[1];
+	my $json = fromDeployToJsonString($deploy);
+	print "deploy json is:\n\n".$json."\n\n\n";
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
@@ -61,15 +68,39 @@ sub putDeploy {
 	    	my $errorException = new Common::ErrorException();
 	    	$errorException->setErrorCode($errorCode);
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	    	print "Error put deploy with code:".$errorCode."\n";
+	    	print "Error put deploy with message:".$decoded->{'error'}{'message'}."\n";
 	    	return $errorException;
 	    } else {
 	    	my $putDeployResult = new PutDeploy::PutDeployResult();
 	    	$putDeployResult = PutDeploy::PutDeployResult->fromJsonObjectToPutDeployResult($decoded->{'result'});
+	    	print "Put deploy successful with deploy hash:".$putDeployResult->getDeployHash()."\n";
 		    return $deployResult;
 	    }
 	}
 	else {
 	    die $response->status_line;
 	}
+}
+sub fromDeployToJsonString {
+	my @vars = @_;
+	my $deploy = new GetDeploy::Deploy();
+	$deploy = $vars[0];
+	my $deployHeader = new GetDeploy::DeployHeader();
+	$deployHeader = $deploy->getHeader();
+	my $ediToJsonHelper = new PutDeploy::ExecutableDeployItemToJsonHelper();
+	my $headerString = "\"header\": {\"account\": \"".$deployHeader->getAccount()."\",\"timestamp\": \"".$deployHeader->getTimestamp()."\",\"ttl\":\"".$deployHeader->getTTL()."\",\"gas_price\":".$deployHeader->getGasPrice().",\"body_hash\":\"".$deployHeader->getBodyHash(). "\",\"dependencies\": [],\"chain_name\": \"".$deployHeader->getChainName()."\"}";
+   	print "Header string is:".$headerString."\n";
+    my $paymentJsonStr = "\"payment\": ".$ediToJsonHelper->toJsonString($deploy->getPayment());
+    print "Payment string is:".$paymentJsonStr."\n";
+    my $sessionJsonStr = "\"session\": ".$ediToJsonHelper->toJsonString($deploy->getSession());
+    print "Session string is:".$sessionJsonStr."\n";
+    my $approval = new GetDeploy::Approval();
+    my @approvalList = $deploy->getApprovals();
+    $approval = $approvalList[0];
+    my $approvalJsonStr = "\"approvals\": [{\"signer\": \"".$approval->getSigner()."\",\"signature\": \"".$approval->getSignature()."\"}]";
+    my $hashStr = "\"hash\": \"".$deploy->getDeployHash()."\"";
+    my $deployJsonStr = "{\"id\": 1,\"method\": \"account_put_deploy\",\"jsonrpc\": \"2.0\",\"params\": [{".$headerString.",".$paymentJsonStr.",".$sessionJsonStr.",".$approvalJsonStr.",".$hashStr."}]}";
+    return $deployJsonStr;
 }
 1;
