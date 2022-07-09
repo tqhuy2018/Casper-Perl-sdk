@@ -17,29 +17,28 @@ sub testKeyGeneration {
 =comment
 This function generate the private/public key pair in PEM string format
 =cut
-sub generateKey {
+sub testGenerateKey {
 	my $pk = Crypt::PK::ECC->new();
 	$pk->generate_key('secp256k1');
 	my $private_pem = $pk->export_key_pem('private_short');
 	my $public_pem = $pk->export_key_pem('public_short');
-	print "private key pem is:".$private_pem."\n";
-	print "public key pem is:".$public_pem."\n";
-	my $message = "HELLO WORLD!";
-	my $privateKeyPath = "./Crypto/Secp256k1/Secp256k1_Perl_secret_key.pem";
-	my $privateKey = Crypt::PK::ECC->new($privateKeyPath);
-	my $signature = $privateKey->sign_message($message,"SHA256");
-	my $signature7518 = $privateKey->sign_message_rfc7518($message,"SHA256");
-	#print "Signature raw:".$signature."\n";
-	#$signature = "hello world";
-	$signature =~ s/(.)/sprintf '%04x', ord $1/seg;
-	$signature7518 =~ s/(.)/sprintf '%04x', ord $1/seg;
-	#print "signature hexa is:".hex($signature)."\n";
-	print "signature in key generation is:".$signature."\n";
-	print "signature2 is:".$signature7518."\n";
-	
-	#my $signature3 = ecc_sign_message($privateKeyPath,$message);
-	#$signature3 =~ s/(.)/sprintf '%04x', ord $1/seg;
-	#print "Signature 3 is:".$signature3."\n";
+	my $privateLength = length($private_pem);
+	my $publicLength = length($public_pem);
+	# private key length and public key length assertion
+	ok($privateLength == 223,"Test generate private key, Passed");
+	ok($publicLength == 174,"Test generate private key, Passed");
 }
-#generateKey();
-testKeyGeneration();
+sub testReadPrivateKey {
+	my $secp256k1 = new Crypt::Secp256k1Handle();
+	# Positive path, read private key from a correct path and correct private PEM file format
+	my $privateKey = $secp256k1->readPrivateKeyFromPemFile("./Crypto/Secp256k1/Secp256k1_Perl_secret_key.pem");
+	my $privateLength = length($privateKey);
+	print "Private key length:".$privateLength."\n";
+	ok($privateLength == 223,"Test read private key, Passed");
+	# Negative path, read private key from an incorrect file path
+	$secp256k1->readPrivateKeyFromPemFile("./Crypto/Secp256k1/wrongPrivateKeyPath.pem");
+}
+testGenerateKey();
+testReadPrivateKey();
+
+#testKeyGeneration();
