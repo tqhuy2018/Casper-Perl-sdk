@@ -2,7 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-use Test::Simple tests => 6;
+use Test::Simple tests => 12;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 use CryptoHandle::Secp256k1Handle;
@@ -79,10 +79,14 @@ sub testSignAndVerify {
 	my $privateKeyPem = $keyPair->getPrivateKey();
 	my $pk = Crypt::PK::ECC->new();
 	my $privateKey =  $pk->import_key(\$privateKeyPem);
-	my $publicKey = $keyPair->getPublicKey();
 	my $signature = $secp256k1->signMessage($message1,$privateKey);
 	ok(length($signature) == 128," Test sign message, Passed");
+	my $publicKeyPem = $keyPair->getPublicKey();
+	my $publicKey = $pk->import_key(\$publicKeyPem);
+	my $ret = $secp256k1->verifyMessage($publicKey,$message1,$signature);
+	ok($ret == 1," Test verify message, Passed");
 	
+	# negative path 
 	
 }
 testGenerateKey();
