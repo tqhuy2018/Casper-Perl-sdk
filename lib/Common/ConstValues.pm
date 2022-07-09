@@ -110,4 +110,7 @@ our $EDI_STORED_CONTRACT_BY_NAME			= "StoredContractByName";
 our $EDI_STORED_VERSIONED_CONTRACT_BY_NAME  = "StoredVersionedContractByName";
 our $EDI_STORED_VERSIONED_CONTRACT_BY_HASH  = "StoredVersionedContractByHash";
 our $EDI_TRANSFER							= "Transfer";
+
+# Error in general
+our $ERROR_TRY_CATCH					 	= "ERROR";
 1;

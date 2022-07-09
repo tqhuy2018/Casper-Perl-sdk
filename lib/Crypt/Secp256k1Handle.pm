@@ -9,7 +9,7 @@ Write private/public key from Pem file
 =cut
 use Crypt::PK::ECC;
 use Crypt::Misc 'write_rawfile';
-use Error(':try');
+use Common::ConstValues;
 package Crypt::Secp256k1Handle;
 
 
@@ -33,15 +33,13 @@ sub generateKey {
 sub readPrivateKeyFromPemFile {
 	my @vars = @_;
 	my $privateKeyPath = $vars[1];
-	print "prviate key path is:".$privateKeyPath."\n";
 	my $privatePem;
 	eval {
 		my $pk = Crypt::PK::ECC->new($privateKeyPath);
 		$privatePem = $pk->export_key_pem('private_short');
 	};
 	if(my $e = $@) {
-		print "Error occur\n";
-		return "Error";
+		return $Common::ConstValues::ERROR_TRY_CATCH;
 	} else {
 		return $privatePem;
 	}
@@ -50,9 +48,16 @@ sub readPrivateKeyFromPemFile {
 sub readPublicKeyFromPemFile {
 	my @vars = @_;
 	my $privateKeyPath = $vars[1];
-	my $pk = Crypt::PK::ECC->new($privateKeyPath);
-	my $publicPem = $pk->export_key_pem('public_short');
-	return $publicPem;
+	my $publicPem;
+	eval {
+		my $pk = Crypt::PK::ECC->new($privateKeyPath);
+		$publicPem = $pk->export_key_pem('public_short');
+	};
+	if(my $e = $@) {
+		return $Common::ConstValues::ERROR_TRY_CATCH;
+	} else {
+		return $publicPem;
+	}
 }
 # This function generates the private key and then write it to a file
 # input: file name
