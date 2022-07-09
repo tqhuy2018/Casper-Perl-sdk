@@ -2,7 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-use Test::Simple tests => 12;
+use Test::Simple tests => 15;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 use CryptoHandle::Secp256k1Handle;
@@ -71,6 +71,7 @@ sub testReadPublicKey {
 }
 # This function tests the message signing and  verification of the signed message
 sub testSignAndVerify {
+	# positive path
 	my $secp256k1 = new CryptoHandle::Secp256k1Handle();
 	my $message1 = "7e86be76bc2031558f810b79602380ad2badfb7d65aef810e30891a8c0d3b3ee";
 	my $message2 = "Hello, World!";
@@ -80,6 +81,7 @@ sub testSignAndVerify {
 	my $pk = Crypt::PK::ECC->new();
 	my $privateKey =  $pk->import_key(\$privateKeyPem);
 	my $signature = $secp256k1->signMessage($message1,$privateKey);
+	my $signature2 = $secp256k1->signMessage($message2,$privateKey);
 	ok(length($signature) == 128," Test sign message, Passed");
 	my $publicKeyPem = $keyPair->getPublicKey();
 	my $publicKey = $pk->import_key(\$publicKeyPem);
@@ -87,12 +89,24 @@ sub testSignAndVerify {
 	ok($ret == 1," Test verify message, Passed");
 	
 	# negative path 
-	
+	# Negative path 1 - verify with a different public key - private key pair
+	# This test use a different public key - a newly generated public key
+	my $keyPair2 = new CryptoHandle::KeyPair();
+	$keyPair2 = $secp256k1->generateKey();
+	my $publicKeyPem2 = $keyPair2->getPublicKey();
+	my $publicKey2 = $pk->import_key(\$publicKeyPem2);
+	my $ret2 = $secp256k1->verifyMessage($publicKey2,$message1,$signature);
+	ok($ret2 == 0," Test verify message, Passed");
+	# Negative path 2 - verify with a correct public key - private key pair but wrong message
+	# This should be message1 but message2 is put into usage
+	my $ret3 = $secp256k1->verifyMessage($publicKey,$message2,$signature);
+	ok($ret3 == 0," Test verify message, Passed");
+	# Negative path 3 - verify with a correct public key - private key pair but wrong signature
+    my $ret4 = $secp256k1->verifyMessage($publicKey,$message1,$signature2);
+	ok($ret4 == 0," Test verify message, Passed");
 }
 testGenerateKey();
 testWriteKeyPair();
 testReadPrivateKey();
 testReadPublicKey();
 testSignAndVerify();
-
-#testKeyGeneration();

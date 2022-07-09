@@ -211,7 +211,6 @@ sub verifyMessage {
 	my $publicKey = $vars[1];
 	my $originalMessage = $vars[2];
 	my $signature = $vars[3];
-	#$signature = pack 'H*', $signature;
 	$signature =~ s/(..)/chr(hex($1))/eg; 
 	my $ret = $publicKey->verify_message_rfc7518($signature,$originalMessage,"SHA256");
 	return $ret;
