@@ -5,7 +5,7 @@ use GetDeploy::Approval;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use Serialization::ExecutableDeployItemSerializationHelper;
 use JSON qw( decode_json );
-use Crypt::Blake2b256Helper;
+use CryptoHandle::Blake2b256Helper;
 sub new {
 	my $class = shift;
 	my $self = {
@@ -108,7 +108,7 @@ sub getBodyHash {
  	print "Session serialization:".$sessionSerialization."\n";
  	my $bodySerialization = $paymentSerialization.$sessionSerialization;
  	print "Body serialization:".$bodySerialization."\n";
- 	my $blake2b = new Crypt::Blake2b256Helper();
+ 	my $blake2b = new CryptoHandle::Blake2b256Helper();
  	return $blake2b->getBlake2b256($bodySerialization);
 }
 

@@ -5,9 +5,9 @@ use warnings;
 use Test::Simple tests => 6;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
-use Crypt::Ed25519Handle;
+use CryptoHandle::Ed25519Handle;
 sub testKeyGeneration {
-	my $ed25519 = new Crypt::Ed25519Handle();
+	my $ed25519 = new CryptoHandle::Ed25519Handle();
 	$ed25519->keyGeneration();
 }
 testKeyGeneration();

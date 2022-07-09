@@ -2,7 +2,7 @@
 This provides blake2b256 hash to get the deploy body hash and deploy hash, used for account_put_deploy RPC method call
 =cut
 
-package Crypt::Blake2b256Helper;
+package CryptoHandle::Blake2b256Helper;
 use Crypt::Digest::BLAKE2b_256 qw( blake2b_256 blake2b_256_hex blake2b_256_b64 blake2b_256_b64u
                              blake2b_256_file blake2b_256_file_hex blake2b_256_file_b64 blake2b_256_file_b64u );
 

@@ -8,7 +8,7 @@ Read private/public key from Pem file
 Write private/public key from Pem file
 =cut
 use Crypt::PK::Ed25519;
-package Crypt::Ed25519Handle;
+package CryptoHandle::Ed25519Handle;
 
 sub new {
 	my $class = shift;

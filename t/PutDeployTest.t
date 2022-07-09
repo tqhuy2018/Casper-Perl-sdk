@@ -21,9 +21,10 @@ use GetDeploy::ExecutableDeployItem::RuntimeArgs;
 use  GetDeploy::ExecutableDeployItem::ExecutableDeployItem_ModuleBytes;
 use GetDeploy::ExecutableDeployItem::ExecutableDeployItem;
 use GetDeploy::Approval;
-use Crypt::Secp256k1Handle;
-use Crypt::Ed25519Handle;
+use CryptoHandle::Secp256k1Handle;
+use CryptoHandle::Ed25519Handle;
 use PutDeploy::PutDeployRPC;
+use Common::Utils;
 # test put deploy with input isEd25519 = int, 1 then use Ed25519 account, 0 then use Secp256k1 account
 sub testPutDeploy {
 	my @list = @_;
@@ -163,21 +164,23 @@ sub testPutDeploy {
 	my $deployHash = $deployHeader->getDeployHash();
 	print("Deploy hash is:".$deployHash."\n");
 	$deploy->setDeployHash($deployHash);
+	my $util = new Common::Utils();
 	# Setup approvals
 	my $oneApproval = new GetDeploy::Approval();
 	if ($isEd25519 == 1) {
 		$oneApproval->setSigner($accountEd25519);
-		my $ed25519 = new Crypt::Ed25519Handle();
-		my $hashAnscii = fromDeployHashToAnscii($deployHash);
+		my $ed25519 = new CryptoHandle::Ed25519Handle();
+		my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
 		my $signature = $ed25519->signMessage($hashAnscii);
 		$signature = "01".$signature;
 		print "Signature is:".$signature."\n";
 		$oneApproval->setSignature($signature);
 	} else {
 		$oneApproval->setSigner($accountSecp256k1);
-		my $secp256k1 = new Crypt::Secp256k1Handle();
-		my $hashAnscii = fromDeployHashToAnscii($deployHash);
-		my $signature = $secp256k1->signMessage($hashAnscii);
+		my $secp256k1 = new CryptoHandle::Secp256k1Handle();
+		my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
+		my $privateKey = Crypt::PK::ECC->new("./Crypto/Secp256k1/Secp256k1_Perl_secret_key.pem");
+		my $signature = $secp256k1->signMessage($hashAnscii,$privateKey);
 		$signature = "02".$signature;
 		print "Signature is:".$signature."\n";
 		$oneApproval->setSignature($signature);
@@ -187,22 +190,6 @@ sub testPutDeploy {
 	my $putDeployRPC = new PutDeploy::PutDeployRPC();
 	$putDeployRPC->putDeploy($deploy);
 }
-sub fromDeployHashToAnscii {
-	my @vars = @_;
-	my $deployHash = $vars[0];
-	my $length = length($deployHash)/2;
-	my @sequence = (0..$length-1);
-	my $ret = "";
-	for my $i (@sequence)  {
-		my $twoChar = substr $deployHash,$i*2,2;
-		my $firstChar = substr $twoChar,0,1;
-		my $secondChar = substr $twoChar,1,1;
-		my $value = hex($firstChar) * 16 + hex($secondChar);
-		my $char = chr($value);
-		$ret = $ret.$char;
-	}
-	print "Hash in anscii is:".$ret."\n";
-	return $ret;
-}
+
 #testPutDeploy(0);
-testPutDeploy(1);
+testPutDeploy(0);

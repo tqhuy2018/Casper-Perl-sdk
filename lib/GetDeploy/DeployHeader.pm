@@ -7,7 +7,7 @@ package GetDeploy::DeployHeader;
 
 use JSON qw( decode_json );
 use Serialization::DeploySerializeHelper;
-use Crypt::Blake2b256Helper();
+use CryptoHandle::Blake2b256Helper();
 sub new {
 	my $class = shift;
 	my $self = {
@@ -132,8 +132,7 @@ sub getDeployHash {
 	my ( $self ) = @_;
 	my $serializationHelper = new  Serialization::DeploySerializeHelper();
 	my $headerSerialization = $serializationHelper->serializeForHeader($self);
-	print "Header serialization is:".$headerSerialization."\n";
-	my $blake2b = new Crypt::Blake2b256Helper();
+	my $blake2b = new CryptoHandle::Blake2b256Helper();
 	return $blake2b->getBlake2b256($headerSerialization);
 }
 1;
