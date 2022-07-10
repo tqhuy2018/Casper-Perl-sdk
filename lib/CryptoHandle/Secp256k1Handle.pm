@@ -36,6 +36,9 @@ sub generateKey {
 	return $keyPair;
 }
 # This function reads private key from pem file and return the private key
+# input: pem file path
+# output: if the file path is correct and the Pem file is in correct format then the private key is returned
+# otherwise error message is returned
 sub readPrivateKeyFromPemFile {
 	my @vars = @_;
 	my $privateKeyPath = $vars[1];
@@ -51,12 +54,15 @@ sub readPrivateKeyFromPemFile {
 	}
 }
 # This function reads public key from pem file and return the public key
+# input: pem file path
+# output: if the file path is correct and the Pem file is in correct format then the public key is returned
+# otherwise error message is returned
 sub readPublicKeyFromPemFile {
 	my @vars = @_;
-	my $privateKeyPath = $vars[1];
+	my $publicKeyPath = $vars[1];
 	my $publicPem;
 	eval {
-		my $pk = Crypt::PK::ECC->new($privateKeyPath);
+		my $pk = Crypt::PK::ECC->new($publicKeyPath);
 		$publicPem = $pk->export_key_pem('public_short');
 	};
 	if(my $e = $@) {
@@ -192,7 +198,7 @@ sub generateAndWriteKeyPairToPemFile {
 	return $success;
 }
 # This function signs the message base on the given private key and original message
-# input: private key and original message
+# input: original message and private key
 # output: signed message
 
 sub signMessage {

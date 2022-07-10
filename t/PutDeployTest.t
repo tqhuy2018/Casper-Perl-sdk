@@ -171,7 +171,8 @@ sub testPutDeploy {
 		$oneApproval->setSigner($accountEd25519);
 		my $ed25519 = new CryptoHandle::Ed25519Handle();
 		my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
-		my $signature = $ed25519->signMessage($hashAnscii);
+		my $privateKey = Crypt::PK::Ed25519->new('./Crypto/Ed25519/Ed25519Perl_secret_key.pem');
+		my $signature = $ed25519->signMessage($hashAnscii,$privateKey);
 		$signature = "01".$signature;
 		print "Signature is:".$signature."\n";
 		$oneApproval->setSignature($signature);
@@ -192,4 +193,4 @@ sub testPutDeploy {
 }
 
 #testPutDeploy(0);
-testPutDeploy(0);
+testPutDeploy(1);
