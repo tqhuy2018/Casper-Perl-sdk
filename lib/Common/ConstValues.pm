@@ -122,4 +122,5 @@ our $READ_SECP256K1_PUBLIC_KEY_FILE			= "./Crypto/Secp256k1/Perl_Secp256k1ReadPu
 
 # Error in general
 our $ERROR_TRY_CATCH					 	= "ERROR";
+our $ERROR_PUT_DEPLOY						= "ERROR_PUT_DEPLOY";
 1;

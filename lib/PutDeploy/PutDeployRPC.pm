@@ -103,15 +103,16 @@ sub putDeploy {
 					return 1;
 				}
             }
-	    	print "Error put deploy with code:".$errorCode."\n";
-	    	print "Error put deploy with message:".$decoded->{'error'}{'message'}."\n";
-	    	return $errorException;
+	    	# print "Error put deploy with code:".$errorCode."\n";
+	    	# print "Error put deploy with message:".$decoded->{'error'}{'message'}."\n";
+	    	return $Common::ConstValues::ERROR_PUT_DEPLOY;
+	    	#return $errorException;
 	    } else {
 	    	$self->{_putDeployCounter} = 0;
 	    	my $putDeployResult = new PutDeploy::PutDeployResult();
 	    	$putDeployResult = PutDeploy::PutDeployResult->fromJsonObjectToPutDeployResult($decoded->{'result'});
 	    	print "Put deploy successful with deploy hash:".$putDeployResult->getDeployHash()."\n";
-		    return $deployResult;
+		    return $putDeployResult->getDeployHash();
 	    }
 	}
 	else {
