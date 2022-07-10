@@ -122,10 +122,10 @@ sub serializeForDeploy {
 	return $ret;
 	
 }
-sub fromTTLToMilisecondsMultiple {
-	my @list = @_;
-	$ttl = $list[0];
-}
+# This function changes ttl (Time to live) to milisecond
+# The ttl is in format defined in this link
+# https:// docs.rs/humantime/latest/humantime/fn.parse_duration.html
+# This function only handle with time format in single form such as "1h", "3days" or "15months"
 sub fromTTLToMilisecondsSingle {
 	my $ret = "";
 	my @list = @_;
@@ -378,6 +378,10 @@ sub fromTTLToMilisecondsSingle {
 		}
 	return $ret;
 }
+# This function changes ttl (Time to live) to milisecond
+# The ttl is in format defined in this link
+# https:// docs.rs/humantime/latest/humantime/fn.parse_duration.html
+# This function only handle with time format in single or muliple form such as "1h", "3mins", "3days 2hours 5minutes" or "15months 7weeks"
 sub fromTTLToMiliseconds {
 	my @list = @_;
 	$ttl = $list[0];
@@ -388,12 +392,9 @@ sub fromTTLToMiliseconds {
 	my $numStr = "";
 	my $numValue = 0;
 	# if ttl is in form of "1h 2m 30s" or "2days 1hour 3minutes 15s"
-	print "Get millisecond for str:".$ttl."\n";
 	if($count > 0) {
-		print "Total element in time is:".$count."\n";
 		my @sequence =(0..$count-1);
 		for my $i (@sequence) {
-			print "Get milisecond for time:".$matches[$i]."_a\n";
 			my $ret1 =  fromTTLToMilisecondsSingle($matches[$i]);
 			print "Ret 1 is:".$ret1."\n";
 			$ret = $ret + $ret1;
@@ -403,9 +404,7 @@ sub fromTTLToMiliseconds {
 	# if ttl is in form of single date time such as "1h", "30" or "2days"
 	else {
 		$ret = fromTTLToMilisecondsSingle($ttl);
-		print("Single time, milisecond is:".$ret."\n");
 		return $ret;
 	}
-		
 }
 1;

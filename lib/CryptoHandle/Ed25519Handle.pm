@@ -8,6 +8,7 @@ Read private/public key from Pem file
 Write private/public key from Pem file
 =cut
 use Common::ConstValues;
+use CryptoHandle::KeyPair;
 use Crypt::PK::Ed25519;
 package CryptoHandle::Ed25519Handle;
 
@@ -199,7 +200,6 @@ sub signMessage {
 	my $signature = $privateKey->sign_message($message);
 	#print "Ed25519 signature:".$signature."\n";
 	$signature =~ s/(.)/sprintf '%02x', ord $1/seg;
-	print "Ed25519 signature:".$signature."\n";
 	return $signature;
 }
 # This function verifies the message base on the given public key, original message and signed message

@@ -272,12 +272,9 @@ sub getCLTypeCompound {
 # This function turn a CLType object to a Json string
 sub toJsonString {
 	my ($self) = @_;
-	print "To json String call for CLType:".$self->{_itsTypeStr}."\n";
 	my $ret = isInputPrimitive($self->{_itsTypeStr});
-	print "Ret is :".$ret."\n";
 	if($ret == 1) {
 		my $ret = $self->clTypePrimitiveToJsonString($self->{_itsTypeStr});
-		print "Cltype string is:".$ret."\n";
 		return "\"".$ret."\"";
 	} else {
 		return $self->clTypeCompoundToJsonString();
@@ -291,7 +288,6 @@ sub clTypePrimitiveToJsonString {
 	#my $type =  $vars[0];
 	my ($self) = @_;
 	my $type = $self->{_itsTypeStr};
-	print "primitive cltype, Type is".$type."\n";
 	if($type eq $Common::ConstValues::CLTYPE_BOOL) {
 		return "Bool";
 	} elsif ($type eq $Common::ConstValues::CLTYPE_I32) {
