@@ -2,7 +2,7 @@
 $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 use strict;
 use warnings;
-use Test::Simple tests => 6;
+use Test::Simple tests => 8;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
 
@@ -196,6 +196,7 @@ sub setupDeploy {
 	my $isEd25519 = int($vars[0]);
 	my $toTransferPublicKey = $vars[1];
 	my $amountToTransfer = $vars[2];
+	my $timeStamp = $vars[3];
 	my $accountEd25519 = "011e22df016929612d5670e20a625124561c5c06c3a2587f0ec10489c35fc8a2b4";
 	my $accountSecp256k1 = "0203b32877c189197706bd62b27690a1857661ab8e53ea07146f1450c9ca59e2d499";
 	my $deploy = new GetDeploy::Deploy();
@@ -211,6 +212,9 @@ sub setupDeploy {
 	$date .= sprintf ".%03d", ($t-int($t))*1000;
 	$date = $date."Z";
 	#$date = "2022-07-08T08:11:27.149Z";
+	if ($timeStamp) {
+		$date = $timeStamp;
+	}
 	$deployHeader->setTimestamp($date);
 	$deployHeader->setChainName("casper-test");
 	$deployHeader->setTTL("1h 30m");
@@ -256,7 +260,9 @@ sub setupDeploy {
     $oneCLParseSession1->setItsValueStr($amountToTransfer);
     $oneCLValueSession1->setCLType($oneCLTypeSession1);
     $oneCLValueSession1->setParse($oneCLParseSession1);
-    $oneCLValueSession1->setBytes("04005ed0b2");
+    my $parse = new Serialization::CLParseSerialization();
+    my $amountParseStr = $parse->serializeFromCLParse($oneCLParseSession1);
+    $oneCLValueSession1->setBytes($amountParseStr);
 	$oneNASession1->setCLValue($oneCLValueSession1);
 	
 	# setup 2nd NamedArg - CLValue of type PublicKey
@@ -351,16 +357,17 @@ sub setupDeploy {
 }
 # This function does all the test
 sub testAll {
+	positiveTest();
 	negativeTest();
 }
 sub positiveTest {
 	# Positive test
 	# Test put deploy with Secp256k1 account
 	my $deployHash = testPutDeploy(0);
-	ok(length($deployHash)>0, "Test put deploy with Secp256k1 account passed");
+	ok(length($deployHash)>0, "Test put deploy with Secp256k1 account successfully, passed");
 	# Test put deploy with Ed25519 account
 	my $deployHash2 = testPutDeploy(1);
-	ok(length($deployHash2)>0, "Test put deploy with Ed25519 account passed");
+	ok(length($deployHash2)>0, "Test put deploy with Ed25519 account successfully, passed");
 }
 sub negativeTest {
 	# Negative test
@@ -376,19 +383,24 @@ sub negativeTest {
 	$deploy2->setDeployHash("62889cf406766131e99200acfd210290051e6391254b25411d265834c7ba8219","3000000000");
 	my $error2 = $putDeployRPC->putDeploy($deploy2);
 	ok($error2 eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Secp256k1 account, wrong deploy hash, passed");
- 	# Negative path 3 - put a transfer deploy for Ed25519 account, to a wrong public key address, stored in toTransferPublicKey input
-    my $deploy3 = setupDeploy(1,"011cfdde555e3000000300df016929612d5670e20a625124561c5c06c3a2587f0ec10489c35fc8a2b4","3000000000");
+ 	# Negative path 3 - put a transfer deploy for Ed25519 account, with a time in the past, stored in toTransferPublicKey input
+    my $deploy3 = setupDeploy(1,"dde7472639058717a42e22d297d6cf3e07906bb57bc28efceac3677f8a3dc83b","3000000000", "2022-05-10T16:56:12.548Z");
 	$error = $putDeployRPC->putDeploy($deploy3);
-	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Ed25519 account, wrong target public key, passed");
-    # Negative path 4 - put a transfer deploy for Secp256k1 account, to a wrong public key address, stored in toTransferPublicKey input
-    my $deploy4 = setupDeploy(0,"bb0000002858ce861a3d47e3a8616f1918b4c68387c90d56aafc5efa49b71ebca32","3000000000");
+	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Ed25519 account, wrong time of sending, passed");
+    # Negative path 4 - put a transfer deploy for Secp256k1 account, with a time in the past, stored in toTransferPublicKey input
+    my $deploy4 = setupDeploy(0,"dde7472639058717a42e22d297d6cf3e07906bb57bc28efceac3677f8a3dc83b","3000000000", "2022-05-10T16:56:12.548Z");
 	$error = $putDeployRPC->putDeploy($deploy4);
-	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Secp256k1 account, wrong target public key, passed");
-    # Negative path 5 - put a transfer deploy for Ed25519 account, to a correct public key address, stored in toTransferPublicKey input, but wrong amount to send - too small amount to send
+	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Secp256k1 account, wrong time of sendin, passed");
+    # Negative path 5 - put a transfer deploy for Ed25519 account,  with too small amount of token for sending
     # Try to send only 300, when the minimum amount is 2500000000
     my $deploy5 = setupDeploy(1,"01fd708b1df7264949b649c423395f882ac7f35732116c989a0edfed3166fbb729","300");
  	$error = $putDeployRPC->putDeploy($deploy5);
-	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Ed25519 account, sending insufficient amount, passed");
+ 	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Ed25519 account, sending insufficient amount, passed");
+ 	# Negative path 6 - put a transfer deploy for Secp256k1 account, with too small amount of token for sending
+    # Try to send only 350, when the minimum amount is 2500000000
+    my $deploy6 = setupDeploy(0,"01fd708b1df7264949b649c423395f882ac7f35732116c989a0edfed3166fbb729","350");
+ 	$error = $putDeployRPC->putDeploy($deploy6);
+	ok($error eq $Common::ConstValues::ERROR_PUT_DEPLOY, "Test negative put deploy with Secp256k1 account, sending insufficient amount, passed");
 }
 testAll();
 

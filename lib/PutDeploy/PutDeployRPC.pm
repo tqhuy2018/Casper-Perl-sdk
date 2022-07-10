@@ -66,7 +66,7 @@ sub putDeploy {
 	}
 	my $deploy = $list[1];
 	my $json = fromDeployToJsonString($deploy);
-	#print "deploy json is:\n\n".$json."\n\n\n";
+	#print "deploy json is:".$json."\n";
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
