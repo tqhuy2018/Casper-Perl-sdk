@@ -31,9 +31,6 @@ sub testPutDeploy {
 	my $isEd25519 = int($list[0]);
 	my $accountEd25519 = "011e22df016929612d5670e20a625124561c5c06c3a2587f0ec10489c35fc8a2b4";
 	my $accountSecp256k1 = "0203b32877c189197706bd62b27690a1857661ab8e53ea07146f1450c9ca59e2d499";
-	# These accounts are from Swift
-	#my $accountEd25519 = "0152a685e0edd9060da4a0d52e500d65e21789df3cbfcb878c91ffeaea756d1c53";
-	#my $accountSecp256k1 = "0202572ee4c44b925477dc7cd252f678e8cc407da31b2257e70e11cf6bcb278eb04b";
 	my $deploy = new GetDeploy::Deploy();
 	my $deployHeader = new GetDeploy::DeployHeader();
 	if ($isEd25519 == 1) {
@@ -46,7 +43,6 @@ sub testPutDeploy {
 	my $date = strftime "%Y-%m-%dT%H:%M:%S", localtime $t;
 	$date .= sprintf ".%03d", ($t-int($t))*1000;
 	$date = $date."Z";
-	print $date, "\n";
 	#$date = "2022-07-08T08:11:27.149Z";
 	$deployHeader->setTimestamp($date);
 	$deployHeader->setChainName("casper-test");
@@ -160,9 +156,7 @@ sub testPutDeploy {
 	$deploy->setSession($session);
 	my $deployBodyHash = $deploy->getBodyHash();
 	$deployHeader->setBodyHash($deployBodyHash);
-	print "Deploy hash is:".$deployBodyHash."\n";
 	my $deployHash = $deployHeader->getDeployHash();
-	print("Deploy hash is:".$deployHash."\n");
 	$deploy->setDeployHash($deployHash);
 	my $util = new Common::Utils();
 	# Setup approvals
@@ -171,26 +165,27 @@ sub testPutDeploy {
 		$oneApproval->setSigner($accountEd25519);
 		my $ed25519 = new CryptoHandle::Ed25519Handle();
 		my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
-		my $privateKey = Crypt::PK::Ed25519->new('./Crypto/Ed25519/Perl_Ed25519ReadPrivateKey.pem');
+		my $privateKey = Crypt::PK::Ed25519->new($Common::ConstValues::READ_ED25519_PRIVATE_KEY_FILE);
 		my $signature = $ed25519->signMessage($hashAnscii,$privateKey);
 		$signature = "01".$signature;
-		print "Signature is:".$signature."\n";
 		$oneApproval->setSignature($signature);
 	} else {
 		$oneApproval->setSigner($accountSecp256k1);
 		my $secp256k1 = new CryptoHandle::Secp256k1Handle();
 		my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
-		my $privateKey = Crypt::PK::ECC->new("./Crypto/Secp256k1/Secp256k1ReadPrivateKey.pem");
+		my $privateKey = Crypt::PK::ECC->new($Common::ConstValues::READ_SECP256K1_PRIVATE_KEY_FILE);
 		my $signature = $secp256k1->signMessage($hashAnscii,$privateKey);
 		$signature = "02".$signature;
-		print "Signature is:".$signature."\n";
 		$oneApproval->setSignature($signature);
 	}
 	my @listApprovals = ($oneApproval);
 	$deploy->setApprovals(@listApprovals);
 	my $putDeployRPC = new PutDeploy::PutDeployRPC();
+	if ($isEd25519 == 0) {
+		$putDeployRPC->setPutDeployCounter(0);
+	}
 	$putDeployRPC->putDeploy($deploy);
 }
 
 #testPutDeploy(0);
-testPutDeploy(1);
+testPutDeploy(0);

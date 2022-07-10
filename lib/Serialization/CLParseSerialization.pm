@@ -437,7 +437,9 @@ sub serializeFromCLParseTuple3 {
 	}
 	return $Common::ConstValues::INVALID_VALUE;
 }
-
+# Function for the serialization of  CLParse compound in type with recursive CLValue inside, 
+# such as List, Map, Tuple1, Tuple2, Tuple3, Option, Result ....
+      
 sub serializeFromCLParseCompound {
 	my @list = @_;
 	my $clParsed = new CLValue::CLParse();
@@ -460,6 +462,14 @@ sub serializeFromCLParseCompound {
 		return serializeFromCLParseTuple3($clParsed);
 	}
 }
+=comment
+Serialize for CLParse in general
+The flow is:
+If the CLParse is of type Primitive, such as Bool, U8, U32 ... - CLParse that does not contain recursive type inside it, then call  function
+serializeFromCLParsePrimitive to get the CLParse serialization value.
+If the CLParse is of type Compound, such as List, Option, Map ... - CLParse that contains recursive type inside it, then call  function
+serializeFromCLParseCompound to get the CLParse serialization value.
+=cut
 sub serializeFromCLParse {
  	my @list = @_;
 	my $clParsed = new CLValue::CLParse();
@@ -471,6 +481,5 @@ sub serializeFromCLParse {
 	} else {
 		serializeFromCLParseCompound($clParsed);
 	}
-	 
 }
 1;

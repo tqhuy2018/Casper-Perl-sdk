@@ -36,7 +36,6 @@ sub toJsonString {
 		my $argStr = argsToJsonString($ras);
 		my $moduleBytes = $ediMB->getModuleBytes();
 		my $innerJson = "{\"module_bytes\": \"".$moduleBytes."\",".$argStr."}";
-		print "Module byte json str is:".$innerJson."\n";
 		return "{\"ModuleBytes\": ".$innerJson."}";
 	} elsif ($executableDeployItem->getItsType() eq $Common::ConstValues::EDI_STORED_CONTRACT_BY_HASH) {
 		my $ediBH = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem_StoredContractByHash();
@@ -88,7 +87,6 @@ sub toJsonString {
 		$ras = $edi->getArgs();
 		my $argStr = argsToJsonString($ras);
 		my $innerJson = "{".$argStr."}";
-		print "Transfer json str is:".$innerJson."\n";
         return "{\"Transfer\": ".$innerJson."}";
 	} else {
 		return "";

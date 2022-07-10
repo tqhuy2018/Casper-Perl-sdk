@@ -111,6 +111,15 @@ our $EDI_STORED_VERSIONED_CONTRACT_BY_NAME  = "StoredVersionedContractByName";
 our $EDI_STORED_VERSIONED_CONTRACT_BY_HASH  = "StoredVersionedContractByHash";
 our $EDI_TRANSFER							= "Transfer";
 
+# Key path for Ed25519 and Secp256k1
+
+our $READ_ED25519_PRIVATE_KEY_FILE			= "./Crypto/Ed25519/Perl_Ed25519ReadPrivateKey.pem";
+our $READ_ED25519_PUBLIC_KEY_FILE			= "./Crypto/Ed25519/Perl_Ed25519ReadPublicKey.pem";
+
+our $READ_SECP256K1_PRIVATE_KEY_FILE		= "./Crypto/Secp256k1/Perl_Secp256k1ReadPrivateKey.pem";
+our $READ_SECP256K1_PUBLIC_KEY_FILE			= "./Crypto/Secp256k1/Perl_Secp256k1ReadPublicKey.pem";
+
+
 # Error in general
 our $ERROR_TRY_CATCH					 	= "ERROR";
 1;

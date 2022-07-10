@@ -10,9 +10,11 @@ use GetDeploy::DeployHeader;
 use PutDeploy::ExecutableDeployItemToJsonHelper;
 use GetDeploy::Approval;
 use  Common::ErrorException;
+use CryptoHandle::Secp256k1Handle;
+use Common::Utils;
 sub new {
 	my $class = shift;
-	my $self = {_url=>shift};
+	my $self = {_url=>shift,_putDeployCounter=>shift,};
 	bless $self, $class;
 	return $self;
 }
@@ -25,6 +27,16 @@ sub setUrl {
 sub getUrl {
 	my ($self) = @_;
 	return $self->{_url};
+}
+# get-set method for _putDeployCounter
+sub setPutDeployCounter {
+	my ($self,$value) = @_;
+	$self->{_putDeployCounter} = $value if defined ($value);
+	return $self->{_putDeployCounter};
+}
+sub getPutDeployCounter {
+	my ($self) = @_;
+	return $self->{_putDeployCounter};
 }
 =comment
 This function does account_put_deploy RPC call
@@ -54,7 +66,7 @@ sub putDeploy {
 	}
 	my $deploy = $list[1];
 	my $json = fromDeployToJsonString($deploy);
-	print "deploy json is:\n\n".$json."\n\n\n";
+	#print "deploy json is:\n\n".$json."\n\n\n";
 	my $req = HTTP::Request->new( 'POST', $uri );
 	$req->header( 'Content-Type' => 'application/json');
 	$req->content( $json );
@@ -68,10 +80,35 @@ sub putDeploy {
 	    	my $errorException = new Common::ErrorException();
 	    	$errorException->setErrorCode($errorCode);
 	    	$errorException->setErrorMessage($decoded->{'error'}{'message'});
+	    	my $errorMessage = $decoded->{'error'}{'message'};
+	    	if ($errorMessage eq "invalid deploy: the approval at index 0 is invalid: asymmetric key error: failed to verify secp256k1 signature: signature error") {
+				$self->{_putDeployCounter} = $self->{_putDeployCounter} + 1;
+				if($self->{_putDeployCounter} < 10) {
+					my @listA = ();
+					$deploy->setApprovals(@listA);
+					my $oneA = new GetDeploy::Approval();
+					$oneA->setSigner($deploy->getHeader()->getAccount());
+					my $deployHash = $deploy->getDeployHash();
+					my $secp256k1 = new CryptoHandle::Secp256k1Handle();
+					print("Put again, deploy hash is:".$deployHash."\n");
+					my $util = new Common::Utils();
+					my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
+					my $privateKey = Crypt::PK::ECC->new($Common::ConstValues::READ_SECP256K1_PRIVATE_KEY_FILE);
+					my $signature = $secp256k1->signMessage($hashAnscii,$privateKey);
+					$signature = "02".$signature;
+					$oneA->setSignature($signature);
+					@listA=($oneA);
+					$deploy->setApprovals(@listA);
+					putDeploy("0",$deploy);
+					print("Put deploy again with effort:".$self->{_putDeployCounter}."\n");
+					return 1;
+				}
+            }
 	    	print "Error put deploy with code:".$errorCode."\n";
 	    	print "Error put deploy with message:".$decoded->{'error'}{'message'}."\n";
 	    	return $errorException;
 	    } else {
+	    	$self->{_putDeployCounter} = 0;
 	    	my $putDeployResult = new PutDeploy::PutDeployResult();
 	    	$putDeployResult = PutDeploy::PutDeployResult->fromJsonObjectToPutDeployResult($decoded->{'result'});
 	    	print "Put deploy successful with deploy hash:".$putDeployResult->getDeployHash()."\n";
@@ -90,11 +127,8 @@ sub fromDeployToJsonString {
 	$deployHeader = $deploy->getHeader();
 	my $ediToJsonHelper = new PutDeploy::ExecutableDeployItemToJsonHelper();
 	my $headerString = "\"header\": {\"account\": \"".$deployHeader->getAccount()."\",\"timestamp\": \"".$deployHeader->getTimestamp()."\",\"ttl\":\"".$deployHeader->getTTL()."\",\"gas_price\":".$deployHeader->getGasPrice().",\"body_hash\":\"".$deployHeader->getBodyHash(). "\",\"dependencies\": [],\"chain_name\": \"".$deployHeader->getChainName()."\"}";
-   	print "Header string is:".$headerString."\n";
     my $paymentJsonStr = "\"payment\": ".$ediToJsonHelper->toJsonString($deploy->getPayment());
-    print "Payment string is:".$paymentJsonStr."\n";
     my $sessionJsonStr = "\"session\": ".$ediToJsonHelper->toJsonString($deploy->getSession());
-    print "Session string is:".$sessionJsonStr."\n";
     my $approval = new GetDeploy::Approval();
     my @approvalList = $deploy->getApprovals();
     $approval = $approvalList[0];

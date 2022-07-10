@@ -29,8 +29,8 @@ sub testGenerateKey {
 sub testWriteKeyPair {
 	my $secp256k1 = new CryptoHandle::Secp256k1Handle();
 	# Positive path, write private and public key to  correct file path
-	my $privateKeyFilePath = "./Crypto/Secp256k1/Secp256k1WritePrivateKey.pem";
-	my $publicKeyFilePath = "./Crypto/Secp256k1/Secp256k1WritePublicKey.pem";
+	my $privateKeyFilePath = "./Crypto/Secp256k1/Perl_Secp256k1WritePrivateKey.pem";
+	my $publicKeyFilePath = "./Crypto/Secp256k1/Perl_Secp256k1WritePublicKey.pem";
 	my $result = $secp256k1->generateAndWriteKeyPairToPemFile($privateKeyFilePath,$publicKeyFilePath);
 	ok($result == 1,"Test write private/public key pair to correct file path, Passed");
 	# Negateive test
@@ -44,7 +44,7 @@ sub testWriteKeyPair {
 sub testReadPrivateKey {
 	my $secp256k1 = new CryptoHandle::Secp256k1Handle();
 	# Positive path, read private key from a correct path and correct private PEM file format
-	my $privateKey = $secp256k1->readPrivateKeyFromPemFile("./Crypto/Secp256k1/Secp256k1ReadPrivateKey.pem");
+	my $privateKey = $secp256k1->readPrivateKeyFromPemFile($Common::ConstValues::READ_SECP256K1_PRIVATE_KEY_FILE);
 	my $privateLength = length($privateKey);
 	ok($privateLength == 223,"Test read private key, Passed");
 	# Negative path 1, read private key from an incorrect file path
@@ -59,7 +59,7 @@ sub testReadPrivateKey {
 sub testReadPublicKey {
 	my $secp256k1 = new CryptoHandle::Secp256k1Handle();
 	# Positive path, read public key from a correct path and correct private PEM file format
-	my $publicKey = $secp256k1->readPublicKeyFromPemFile("./Crypto/Secp256k1/Secp256k1ReadPublicKey.pem");
+	my $publicKey = $secp256k1->readPublicKeyFromPemFile("./Crypto/Secp256k1/Perl_Secp256k1ReadPublicKey.pem");
 	my $publicLength = length($publicKey);
 	ok($publicLength == 174,"Test read public key, Passed");
 	# Negative path 1, read public key from an incorrect file path

@@ -396,7 +396,6 @@ sub fromTTLToMiliseconds {
 		my @sequence =(0..$count-1);
 		for my $i (@sequence) {
 			my $ret1 =  fromTTLToMilisecondsSingle($matches[$i]);
-			print "Ret 1 is:".$ret1."\n";
 			$ret = $ret + $ret1;
 		}
 		return $ret;
