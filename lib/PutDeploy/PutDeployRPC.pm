@@ -90,7 +90,6 @@ sub putDeploy {
 					$oneA->setSigner($deploy->getHeader()->getAccount());
 					my $deployHash = $deploy->getDeployHash();
 					my $secp256k1 = new CryptoHandle::Secp256k1Handle();
-					print("Put again, deploy hash is:".$deployHash."\n");
 					my $util = new Common::Utils();
 					my $hashAnscii = $util->fromDeployHashToAnscii($deployHash);
 					my $privateKey = Crypt::PK::ECC->new($Common::ConstValues::READ_SECP256K1_PRIVATE_KEY_FILE);
@@ -100,7 +99,7 @@ sub putDeploy {
 					@listA=($oneA);
 					$deploy->setApprovals(@listA);
 					putDeploy("0",$deploy);
-					print("Put deploy again with effort:".$self->{_putDeployCounter}."\n");
+					#print("Put deploy again with effort:".$self->{_putDeployCounter}."\n");
 					return 1;
 				}
             }

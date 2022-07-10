@@ -101,13 +101,10 @@ sub getBodyHash {
  	$payment = $self->{_payment};
  	my $serializationHelper = new Serialization::ExecutableDeployItemSerializationHelper();
  	my $paymentSerialization = $serializationHelper->serializeForExecutableDeployItem($payment);
- 	print "Payment serialization:".$paymentSerialization."\n";
  	my $session = new GetDeploy::ExecutableDeployItem::ExecutableDeployItem();
  	$session = $self->{_session};
  	my $sessionSerialization = $serializationHelper->serializeForExecutableDeployItem($session);
- 	print "Session serialization:".$sessionSerialization."\n";
  	my $bodySerialization = $paymentSerialization.$sessionSerialization;
- 	print "Body serialization:".$bodySerialization."\n";
  	my $blake2b = new CryptoHandle::Blake2b256Helper();
  	return $blake2b->getBlake2b256($bodySerialization);
 }
