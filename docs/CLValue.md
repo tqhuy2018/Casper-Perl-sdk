@@ -335,12 +335,14 @@ $clParsedMap->setInnerParse2($innerParseValue);
 ```
 ### CLValue in detail
  
-To store information of one CLValue object, which include the following information: {bytes,parsed,cl_type}, this SDK uses a class with name CLValue, which is declared in "CLValue.kt" file under package "com.casper.sdk.clvalue", with main information like this:
+To store information of one CLValue object, which include the following information: {bytes,parsed,cl_type}, this SDK uses a class with name CLValue, which is declared in "CLValue.pm" file under folder "CLValue", with main information like this:
  
 ```Perl
-var itsBytes: String = ""
-var itsParse: CLParsed = CLParsed()
-var itsCLType: CLType = CLType()
+my $self = {
+	_clType => shift,
+	_bytes => shift,
+	_parse => shift,
+};
 ```
 
 This class also provide a supporter function to parse a JSON object to CLValue object.
@@ -361,15 +363,15 @@ Take this CLValue in JSON
 
 This JSON will turn to a CLValue like this:
  ```Perl
-val oneCLValue = CLValue()
-val oneCLType = CLType()
-oneCLType.itsTypeStr = ConstValues.CLTYPE_U512
-oneCLValue.itsCLType = oneCLType
-val oneCLParse = CLParsed()
-oneCLParse.itsCLType = oneCLType
-oneCLParse.itsValueInStr = "100000000"
-oneCLValue.itsParse = oneCLParse
-oneCLValue.itsBytes = "0400e1f505"
+my $clValue = new CLValue::CLValue();
+$clValue->setBytes("0400e1f505");
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+my $clParse = new CLValue::CLParse();
+$clParse->setItsCLType($clType);
+$clParse->setItsValueStr("100000000");
+$clValue->setCLType($clType);
+$clValue->setParse($clParse);
 ```
 
 Take this CLValue in JSON:
