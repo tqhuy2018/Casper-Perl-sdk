@@ -228,12 +228,19 @@ $clParsed->setItsValueStr($Common::ConstValues::NULL_VALUE);
 To declare for a CLParsed of type Option(U32(10))
 
 ```Perl
-val clParse = CLParsed()
-clParse.innerParsed1 = CLParsed()
-clParse.itsValueInStr = ""
-clParse.innerParsed1.itsCLType = CLType()
-clParse.innerParsed1.itsCLType.itsTypeStr = ConstValues.CLTYPE_U32
-clParse.innerParsed1.itsValueInStr = "10"
+my $clType = new CLValue::CLType();
+my $clParsed = new CLValue::CLParse();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+$clParsed->setItsCLType($clType);
+$clParsed->setItsValueStr("not_null"); # actually you can assign this value to ok, or 1 or any value that is different from $Common::ConstValues::NULL_VALUE
+my $clParsedInner1 = new CLValue::CLParse();
+my $clTypeInner1 = new CLValue::CLType();
+$clTypeInner1->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+$clType->setInnerCLType1($clTypeInner1);
+$clParsed->setItsCLType($clType);
+$clParsedInner1->setItsCLType($clTypeInner1);
+$clParsedInner1->setItsValueStr("10");
+$clParsed->setInnerParse1($clParsedInner1);
 ```
 
 To declare for a List of 3 CLParse U32 numbers 
