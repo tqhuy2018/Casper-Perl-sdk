@@ -99,14 +99,10 @@ sub putDeploy {
 					@listA=($oneA);
 					$deploy->setApprovals(@listA);
 					putDeploy("0",$deploy);
-					#print("Put deploy again with effort:".$self->{_putDeployCounter}."\n");
 					return 1;
 				}
             }
-	    	# print "Error put deploy with code:".$errorCode."\n";
-	    	# print "Error put deploy with message:".$decoded->{'error'}{'message'}."\n";
 	    	return $Common::ConstValues::ERROR_PUT_DEPLOY;
-	    	#return $errorException;
 	    } else {
 	    	$self->{_putDeployCounter} = 0;
 	    	my $putDeployResult = new PutDeploy::PutDeployResult();
