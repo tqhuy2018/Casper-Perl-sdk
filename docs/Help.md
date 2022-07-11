@@ -977,4 +977,69 @@ For example this is the list of deploys being created for account "011e22df01692
 For Secp256k1 account, you can see a list of deploy being put by going to this address and scroll down: 
 <img width="1440" alt="Screen Shot 2022-07-11 at 17 02 26" src="https://user-images.githubusercontent.com/94465107/178240244-16257b49-9107-4b79-9acf-acaa3dbe959b.png">
 
+The above manual is for exising account in the test net. If you are familiar with the Casper system and Casper Signer, you can create your own Ed25519 or Secp256k1 account and do the test with your account.
+ 
+Here is a brief description of the steps to do:
+
+### Test account_put_deploy RPC method call with your own account 
+
+Install Casper Signer. Create 1 account of type Ed25519 (for example, Secp256k1 is quite the same). 
+
+<img width="304" alt="Screen Shot 2022-06-28 at 14 55 53" src="https://user-images.githubusercontent.com/94465107/176126379-c5057e07-b3dc-471e-a462-988414ca162c.png">
+
+
+Download the private key for the newly created account. Give it a name, for example "Ed25519PrivateKeyKotlin01.pem". Copy the key to the folder "Ed25519" of the SDK.
+
+<img width="301" alt="Screen Shot 2022-06-28 at 14 56 03" src="https://user-images.githubusercontent.com/94465107/176126462-facea106-07cf-412b-8ccf-e5842d175fa0.png">
+
+<img width="1011" alt="Screen Shot 2022-06-28 at 14 57 08" src="https://user-images.githubusercontent.com/94465107/176126511-3a81803f-291d-4412-a710-10d2b9aff04a.png">
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 09 36" src="https://user-images.githubusercontent.com/94465107/176128299-5d4fd38e-4f2e-4e7e-a215-d027f41e6bf1.png">
+
+
+The newly account will be connect to the site of Casper test net, in this example the account is "01afed08ed3ccf68a087db0e15e0b9d90d5d7c0f6eb3a3cc84eff52e81db733a50"
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 14 57 47" src="https://user-images.githubusercontent.com/94465107/176126619-c89c1169-bee7-4d60-b161-732315d127be.png">
+
+From Casper test net choose Tool->Faucet and request for a 1000 CSPR token for the newly created account.
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 14 57 58" src="https://user-images.githubusercontent.com/94465107/176126705-6726e016-1c70-4e85-b6ad-ad45add94e33.png">
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 14 59 12" src="https://user-images.githubusercontent.com/94465107/176126792-57cec2e5-d3ab-490a-919f-d384586229b9.png">
+
+Wait for 1-5 minutes and refresh the page for the account, you will now see the account with 1000 CSPR tokens.
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 02 54" src="https://user-images.githubusercontent.com/94465107/176126912-60e2ddf4-c80d-446d-9ab0-99341bf1274f.png">
+
+
+In file "ConstValues" under package "com.casper.sdk" of the Casper Kotlin SDK find for the variable "PEM_READ_PRIVATE_ED25519", change its value to your pem name "Ed25519PrivateKeyKotlin01.pem". It is the path for the private key of the account you are working on.
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 13 47" src="https://user-images.githubusercontent.com/94465107/176129400-5510971a-c301-4e12-93ca-91b5dd95f7d7.png">
+
+
+In file "PutDeployRPCTest" under package "com.casper.sdk.putdeploy" of the test folder, find for testPutDeploy function and replace the accountEd25519 value with the new account you have created, in this example it is "01afed08ed3ccf68a087db0e15e0b9d90d5d7c0f6eb3a3cc84eff52e81db733a50".
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 05 31" src="https://user-images.githubusercontent.com/94465107/176128037-84950bf7-19d4-4f34-9798-ad92ec99015d.png">
+
+Now you can test the new account by openning the file "PutDeployRPCTest" and right click any where in the file, choose "Run'PutDeployRPCTest'"
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 16 05" src="https://user-images.githubusercontent.com/94465107/176130197-3e3ad286-6ebd-451e-8da4-641245505033.png">
+
+There will be 2 line informing the deploy has just been successfully posted in the log panel, like this "Put deploy successfull with deploy hash:857722d6a901d8f48938e8acd244af7f40985291324056fcf681f0704db9b589".
+Copy the first deploy hash, which is for Ed25519 account.
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 23 39" src="https://user-images.githubusercontent.com/94465107/176131599-c2dadba6-54a9-4485-92c3-4052bf91c80d.png">
+
+Search for it in the Test net
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 26 39" src="https://user-images.githubusercontent.com/94465107/176132318-e702ccfb-4a49-41fc-bac3-fc5cf54179c9.png">
+
+As you can see, the deploy is in Pending mode, and not listed in the Account deploy list, as you go to the Account detail page.
+
+<img width="1440" alt="Screen Shot 2022-06-28 at 15 29 02" src="https://user-images.githubusercontent.com/94465107/176132500-5903ac9b-0ac3-4591-8ddc-3adedef0659b.png">
+
+The deploy will be there in hours, but as you can see the deploy in Pending mode, then the Deploy is put to the system successfully.
+
+The procedure for Secp256k1 account is quite the same, as long as you create the right account, copy the private key for the account to the right folder and point to it correctly, change the Secp256k1 account for sending the deploy in the PutDeployRPCTest file, then the test will be done without error.
+
+
 
