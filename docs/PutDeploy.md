@@ -242,5 +242,3 @@ The deploy will be there in hours, but as you can see the deploy in Pending mode
 
 The procedure for Secp256k1 account is quite the same, as long as you create the right account, copy the private key for the account to the right folder and point to it correctly, change the Secp256k1 account for sending the deploy in the PutDeployRPCTest file, then the test will be done without error.
 
-
-
