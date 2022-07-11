@@ -186,19 +186,28 @@ Here is a brief description of the steps to do:
 
 Install Casper Signer. Create 1 account of type Ed25519 (for example, Secp256k1 is quite the same). 
 
-<img width="304" alt="Screen Shot 2022-06-28 at 14 55 53" src="https://user-images.githubusercontent.com/94465107/176126379-c5057e07-b3dc-471e-a462-988414ca162c.png">
+<img width="306" alt="Screen Shot 2022-07-11 at 18 17 10" src="https://user-images.githubusercontent.com/94465107/178252948-b25b0d24-899a-4449-9434-57ad577175d1.png">
 
-
-Download the private key for the newly created account. Give it a name, for example "Ed25519PrivateKeyKotlin01.pem". Copy the key to the folder "Ed25519" of the SDK.
+Download the private key for the newly created account. 
 
 <img width="301" alt="Screen Shot 2022-06-28 at 14 56 03" src="https://user-images.githubusercontent.com/94465107/176126462-facea106-07cf-412b-8ccf-e5842d175fa0.png">
 
-<img width="1011" alt="Screen Shot 2022-06-28 at 14 57 08" src="https://user-images.githubusercontent.com/94465107/176126511-3a81803f-291d-4412-a710-10d2b9aff04a.png">
+Give it a name, for example "Ed25519PrivateKeyPerl01.pem". Copy the key to the folder "t/Crypto/Ed25519" of the SDK.
 
-<img width="1440" alt="Screen Shot 2022-06-28 at 15 09 36" src="https://user-images.githubusercontent.com/94465107/176128299-5d4fd38e-4f2e-4e7e-a215-d027f41e6bf1.png">
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 19 19" src="https://user-images.githubusercontent.com/94465107/178253319-21dd9d0e-f5ed-45e6-802f-b3f5f0272e33.png">
 
 
-The newly account will be connect to the site of Casper test net, in this example the account is "01afed08ed3ccf68a087db0e15e0b9d90d5d7c0f6eb3a3cc84eff52e81db733a50"
+In Eclipse, Right click the folder "t/Crypto/Ed25519" and hit "Refresh", you will then see the new "Ed25519PrivateKeyPerl01.pem" file is there.
+
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 20 55" src="https://user-images.githubusercontent.com/94465107/178253582-ad8cec64-d683-41f0-ab25-a0750d8871ba.png">
+
+Open CSPR test net at this address: https://testnet.cspr.live/
+
+And make sure that in Casper Signer the active key is the already Ed25519 created key. If you have several keys in the list, please select other key and then select the Ed25519 Perl key again to make sure that in the CSPR test site, the account is link to the Perl Ed25519 account areadly being created.
+
+<img width="305" alt="Screen Shot 2022-07-11 at 18 23 07" src="https://user-images.githubusercontent.com/94465107/178253839-9c627e23-16fe-45fc-a629-b5b780ad7b52.png">
+
+The newly account will be connect to the site of Casper test net, in this example the account is "01a70c9c157a1cd8dbe00d5b12bb90ee7113f3b0d74e007f65daf4ebd1ba8e4282"
 
 <img width="1440" alt="Screen Shot 2022-06-28 at 14 57 47" src="https://user-images.githubusercontent.com/94465107/176126619-c89c1169-bee7-4d60-b161-732315d127be.png">
 
