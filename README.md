@@ -176,7 +176,7 @@ The Secp256k1 crypto task is implemented in file "Secp256k1Handle.pm" under fold
  
  A detail information on CLType primitive can be read here 
  
- [Perl SDK CLType primitive](./Docs/CLValue.md)
+ [Perl SDK CLType primitive](./docs/CLValue.md)
 
 # Documentation for classes and methods
 
