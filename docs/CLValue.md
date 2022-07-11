@@ -68,15 +68,22 @@ In the examples above,
 ### CLType in detail
 
 
-In Perl SDK the "cl_type" is wrapped in CLType class, which is declared in  "CLType.kt" file under package "com.casper.sdk.clvalue". The CLType class stores all information need when you want to declare a CLType, and also this class provides functions to turn JSON object to CLType object and supporter function such as function to check if the CLType hold pure value of CLType with recursive CLType inside its body.
+In Perl SDK the "cl_type" is wrapped in CLType class, which is declared in  "CLType.pm" file under folder "CLValue". The CLType class stores all information need when you want to declare a CLType, and also this class provides functions to turn JSON object to CLType object and supporter function such as function to check if the CLType hold pure value of CLType with recursive CLType inside its body.
 
 The main properties of the CLType object are:
 
  ```Perl
-  var itsTypeStr: String = ""
-  lateinit var innerCLType1: CLType
-  lateinit var innerCLType2: CLType
-  lateinit var innerCLType3:  CLType
+ my $self = {
+		# Type of the CLType in String,  can be Bool,  String,  I32,  I64,  List,  Map, ...
+		_itsTypeStr => shift, 
+		# innerCLType to hold value for the following type: 
+    	# Option,  Result,  Tuple1 will take only 1 item:  innerCLType1
+    	# Map,  Tuple2 will take 2  item:  innerCLType1, innerCLType2
+    	# Tuple3 will take 3 item:  innerCLType1,  innerCLType2,  innerCLType3
+		_innerCLType1 => shift, 
+		_innerCLType2 => shift, 
+		_innerCLType3 => shift, 
+	};
  ```
 
 In which itsTypeStr is the type of the CLType in String,  can be Bool,  String,  I32,  I64,  List,  Map, ...
@@ -87,22 +94,22 @@ Primitive CLType is the CLType with no recursive CLType declaration inside its b
 
 Compound CLType is the CLType with recursive CLType declaration inside its body. The following CLType are compound: List, Map, Option, Result, Tuple1, Tuple2, Tuple 3.
 
-The variables innerCLType1, innerCLType2, innerCLType3 to hold value for the following type:
+The variables _innerCLType1, _innerCLType2, _innerCLType3 to hold value for the following type:
 
-Option,  Result,  Tuple1 will take only 1 item:  innerCLType1
+Option,  Result,  Tuple1 will take only 1 item:  _innerCLType1
 
-Map,  Tuple2 will take 2  items:  innerCLType1, innerCLType2
+Map,  Tuple2 will take 2  items:  _innerCLType1, _innerCLType2
 
-Tuple3 will take 3 items:  innerCLType1,  innerCLType2,  innerCLType3
+Tuple3 will take 3 items:  _innerCLType1,  _innerCLType2,  _innerCLType3
 
 
 These innerCLType variables are lateinit var, which means that they can be initialized or not, depends on the CLType. For example if the CLType is primitive (Bool, I32, I64, U8, U32 ...) , then the 3 variables: innerCLType1, innerCLType2, innerCLType3 is not used and not initialized.
 
-If the CLType is List, then the innerCLType1 is used in initialized, while innerCLType2 and innerCLType3 is not.
+If the CLType is List, then the _innerCLType1_ is used in initialized, while _innerCLType2_ and _innerCLType3_ is not.
 
-If the CLType is Map, then the innerCLType1, innerCLType2 are in used and initialized, while innerCLType3 is not.
+If the CLType is Map, then the _innerCLType1_, _innerCLType2_ are in used and initialized, while _innerCLType3_ is not.
 
-If the CLType is Tuple3, all the innerCLType1, innerCLType2, innerCLType3 are used.
+If the CLType is Tuple3, all the _innerCLType1_, _innerCLType2_, _innerCLType3_ are used.
 
 #### Examples of declaring the CLType object for some types:
 
