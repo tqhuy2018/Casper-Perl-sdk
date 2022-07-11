@@ -403,8 +403,11 @@ Base on the deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a
 This JSON will turn to a CLValue like this:
   
 ```Perl 
-val oneCLValue = CLValue()
-oneCLValue.itsBytes = "010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b"
+my $clValue = new CLValue::CLValue();
+$clValue->setBytes("010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b");
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_LIST);
+
 //assignment for cl_type
 val clType = CLType()
 clType.itsTypeStr = ConstValues.CLTYPE_LIST
