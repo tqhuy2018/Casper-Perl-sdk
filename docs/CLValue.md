@@ -147,63 +147,82 @@ $clType->setInnerCLType2($innerType2);
 
 ### CLParsed in detail 
 
-The "parsed" is wrapped in CLParsed class, which is declared in  "CLParsed.kt" file under package "com.casper.sdk.clvalue". The CLParsed class stores all information need when you want to declare a CLParsed object, and also this class provides functions to turn JSON object to CLParsed object and supporter function such as function to check if the CLParsed hold pure value of CLType object or with hold value of recursive CLType object inside its body.
+The "parsed" is wrapped in CLParsed class, which is declared in  "CLParsed.pm" file under folder "CLValue". The CLParsed class stores all information need when you want to declare a CLParsed object, and also this class provides functions to turn JSON object to CLParsed object and supporter function such as function to check if the CLParsed hold pure value of CLType object or with hold value of recursive CLType object inside its body.
 
 The main properties of the CLParsed object are:
 
 ```Perl
-var itsValueInStr: String = ""
-var itsCLType: CLType = CLType()
-lateinit var innerParsed1: CLParsed
-lateinit var innerParsed2: CLParsed
-lateinit var innerParsed3: CLParsed
-var itsArrayValue: MutableList<CLParsed> = mutableListOf()
+my $self = {
+# Value of the Parse in String format, in the above example this value is 100000000
+_itsValueStr => shift,
+# The CLType of the CLParse, in the above example, the CLType is of type U512
+_itsCLType => shift,
+# innerParsed to hold value for the following type: 
+# Option,  Result,  Tuple1 will take only 1 item of innerParsed
+# Map,  Tuple2 will take 2  item of innerParsed
+# Tuple3 will take 3 item of innerParsed
+_innerParsed1 => shift,
+_innerParsed2 => shift,
+_innerParsed3 => shift,
+#This property is for holding array value of List and FixList, it is a list that can hold list of CLParse elements
+_itsValueList => [ @_ ],
+	};
 ```
 
 In which the property "itsCLType" is to hold CLType of the CLParsed object, which can be 1 among 23 possible value from "Bool", "I32","I64", "U8" ... to "Tuple1", "Tuple2", "Tuple3" and "Any".
  
-The property "itsValueInStr" is to hold value of CLParsed that doesn't contain recursive CLParsed inside its body
+The property "_itsValueInStr" is to hold value of CLParsed that doesn't contain recursive CLParsed inside its body
 
-The property "itsArrayValue" is to hold value of List and FixedList elements
+The property "_itsCLType" is to hold the CLType for the CLParsed
+
+The property "_itsValueList" is to hold value of List and FixedList elements
  
-The property "innerParsed1" is to hold the inner CLParsed object for the following CLType: Tuple1, Option
+The property "_innerParsed1" is to hold the inner CLParsed object for the following CLType: Tuple1, Option
 
-The properties "innerParsed1" and "innerParsed2" are to hold the inner CLParsed for the following CLType: Map, Result, Tuple2
+The properties "_innerParsed1" and "innerParsed2" are to hold the inner CLParsed for the following CLType: Map, Result, Tuple2
 
-The properties "innerParsed1", "innerParsed2" and "innerParsed3" are to hold the inner CLParsed for the following CLType: Tuple3
+The properties "_innerParsed1", "innerParsed2" and "innerParsed3" are to hold the inner CLParsed for the following CLType: Tuple3
 
 #### Here are some examples of declaring the CLParsed object for some types: 
 
 To declare for a CLParsed of type Bool with value "true":
 
 ```Perl
-val clParse = CLParsed()
-clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_BOOL
-clParse.itsValueInStr = "true"
+my $clType = new CLValue::CLType();
+my $clParsed = new CLValue::CLParse();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_BOOL);
+$clParsed->setItsCLType($clType);
+$clParsed->setItsValueStr("true");
 ```
 
 To declare for a CLParsed of type U8 with value "12":
 
 ```Perl
-val clParse = CLParsed()
-clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_U8
-clParse.itsValueInStr = "12"
+my $clType = new CLValue::CLType();
+my $clParsed = new CLValue::CLParse();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_U8);
+$clParsed->setItsCLType($clType);
+$clParsed->setItsValueStr("0");
 ```
 
 To declare for a CLParsed of type U512 with value "999888666555444999887988887777666655556666777888999666999":
 
 ```Perl
-val clParse = CLParsed()
-clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_U512
-clParse.itsValueInStr = "999888666555444999887988887777666655556666777888999666999"
+my $clType = new CLValue::CLType();
+my $clParsed = new CLValue::CLParse();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+$clParsed->setItsCLType($clType);
+$clParsed->setItsValueStr("999888666555444999887988887777666655556666777888999666999");
 ```
 
 To declare for a CLParsed of type Option(NULL)
 
 ```Perl
-val clParse = CLParsed()
-clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_OPTION
-clParse.itsValueInStr = ConstValues.VALUE_NULL
+my $clType = new CLValue::CLType();
+my $clParsed = new CLValue::CLParse();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+$clParsed->setItsCLType($clType);
+$clParsed->setItsValueStr($Common::ConstValues::NULL_VALUE);
 ```
 
 To declare for a CLParsed of type Option(U32(10))
