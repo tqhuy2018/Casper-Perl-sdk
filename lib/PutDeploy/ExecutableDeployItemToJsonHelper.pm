@@ -93,6 +93,8 @@ sub toJsonString {
 	}
 }
 # This function does the work of turning an RuntimeArgs object to Json String, used for ExecutableDeployItemHelper.toJsonString function
+# input: a RuntimeArgs object
+# output: a Json String represents the RuntimeArgs object
 sub argsToJsonString {
 	my @list = @_;
 	my $args = new GetDeploy::ExecutableDeployItem::RuntimeArgs();
