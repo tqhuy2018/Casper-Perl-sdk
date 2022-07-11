@@ -246,41 +246,92 @@ $clParsed->setInnerParse1($clParsedInner1);
 To declare for a List of 3 CLParse U32 numbers 
 
 ```Perl
-val clParse = CLParsed()
-val u321 = CLParsed()
-u321.itsCLType.itsTypeStr = ConstValues.CLTYPE_U32
-u321.itsValueInStr = "1"
-val u322 = CLParsed()
-u322.itsCLType.itsTypeStr = ConstValues.CLTYPE_U32
-u322.itsValueInStr = "2"
-val u323 = CLParsed()
-u323.itsCLType.itsTypeStr = ConstValues.CLTYPE_U32
-u323.itsValueInStr = "3"
-clParse.itsArrayValue.add(u321)
-clParse.itsArrayValue.add(u322)
-clParse.itsArrayValue.add(u323)
+# List of 3 CLParse U32 number assertion
+my $clParsed = new CLValue::CLParse();
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_LIST);
+$clParsed->setItsCLType($clType);
+# First U32 
+my $clParseList1 = new CLValue::CLParse();
+my $clTypeList1 = new CLValue::CLType();
+$clTypeList1->setItsTypeStr($Common::ConstValues::CLTYPE_U32);
+$clParseList1->setItsCLType($clTypeList1);
+$clParseList1->setItsValueStr("1");
+# Second U32
+my $clParseList2 = new CLValue::CLParse();
+$clParseList2->setItsCLType($clTypeList1);
+$clParseList2->setItsValueStr("2");
+# Third U32 
+my $clParseList3 = new CLValue::CLParse();
+$clParseList3->setItsCLType($clTypeList1);
+$clParseList3->setItsValueStr("3");
+my @listValue = ($clParseList1,$clParseList2,$clParseList3);
+$clParsed->setItsValueList(@listValue);
 ```
 
-To declare a Map(String,String) base on the deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a37Bc9386020609aa1CabaD895c3E2E104d877B936C6Ffa2302268 refer to session section of the deploy, args item number 2, here is the CLValue detail
+To declare a Map(String,String) base on the deploy at this address: https://testnet.cspr.live/deploy/430df377ae04726de907f115bb06c52e40f6cd716b4b475a10e4cd9226d1317e  refer to session section of the deploy, args item number 86, here is the CLValue detail
 
-<img width="831" alt="Screen Shot 2022-06-29 at 11 32 49" src="https://user-images.githubusercontent.com/94465107/176352315-502d6230-6a33-4165-a049-31a5671f890f.png">
+<img width="1286" alt="Screen Shot 2022-07-11 at 12 00 36" src="https://user-images.githubusercontent.com/94465107/178192087-93de92a8-66f9-44d0-b1e0-660bf735eca0.png">
+
 
 and here is the declaration in Perl for such CLParsed in the CLValue
 
 ```Perl
-val mapParse = CLParsed()
-mapParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_MAP
-val mapKey1 = CLParsed()
-mapKey1.itsCLType.itsTypeStr = ConstValues.CLTYPE_STRING
-mapKey1.itsValueInStr = "token_uri"
-val mapValue1 = CLParsed()
-mapValue1.itsCLType.itsTypeStr = ConstValues.CLTYPE_STRING
-mapValue1.itsValueInStr = "https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk"
-mapParse.innerParsed1 = CLParsed()
-mapParse.innerParsed1.itsArrayValue.add(mapKey1)
-mapParse.innerParsed2 = CLParsed()
-mapParse.innerParsed2.itsArrayValue.add(mapValue1)
-clParse.itsArrayValue.add(mapParse)
+my $clParsedMap = new CLValue::CLParse();
+my $clTypeMap = new CLValue::CLType();
+$clTypeMap->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+$clParsedMap->setItsCLType($clTypeMap);
+# Key generation
+# Key CLType declaration
+my $clTypeMapKey = new CLValue::CLType();
+$clTypeMapKey->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+# First key
+my $clParseMapKey1 = new CLValue::CLParse();
+$clParseMapKey1->setItsCLType($clTypeMapKey);
+$clParseMapKey1->setItsValueStr("contract_package_hash");
+# Second key
+my $clParseMapKey2 = new CLValue::CLParse();
+$clParseMapKey2->setItsCLType($clTypeMapKey);
+$clParseMapKey2->setItsValueStr("event_type");
+# Third key
+my $clParseMapKey3 = new CLValue::CLParse();
+$clParseMapKey3->setItsCLType($clTypeMapKey);
+$clParseMapKey3->setItsValueStr("reserve0");
+# Fourth key
+my $clParseMapKey4 = new CLValue::CLParse();
+$clParseMapKey4->setItsCLType($clTypeMapKey);
+$clParseMapKey4->setItsValueStr("reserve1");
+# Map Key assignment
+my @listKey = ($clParseMapKey1,$clParseMapKey2,$clParseMapKey3,$clParseMapKey4);
+my $innerParseKey = new CLValue::CLParse();
+$innerParseKey->setItsValueList(@listKey);
+$clParsedMap->setInnerParse1($innerParseKey);
+# Value generation
+# Value CLType declaration
+my $clTypeMapValue = new CLValue::CLType();
+$clTypeMapValue->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+# First value
+my $clParseMapValue1 = new CLValue::CLParse();
+$clParseMapValue1->setItsCLType($clTypeMapValue);
+$clParseMapValue1->setItsValueStr("d32DE152c0bBFDcAFf5b2a6070Cd729Fc0F3eaCF300a6b5e2abAB035027C49bc");
+# Second value
+my $clParseMapValue2 = new CLValue::CLParse();
+$clParseMapValue2->setItsCLType($clTypeMapValue);
+$clParseMapValue2->setItsValueStr("sync");
+# Third value
+my $clParseMapValue3 = new CLValue::CLParse();
+$clParseMapValue3->setItsCLType($clTypeMapValue);
+$clParseMapValue3->setItsValueStr("412949147973569321536747");
+# Fourth value
+my $clParseMapValue4 = new CLValue::CLParse();
+$clParseMapValue4->setItsCLType($clTypeMapValue);
+$clParseMapValue4->setItsValueStr("991717147268569848142418");
+# Map Key assignment
+@listValue = ();
+@listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4);
+my $innerParseValue = new CLValue::CLParse();
+$innerParseValue->setItsValueList(@listValue);
+$clParsedMap->setInnerParse2($innerParseValue);	
 ```
 ### CLValue in detail
  
