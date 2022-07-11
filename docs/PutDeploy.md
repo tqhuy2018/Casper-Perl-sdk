@@ -199,7 +199,14 @@ Give it a name, for example "Ed25519PrivateKeyPerl01.pem". Copy the key to the f
 
 In Eclipse, Right click the folder "t/Crypto/Ed25519" and hit "Refresh", you will then see the new "Ed25519PrivateKeyPerl01.pem" file is there.
 
+Here is the file/folder structure before updated.
+
 <img width="1440" alt="Screen Shot 2022-07-11 at 18 20 55" src="https://user-images.githubusercontent.com/94465107/178253582-ad8cec64-d683-41f0-ab25-a0750d8871ba.png">
+
+And here is the file/folder structure after being updated, with the new "Ed25519PrivateKeyPerl01.pem" file appears.
+
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 28 41" src="https://user-images.githubusercontent.com/94465107/178254925-e11a2900-2e76-46d8-837a-3af83a17f78d.png">
+
 
 Open CSPR test net at this address: https://testnet.cspr.live/
 
@@ -209,11 +216,14 @@ And make sure that in Casper Signer the active key is the already Ed25519 create
 
 The newly account will be connect to the site of Casper test net, in this example the account is "01a70c9c157a1cd8dbe00d5b12bb90ee7113f3b0d74e007f65daf4ebd1ba8e4282"
 
-<img width="1440" alt="Screen Shot 2022-06-28 at 14 57 47" src="https://user-images.githubusercontent.com/94465107/176126619-c89c1169-bee7-4d60-b161-732315d127be.png">
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 26 28" src="https://user-images.githubusercontent.com/94465107/178255073-ab505b83-6780-4567-8b81-2f2464a0827c.png">
+
+
+And here is the Account detail, with no token at all.
 
 From Casper test net choose Tool->Faucet and request for a 1000 CSPR token for the newly created account.
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 32 48" src="https://user-images.githubusercontent.com/94465107/178255430-8533da34-fae1-4967-937e-1b5dbc6889bc.png">
 
-<img width="1440" alt="Screen Shot 2022-06-28 at 14 57 58" src="https://user-images.githubusercontent.com/94465107/176126705-6726e016-1c70-4e85-b6ad-ad45add94e33.png">
 
 <img width="1440" alt="Screen Shot 2022-06-28 at 14 59 12" src="https://user-images.githubusercontent.com/94465107/176126792-57cec2e5-d3ab-490a-919f-d384586229b9.png">
 
