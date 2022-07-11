@@ -103,42 +103,46 @@ Map,  Tuple2 will take 2  items:  _innerCLType1, _innerCLType2
 Tuple3 will take 3 items:  _innerCLType1,  _innerCLType2,  _innerCLType3
 
 
-These innerCLType variables are lateinit var, which means that they can be initialized or not, depends on the CLType. For example if the CLType is primitive (Bool, I32, I64, U8, U32 ...) , then the 3 variables: innerCLType1, innerCLType2, innerCLType3 is not used and not initialized.
+These innerCLType variables are lateinit var, which means that they can be initialized or not, depends on the CLType. For example if the CLType is primitive (Bool, I32, I64, U8, U32 ...) , then the 3 variables: _innerCLType1, _innerCLType2, _innerCLType3 is not used and not initialized.
 
-If the CLType is List, then the _innerCLType1_ is used in initialized, while _innerCLType2_ and _innerCLType3_ is not.
+If the CLType is List, then the _innerCLType1 is used in initialized, while _innerCLType2 and _innerCLType3 is not.
 
-If the CLType is Map, then the _innerCLType1_, _innerCLType2_ are in used and initialized, while _innerCLType3_ is not.
+If the CLType is Map, then the _innerCLType1, _innerCLType2 are in used and initialized, while _innerCLType3 is not.
 
-If the CLType is Tuple3, all the _innerCLType1_, _innerCLType2_, _innerCLType3_ are used.
+If the CLType is Tuple3, all the _innerCLType1, _innerCLType2, _innerCLType3 are used.
+
+The types in String format for CLType is defined in "ConstValues.pm" file under folder "Common". These types in String are used for identifying what the CLType is.
 
 #### Examples of declaring the CLType object for some types:
 
 Declaration for a CLType of type Bool:
 
  ```Perl
- val clType = CLType()
- clType.itsTypeStr = ConstValues.CLTYPE_BOOL
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_BOOL);
  ```
 
 Declaration for a CLType of type Option(U512):
 
  ```Perl
- val clType = CLType()
- clType.itsTypeStr = ConstValues.CLTYPE_OPTION
- clType.innerCLType1 = CLType()
- clType.innerCLType1.itsTypeStr = ConstValues.CLTYPE_U512
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_OPTION);
+my $innerType1  = new CLValue::CLType();
+$innerType1->setItsTypeStr($Common::ConstValues::CLTYPE_U512);
+$clType->setInnerCLType1($innerType1);
  ```
 
 
 Declaration for a CLType of type Map(String,String):
 
 ```Perl
-val clType = CLType()
-clType.itsTypeStr = ConstValues.CLTYPE_MAP
-clType.innerCLType1 = CLType()
-clType.innerCLType2 = CLType()
-clType.innerCLType1.itsTypeStr = ConstValues.CLTYPE_STRING
-clType.innerCLType2.itsTypeStr = ConstValues.CLTYPE_STRING
+my $clType = new CLValue::CLType();
+$clType->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+$innerType1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+$clType->setInnerCLType1($innerType1);
+my $innerType2  = new CLValue::CLType();
+$innerType2->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
+$clType->setInnerCLType2($innerType2);
 ```
 
 ### CLParsed in detail 
