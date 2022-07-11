@@ -1,4 +1,4 @@
-# Kotlin version of CLType primitives
+# Perl version of CLType primitives
 
 ## CLType primitives
 
@@ -6,11 +6,11 @@ The CLType is an enum variables, defined at this address: (for Rust version)
 
 https://docs.rs/casper-types/1.4.6/casper_types/enum.CLType.html
 
-In Kotlin, the CLType when put into usage is part of a CLValue object.
+In Perl, the CLType when put into usage is part of a CLValue object.
 
 To more detail, a CLValue holds the information like this:
 
- ```Kotlin
+ ```Perl
  {
 "bytes":"0400e1f505"
 "parsed":"100000000"
@@ -21,7 +21,7 @@ To more detail, a CLValue holds the information like this:
 or
 
 
- ```Kotlin
+ ```Perl
  {
 "bytes":"010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b"
 "parsed":[
@@ -52,7 +52,7 @@ In the examples above,
  - The cl_type is: List(Map(String,String))
  - The parsed is:
 
- ```Kotlin
+ ```Perl
  "[
           [
              {
@@ -68,11 +68,11 @@ In the examples above,
 ### CLType in detail
 
 
-In Kotlin SDK the "cl_type" is wrapped in CLType class, which is declared in  "CLType.kt" file under package "com.casper.sdk.clvalue". The CLType class stores all information need when you want to declare a CLType, and also this class provides functions to turn JSON object to CLType object and supporter function such as function to check if the CLType hold pure value of CLType with recursive CLType inside its body.
+In Perl SDK the "cl_type" is wrapped in CLType class, which is declared in  "CLType.kt" file under package "com.casper.sdk.clvalue". The CLType class stores all information need when you want to declare a CLType, and also this class provides functions to turn JSON object to CLType object and supporter function such as function to check if the CLType hold pure value of CLType with recursive CLType inside its body.
 
 The main properties of the CLType object are:
 
- ```Kotlin
+ ```Perl
   var itsTypeStr: String = ""
   lateinit var innerCLType1: CLType
   lateinit var innerCLType2: CLType
@@ -108,14 +108,14 @@ If the CLType is Tuple3, all the innerCLType1, innerCLType2, innerCLType3 are us
 
 Declaration for a CLType of type Bool:
 
- ```Kotlin
+ ```Perl
  val clType = CLType()
  clType.itsTypeStr = ConstValues.CLTYPE_BOOL
  ```
 
 Declaration for a CLType of type Option(U512):
 
- ```Kotlin
+ ```Perl
  val clType = CLType()
  clType.itsTypeStr = ConstValues.CLTYPE_OPTION
  clType.innerCLType1 = CLType()
@@ -125,7 +125,7 @@ Declaration for a CLType of type Option(U512):
 
 Declaration for a CLType of type Map(String,String):
 
-```Kotlin
+```Perl
 val clType = CLType()
 clType.itsTypeStr = ConstValues.CLTYPE_MAP
 clType.innerCLType1 = CLType()
@@ -140,7 +140,7 @@ The "parsed" is wrapped in CLParsed class, which is declared in  "CLParsed.kt" f
 
 The main properties of the CLParsed object are:
 
-```Kotlin
+```Perl
 var itsValueInStr: String = ""
 var itsCLType: CLType = CLType()
 lateinit var innerParsed1: CLParsed
@@ -165,7 +165,7 @@ The properties "innerParsed1", "innerParsed2" and "innerParsed3" are to hold the
 
 To declare for a CLParsed of type Bool with value "true":
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_BOOL
 clParse.itsValueInStr = "true"
@@ -173,7 +173,7 @@ clParse.itsValueInStr = "true"
 
 To declare for a CLParsed of type U8 with value "12":
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_U8
 clParse.itsValueInStr = "12"
@@ -181,7 +181,7 @@ clParse.itsValueInStr = "12"
 
 To declare for a CLParsed of type U512 with value "999888666555444999887988887777666655556666777888999666999":
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_U512
 clParse.itsValueInStr = "999888666555444999887988887777666655556666777888999666999"
@@ -189,7 +189,7 @@ clParse.itsValueInStr = "9998886665554449998879888877776666555566667778889996669
 
 To declare for a CLParsed of type Option(NULL)
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 clParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_OPTION
 clParse.itsValueInStr = ConstValues.VALUE_NULL
@@ -197,7 +197,7 @@ clParse.itsValueInStr = ConstValues.VALUE_NULL
 
 To declare for a CLParsed of type Option(U32(10))
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 clParse.innerParsed1 = CLParsed()
 clParse.itsValueInStr = ""
@@ -208,7 +208,7 @@ clParse.innerParsed1.itsValueInStr = "10"
 
 To declare for a List of 3 CLParse U32 numbers 
 
-```Kotlin
+```Perl
 val clParse = CLParsed()
 val u321 = CLParsed()
 u321.itsCLType.itsTypeStr = ConstValues.CLTYPE_U32
@@ -228,9 +228,9 @@ To declare a Map(String,String) base on the deploy at this address: https://test
 
 <img width="831" alt="Screen Shot 2022-06-29 at 11 32 49" src="https://user-images.githubusercontent.com/94465107/176352315-502d6230-6a33-4165-a049-31a5671f890f.png">
 
-and here is the declaration in Kotlin for such CLParsed in the CLValue
+and here is the declaration in Perl for such CLParsed in the CLValue
 
-```Kotlin
+```Perl
 val mapParse = CLParsed()
 mapParse.itsCLType.itsTypeStr = ConstValues.CLTYPE_MAP
 val mapKey1 = CLParsed()
@@ -249,7 +249,7 @@ clParse.itsArrayValue.add(mapParse)
  
 To store information of one CLValue object, which include the following information: {bytes,parsed,cl_type}, this SDK uses a class with name CLValue, which is declared in "CLValue.kt" file under package "com.casper.sdk.clvalue", with main information like this:
  
-```Kotlin
+```Perl
 var itsBytes: String = ""
 var itsParse: CLParsed = CLParsed()
 var itsCLType: CLType = CLType()
@@ -257,13 +257,13 @@ var itsCLType: CLType = CLType()
 
 This class also provide a supporter function to parse a JSON object to CLValue object.
 
-When get information for a deploy, for example, the args of the payment/session or items in the execution_results can hold CLValue values, and they will be turned to CLValue object in Kotlin to support the work of storing information and doing the serialization.
+When get information for a deploy, for example, the args of the payment/session or items in the execution_results can hold CLValue values, and they will be turned to CLValue object in Perl to support the work of storing information and doing the serialization.
 
 ### Example of declaring CLValue object
 
 Take this CLValue in JSON
 
- ```Kotlin
+ ```Perl
  {
 "bytes":"0400e1f505"
 "parsed":"100000000"
@@ -272,7 +272,7 @@ Take this CLValue in JSON
 ```
 
 This JSON will turn to a CLValue like this:
- ```Kotlin
+ ```Perl
 val oneCLValue = CLValue()
 val oneCLType = CLType()
 oneCLType.itsTypeStr = ConstValues.CLTYPE_U512
@@ -286,7 +286,7 @@ oneCLValue.itsBytes = "0400e1f505"
 
 Take this CLValue in JSON:
 
- ```Kotlin
+ ```Perl
  {
 "bytes":"010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b"
 "parsed":[
@@ -312,7 +312,7 @@ Base on the deploy at this address: https://testnet.cspr.live/deploy/AaB4aa0C14a
 
 This JSON will turn to a CLValue like this:
   
-```Kotlin 
+```Perl 
 val oneCLValue = CLValue()
 oneCLValue.itsBytes = "010000000100000009000000746f6b656e5f7572695000000068747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f516d5a4e7a337a564e7956333833666e315a6762726f78434c5378566e78376a727134796a4779464a6f5a35566b"
 //assignment for cl_type
