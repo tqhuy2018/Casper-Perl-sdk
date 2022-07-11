@@ -1,6 +1,6 @@
-### XII. Put Deploy
+# Put Deploy RPC method call
 
-#### 1. Method declaration
+## 1. Method declaration
 
 The call for account_put_deploy RPC method is done through this function in "PutDeployRPC.pm" file under folder "PutDeploy":
 
@@ -13,7 +13,7 @@ From this the GetAuctionInfoResult is retrieved through this function in "GetAuc
 sub fromJsonToGetItemResult
 ```
 
-#### 2. Input & Output: 
+## 2. Input & Output: 
 
 * For this function in file "PutDeployRPC.pm": 
 
@@ -118,7 +118,7 @@ And then if the errorCode does exist, an Error message is returned
 ```Perl
 return $Common::ConstValues::ERROR_PUT_DEPLOY;
 ```
-#### Put deploy test 
+## Put deploy test 
 
 There are positive and negative test cases for putting deploy of Ed25519 account and Secp256k1 account.
 
