@@ -182,7 +182,7 @@ The above manual is for exising account in the test net. If you are familiar wit
  
 Here is a brief description of the steps to do:
 
-### Test account_put_deploy RPC method call with your own account 
+## Test account_put_deploy RPC method call with your own account 
 
 Install Casper Signer. Create 1 account of type Ed25519 (for example, Secp256k1 is quite the same). 
 
