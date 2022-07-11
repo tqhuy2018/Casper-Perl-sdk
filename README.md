@@ -86,12 +86,6 @@ If you want to test for file "GetDeployRPCTest.t" run this command:
 perl GetDeployRPCTest.t
 ```
 
-To test for all file, enter the root folder of the SDK and run this command:
-
-```Perl
-make test
-```
-
 ### Run the module of the SDK
 
 The SDK provide functionality in form of module. To use the module in other Perl project, simply copy all file/folders under the "lib" folder of the SDK and copy it under the "lib" folder of other project.
@@ -143,6 +137,46 @@ perl test.pl
 Or in Eclipse double click the file "test.pl" and then hit "Run->Run" to run the file.
 
 You will see the state root hash value printed in the Terminal or Console Window of Eclipse.
+
+# Information for Secp256k1, Ed25519 Key Wrapper and Put Deploy
+
+## Key wrapper specification:
+
+The Key wrapper do the following work:(for both Secp256k1 and Ed25519):
+
+- (PrivateKey,PublicKey) generation
+
+- Sign message 
+
+- Verify message
+
+- Read PrivateKey/PublicKey from PEM file
+
+- Write PrivateKey/PublicKey to PEM file
+
+The key wrapper is used in account_put_deploy RPC method to generate approvals signature based on deploy hash.
+
+The Blake2b256 hash and Crypto task for Ed25519 and Secp256k1 use Crypt and CryptX at this address:
+
+https://metacpan.org/pod/Crypt::Digest::BLAKE2b_256 for blake2b256 hash function
+
+https://metacpan.org/pod/Crypt::PK::ECC for Secp256k1 Crypto task
+
+https://metacpan.org/pod/Crypt::PK::Ed25519 for Ed25519 Crypto task
+
+The Blake2b256 hash is implemented in file "Blake2b256Helper.pm" under folder "CryptoHandle"
+
+The Ed25519 crypto task is implemented in file "Ed25519Handle.pm" under folder "CryptoHandle"
+
+The Secp256k1 crypto task is implemented in file "Secp256k1Handle.pm" under folder "CryptoHandle"
+
+# Perl version of CLType primitives, Casper Domain Specific Objects and Serialization
+ 
+ ## CLType primitives
+ 
+ A detail information on CLType primitive can be read here 
+ 
+ [Perl SDK CLType primitive](./Docs/CLValue.md)
 
 # Documentation for classes and methods
 
