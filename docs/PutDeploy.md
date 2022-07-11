@@ -244,11 +244,12 @@ In file "PutDeployTest.t" under folder "t" of the test folder, find for testPutD
 <img width="1440" alt="Screen Shot 2022-07-11 at 18 59 42" src="https://user-images.githubusercontent.com/94465107/178259761-06847272-a6dc-4051-bafc-de5eb1b93667.png">
 
 
-Now you can test the new account by openning the file "PutDeployRPCTest" and right click any where in the file, choose "Run'PutDeployRPCTest'"
+Now you can test the new account by openning the file "PutDeployTest.t" and hit the Run button
 
-<img width="1440" alt="Screen Shot 2022-06-28 at 15 16 05" src="https://user-images.githubusercontent.com/94465107/176130197-3e3ad286-6ebd-451e-8da4-641245505033.png">
+<img width="1440" alt="Screen Shot 2022-07-11 at 18 53 24" src="https://user-images.githubusercontent.com/94465107/178262391-90c00190-5df8-4a43-99fe-3ebaa6d99e99.png">
 
-There will be 2 line informing the deploy has just been successfully posted in the log panel, like this "Put deploy successfull with deploy hash:8b9848dd5cf1cdba777a560cc08a2fb7ea87ae9f87ee32570bb9baf115cb4870".
+
+There will be 2 lines informing the deploys have just been successfully posted in the log panel (1 deploy for Ed25519 account, 1 deploy for Secp256k1 account), like this "Put deploy successfull with deploy hash:8b9848dd5cf1cdba777a560cc08a2fb7ea87ae9f87ee32570bb9baf115cb4870".
 Copy the second deploy hash, which is for Ed25519 account.
 
 <img width="1440" alt="Screen Shot 2022-07-11 at 19 02 50" src="https://user-images.githubusercontent.com/94465107/178260483-8cbfe093-e0ea-48b6-a1e0-17a0228a8ee4.png">
