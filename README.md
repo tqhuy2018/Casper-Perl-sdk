@@ -203,3 +203,5 @@ The Secp256k1 crypto task is implemented in file "Secp256k1Handle.pm" under fold
   -  [Get Balance](./docs/Help.md#x-get-balance)
   
   -  [Get Auction Info](./docs/Help.md#xi-get-auction-info)
+  
+  -  [Put Deploy](./docs/PutDeploy.md)
