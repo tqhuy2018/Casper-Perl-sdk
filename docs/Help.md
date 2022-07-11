@@ -875,3 +875,45 @@ sub fromDeployToJsonString {
     return $deployJsonStr;
 }
 ```
+Output: If the deploy is sent successfully to the system, then the result will be a Json string back like this
+```Perl
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "api_version": "1.4.6",
+        "deploy_hash": "65c6ccdc5aacc9dcd073ca79358bf0b5115061e8d561b3e6f461a34a6c5858f0"
+    }
+}
+```
+The PutDeployResult object is then retrieved by parsing that Json string. The work is done in this code in function "putDeploy" in file "PutDeployRPC.pm":
+
+```Perl
+my $putDeployResult = new PutDeploy::PutDeployResult();
+$putDeployResult = PutDeploy::PutDeployResult->fromJsonObjectToPutDeployResult($decoded->{'result'});
+return $putDeployResult->getDeployHash();
+```
+
+If the deploy fails to send to the system (for some reasons, such as you send a deploy with time_stamp in the very old past, or send insufficient amount of token, then the result will be a Json string back somehow like this:
+```Perl
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+        "code": -32602,
+        "message": "Invalid params",
+        "data": null
+    }
+}
+```
+
+A line of code checking for this error 
+
+```Kotlin
+ my $errorCode = $decoded->{'error'}{'code'};
+```
+And then if the errorCode does exist, an Error message is returned
+```Kotlin
+return $Common::ConstValues::ERROR_PUT_DEPLOY;
+```
+
