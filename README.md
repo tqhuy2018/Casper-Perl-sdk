@@ -87,9 +87,26 @@ Click on the "..." Circle in the bottom and choose "Apply to enclosed items..."
 
 <img width="303" alt="Screen Shot 2022-07-12 at 10 51 04" src="https://user-images.githubusercontent.com/94465107/178405136-ffbf9206-86bf-4f63-9a4d-c4d6b2455bef.png">
 
+Click "OK" for the confirmation Window.
+
+<img width="308" alt="Screen Shot 2022-07-12 at 10 59 45" src="https://user-images.githubusercontent.com/94465107/178405877-f874b1ba-b681-4f57-b986-921cdc47fc44.png">
+
+
 Now the "admin" account can have the right to Read&Write all folder/subfolder of the Perl/5.30 folder (5.30 is the Perl version in this manual).
 
+Do it the same for the rest of the user, to make sure that when you install the Libraries, you won't face the problem of Read/Write deny problem. If the "admin" account user is not in the list, add this account by clicking the "+" button, then assign the permission "Read/Write" to this "admin" account.
+When all the account Privilege is set to "Read & Write", you can click the Lock icon again to lock the Permission setting section. Then close the information window for the folder. The Permission setting is now done.
 
+<img width="305" alt="Screen Shot 2022-07-12 at 11 00 57" src="https://user-images.githubusercontent.com/94465107/178406417-e9a84c23-233d-4d11-9815-451efc4db052.png">
+
+You can now run the command line to install the outside libraries.
+
+Open Terminal and type these commands:
+
+```Perl
+perl -MCPAN -e shell
+install CryptX
+```
 
 ### Run and test from IDE
 
@@ -145,7 +162,7 @@ From the Terminal(Mac OS) or Command Prompt (Windows) enter the root folder of t
 Run this command to test for each test file in the "t" folder.
 
 ```Perl
-perl "test file".
+perl "test file"
 ```
 
 For example if you want to test for file "GetAuction.t" which contain all test for the "state_get_auction_info" RPC call, run this command:
