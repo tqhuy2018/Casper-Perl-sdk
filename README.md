@@ -178,7 +178,7 @@ If you want to test for file "GetDeployRPCTest.t" run this command:
 perl GetDeployRPCTest.t
 ```
 
-### Run the module of the SDK
+# Usage: Run the module of the SDK
 
 The SDK provide functionality in form of module. To use the module in other Perl project, simply copy all file/folders under the "lib" folder of the SDK and copy it under the "lib" folder of other project.
 
