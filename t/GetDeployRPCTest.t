@@ -701,17 +701,19 @@ sub getDeploy5 {
 	}
 	#Approvals assertion
 	my @listApproval = $deploy->getApprovals();
+	my $totalApproval = @listApproval;
+	ok($totalApproval == 1, "Test total approval = 1, Passed");
 	$counter1 = 0;
 	foreach(@listApproval) {
 		if($counter1 == 0) {
-			my @oneApproval = @{$_};
-			my $totalApproval = @oneApproval;
-			ok($totalApproval == 1, "Test total approval = 1, Passed");
-			foreach(@oneApproval) {
+			#my @oneApproval = @{$_};
+			#my $totalApproval = @oneApproval;
+			#ok($totalApproval == 1, "Test total approval = 1, Passed");
+			#foreach(@oneApproval) {
 				my $oA = $_;
 				ok($oA->getSigner() eq "014caf1ce908f9ef3d427dceac17e5c47950becf15d1def0810c235e0d58a9efad", "Test approval signer - Passed");
 				ok($oA->getSignature() eq "011f547186d73f9b47de744e2d83294863667153bbc9e17d2d93b81c2a534baea889ccea44ae75c5078ed96930accd795982ed038781f8122c07dafde418117a00", "Test approval signature - Passed");
-			}
+			#}
 		}
 		$counter1 ++;
 	}
@@ -800,17 +802,14 @@ sub getDeploy6 {
 	}
 	#Approvals assertion
 	my @listApproval = $deploy->getApprovals();
+	my $totalApproval = @listApproval;
+	ok($totalApproval == 1, "Test total approval = 1, Passed");
 	$counter1 = 0;
 	foreach(@listApproval) {
 		if($counter1 == 0) {
-			my @oneApproval = @{$_};
-			my $totalApproval = @oneApproval;
-			ok($totalApproval == 1, "Test total approval = 1, Passed");
-			foreach(@oneApproval) {
-				my $oA = $_;
-				ok($oA->getSigner() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b", "Test approval signer - Passed");
-				ok($oA->getSignature() eq "01e3cf17faf54d7145d64c4cb446f75d82ad673b2d76105116b621f7dc853eb6e169163ec9a360505484ca176b333a3958c02d3b47300a6fded81412736196fa02", "Test approval signature - Passed");
-			}
+			my $oA = $_;
+			ok($oA->getSigner() eq "013112068231a00e12e79b477888ae1f3b2dca40d6e2de17de4174534bc3a5143b", "Test approval signer - Passed");
+			ok($oA->getSignature() eq "01e3cf17faf54d7145d64c4cb446f75d82ad673b2d76105116b621f7dc853eb6e169163ec9a360505484ca176b333a3958c02d3b47300a6fded81412736196fa02", "Test approval signature - Passed");
 		}
 		$counter1 ++;
 	}
@@ -1015,17 +1014,14 @@ sub getDeploy7 {
 	}
 	#Approvals assertion
 	my @listApproval = $deploy->getApprovals();
+	my $totalApproval = @listApproval;
+	ok($totalApproval == 1, "Test total approval = 1, Passed");
 	$counter1 = 0;
 	foreach(@listApproval) {
 		if($counter1 == 0) {
-			my @oneApproval = @{$_};
-			my $totalApproval = @oneApproval;
-			ok($totalApproval == 1, "Test total approval = 1, Passed");
-			foreach(@oneApproval) {
-				my $oA = $_;
-				ok($oA->getSigner() eq "02035f1c6d78e727edc1901080b812dbee429ea8365cbfbc0ed6a4238673646630cf", "Test approval signer - Passed");
-				ok($oA->getSignature() eq "0247cbc2d683782079b17fdf26d207b47bc549c676d0cd4532b7af19ab601e8fb8031c0f5fd10735a96c5d939c55b4ce5ba301d02cb651b9e4213c81d98a60997e", "Test approval signature - Passed");
-			}
+			my $oA = $_;
+			ok($oA->getSigner() eq "02035f1c6d78e727edc1901080b812dbee429ea8365cbfbc0ed6a4238673646630cf", "Test approval signer - Passed");
+			ok($oA->getSignature() eq "0247cbc2d683782079b17fdf26d207b47bc549c676d0cd4532b7af19ab601e8fb8031c0f5fd10735a96c5d939c55b4ce5ba301d02cb651b9e4213c81d98a60997e", "Test approval signature - Passed");
 		}
 		$counter1 ++;
 	}
@@ -1106,17 +1102,14 @@ sub getDeploy8 {
 	}
 	#Approvals assertion
 	my @listApproval = $deploy->getApprovals();
+	my $totalApproval = @listApproval;
+	ok($totalApproval == 1, "Test total approval = 1, Passed");
 	$counter1 = 0;
 	foreach(@listApproval) {
 		if($counter1 == 0) {
-			my @oneApproval = @{$_};
-			my $totalApproval = @oneApproval;
-			ok($totalApproval == 1, "Test total approval = 1, Passed");
-			foreach(@oneApproval) {
-				my $oA = $_;
-				ok($oA->getSigner() eq "0203e15e061bbf79491df84130192a711e541ce078b1c7deb46bf42194cc1cc7900f", "Test approval signer - Passed");
-				ok($oA->getSignature() eq "0215fe5e8fc7f5a63ad08bbe84409cfc67ca2360c01db99c9964ae023496f00157033d28dee9949b1ccd508fe22f741ab6c4a77921d735b2e026e5c52932a3b6e0", "Test approval signature - Passed");
-			}
+			my $oA = $_;
+			ok($oA->getSigner() eq "0203e15e061bbf79491df84130192a711e541ce078b1c7deb46bf42194cc1cc7900f", "Test approval signer - Passed");
+			ok($oA->getSignature() eq "0215fe5e8fc7f5a63ad08bbe84409cfc67ca2360c01db99c9964ae023496f00157033d28dee9949b1ccd508fe22f741ab6c4a77921d735b2e026e5c52932a3b6e0", "Test approval signature - Passed");
 		}
 		$counter1 ++;
 	}
