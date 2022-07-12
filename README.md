@@ -180,6 +180,8 @@ perl GetDeployRPCTest.t
 
 # Usage: Run the module of the SDK
 
+A sample project can be found at this address: https://github.com/hienbui9999/SampleCasperSDKCall_Perl
+
 The SDK provide functionality in form of module. To use the module in other Perl project, simply copy all file/folders under the "lib" folder of the SDK and copy it under the "lib" folder of other project.
 
 After that, you can call the function directly within the "lib" folder of project or create other file outside of the "lib" folder, for example in the root directory of the project, then call the class/function of the Casper SDK in the "lib" folder.
@@ -229,6 +231,8 @@ perl test.pl
 Or in Eclipse double click the file "test.pl" and then hit "Run->Run" to run the file.
 
 You will see the state root hash value printed in the Terminal or Console Window of Eclipse.
+
+Full code for a sample project can be found at this address: https://github.com/hienbui9999/SampleCasperSDKCall_Perl
 
 # Information for Secp256k1, Ed25519 Key Wrapper and Put Deploy
 
