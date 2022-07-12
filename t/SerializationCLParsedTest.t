@@ -18,7 +18,6 @@ sub testCLParsedSerialization {
 	$clType->setItsTypeStr($Common::ConstValues::CLTYPE_BOOL);
 	$clParsed->setItsCLType($clType);
 	
-	
 	# CLParse Bool assertion
 	
 	$clParsed->setItsValueStr("true");
