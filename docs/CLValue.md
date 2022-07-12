@@ -429,7 +429,7 @@ my $clParseMapValue1 = new CLValue::CLParse();
 $clParseMapValue1->setItsCLType($clTypeMapValue);
 $clParseMapValue1->setItsValueStr("https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk");
 # Map Key assignment
-@listValue = ();
+my @listValue = ();
 @listValue = ($clParseMapValue1);
 my $innerParseValue = new CLValue::CLParse();
 $innerParseValue->setItsValueList(@listValue);
