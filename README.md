@@ -11,6 +11,13 @@ SDK to streamline the 3rd party Perl client integration processes. Such 3rd part
 The SDK use Perl 5.30.2. To run the SDK you need to have Perl 5.8.3 or above installed in your system.
 
 ## Run and test
+
+You can run and test the SDK from command line interface or other IDE such as Eclipse.
+
+To run and test the SDK you will need to install Perl and some Perl libraries.
+
+### Install Perl
+
 To run Perl on specific Operating System, please refer to the Perl language main site for how to set up on each Operating System at this address: https://www.perl.org/get.html
 
 The SDK can be built and tested in different IDEs and from command line.
@@ -18,8 +25,62 @@ The SDK can be built and tested in different IDEs and from command line.
 For Windows user, for fast and easy installation and usage of the command line for Perl, please install "Strawberry Perl" - As the document at the Perl main page:
 
 A 100% Open Source Perl for Windows that is exactly the same as Perl everywhere else; this includes using modules from CPAN, without the need for binary packages. 
- 
+
+### Install libraries for Ed25519, Secp256k1, Blake2b256 
+
+The SDK uses outside libraries for doing Ed25519, Secp256k1 Crypto and Blake2b256 Hash task from the following address:
+
+Blake2b256: https://metacpan.org/pod/Crypt::Digest::BLAKE2b_256
+
+Ed25519: https://metacpan.org/pod/Crypt::PK::Ed25519
+
+Secp256k1: https://metacpan.org/pod/Crypt::PK::ECC
+
+You need to install all the libraries before you can run and test the Casper Perl SDK.
+
+For Windows users, the libraries can be installed following these steps:
+
+- Open Command Prompt
+- Run this command "perl -MCPAN -e shell"
+- Then run this command "install CryptX"
+
+For Mac users, there are several steps need to be done before you can run these command above.
+
+First of all, before installing the libraries, you have to assign the read/write permission for the Perl folder. In general the Perl setting folder is in this path "/Library/Perl/..."
+
+Open "Terminal" and run this command "open /Library/Perl"
+
+You can see the folder for Perl, there can be sereral folders for some Perl version like this:
+
+<img width="1179" alt="Screen Shot 2022-07-12 at 10 16 14" src="https://user-images.githubusercontent.com/94465107/178401243-154ffbe2-89f5-463d-a621-f7ae36eeec71.png">
+
+
+Right click on the Perl latest version (or the version you are working on - by default it will be the latest) then choose "Get Info".
+
+<img width="1250" alt="Screen Shot 2022-07-12 at 10 16 57" src="https://user-images.githubusercontent.com/94465107/178401290-f520e1eb-e285-47d9-be5b-5d5a08ac070a.png">
+
+The detail information of the Perl folder is shown. Take attention to the "Sharing & Permission" region. There can be some accounts with "Read only" permission. You have to give the account "Read & Write" permission.
+
+<img width="594" alt="Screen Shot 2022-07-12 at 10 21 54" src="https://user-images.githubusercontent.com/94465107/178402232-c5e52d71-25cd-4629-abc1-51f439d60726.png">
+
+Click on the Lock at the bottom to begin the Permission assignment.
+
+<img width="1057" alt="Screen Shot 2022-07-12 at 10 31 09" src="https://user-images.githubusercontent.com/94465107/178402804-af2e5791-976b-411b-b5ac-e4d5154888c5.png">
+
+A window appears like this, enter your Administrator user name and password, then click "OK"
+
+<img width="1252" alt="Screen Shot 2022-07-12 at 10 33 40" src="https://user-images.githubusercontent.com/94465107/178403424-7f7e8178-33e7-4ee9-b51d-d5d054d44212.png">
+
+You will see the Lock is now in Open mode, click on each "Privilege" row to set the account Right.
+
+<img width="309" alt="Screen Shot 2022-07-12 at 10 39 37" src="https://user-images.githubusercontent.com/94465107/178403852-3035971e-8957-4220-a5b0-929aeb25d634.png">
+
+
+
+
+
 ### Run and test from IDE
+
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
 In this document, we focus on how to implement the SDK in Eclipse as IDE, with EPIC add on installed.
 First you need to install Eclipse from this address:
