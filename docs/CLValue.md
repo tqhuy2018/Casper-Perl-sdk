@@ -138,6 +138,7 @@ Declaration for a CLType of type Map(String,String):
 ```Perl
 my $clType = new CLValue::CLType();
 $clType->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+my $innerType1 = new CLValue::CLType();
 $innerType1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
 $clType->setInnerCLType1($innerType1);
 my $innerType2  = new CLValue::CLType();
@@ -274,7 +275,7 @@ To declare a Map(String,String) base on the deploy at this address: https://test
 <img width="1286" alt="Screen Shot 2022-07-11 at 12 00 36" src="https://user-images.githubusercontent.com/94465107/178192087-93de92a8-66f9-44d0-b1e0-660bf735eca0.png">
 
 
-and here is the declaration in Perl for such CLParsed in the CLValue
+and here is the declaration in Perl for such CLParsed in the CLValue:
 
 ```Perl
 my $clParsedMap = new CLValue::CLParse();
@@ -327,7 +328,7 @@ my $clParseMapValue4 = new CLValue::CLParse();
 $clParseMapValue4->setItsCLType($clTypeMapValue);
 $clParseMapValue4->setItsValueStr("991717147268569848142418");
 # Map Key assignment
-@listValue = ();
+my @listValue = ();
 @listValue = ($clParseMapValue1,$clParseMapValue2,$clParseMapValue3,$clParseMapValue4);
 my $innerParseValue = new CLValue::CLParse();
 $innerParseValue->setItsValueList(@listValue);
@@ -429,7 +430,7 @@ my $clParseMapValue1 = new CLValue::CLParse();
 $clParseMapValue1->setItsCLType($clTypeMapValue);
 $clParseMapValue1->setItsValueStr("https://gateway.pinata.cloud/ipfs/QmZNz3zVNyV383fn1ZgbroxCLSxVnx7jrq4yjGyFJoZ5Vk");
 # Map Key assignment
-@listValue = ();
+my @listValue = ();
 @listValue = ($clParseMapValue1);
 my $innerParseValue = new CLValue::CLParse();
 $innerParseValue->setItsValueList(@listValue);
