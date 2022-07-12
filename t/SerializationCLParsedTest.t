@@ -5,12 +5,10 @@ use warnings;
 use Test::Simple tests => 76;
 use FindBin qw( $RealBin );
 use lib "$RealBin/../lib";
-
 use Serialization::CLParseSerialization;
 use CLValue::CLType;
 use CLValue::CLParse;
 use Common::ConstValues;
-
 
 # Test 1: Call with block hash
 sub testCLParsedSerialization {
