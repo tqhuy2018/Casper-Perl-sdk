@@ -38,13 +38,17 @@ Secp256k1: https://metacpan.org/pod/Crypt::PK::ECC
 
 You need to install all the libraries before you can run and test the Casper Perl SDK.
 
-For Windows users, the libraries can be installed following these steps:
+#### For Windows users
+
+The libraries can be installed following these steps:
 
 - Open Command Prompt
 - Run this command "perl -MCPAN -e shell"
 - Then run this command "install CryptX"
 
-For Mac users, there are several steps need to be done before you can run these command above.
+#### For Mac users
+
+There are several steps need to be done before you can run these command above.
 
 First of all, before installing the libraries, you have to assign the read/write permission for the Perl folder. In general the Perl setting folder is in this path "/Library/Perl/..."
 
@@ -75,7 +79,15 @@ You will see the Lock is now in Open mode, click on each "Privilege" row to set 
 
 <img width="309" alt="Screen Shot 2022-07-12 at 10 39 37" src="https://user-images.githubusercontent.com/94465107/178403852-3035971e-8957-4220-a5b0-929aeb25d634.png">
 
+First set Permission for "admin" account. Click on the "Privilege" row for "admin" account, choose "Read & Write"
 
+<img width="309" alt="Screen Shot 2022-07-12 at 10 46 10" src="https://user-images.githubusercontent.com/94465107/178404822-a986d65b-5cf4-4a73-b209-b14fe315e361.png">
+
+Click on the "..." Circle in the bottom and choose "Apply to enclosed items..."
+
+<img width="303" alt="Screen Shot 2022-07-12 at 10 51 04" src="https://user-images.githubusercontent.com/94465107/178405136-ffbf9206-86bf-4f63-9a4d-c4d6b2455bef.png">
+
+Now the "admin" account can have the right to Read&Write all folder/subfolder of the Perl/5.30 folder (5.30 is the Perl version in this manual).
 
 
 
