@@ -138,6 +138,7 @@ Declaration for a CLType of type Map(String,String):
 ```Perl
 my $clType = new CLValue::CLType();
 $clType->setItsTypeStr($Common::ConstValues::CLTYPE_MAP);
+my $innerType1 = new CLValue::CLType();
 $innerType1->setItsTypeStr($Common::ConstValues::CLTYPE_STRING);
 $clType->setInnerCLType1($innerType1);
 my $innerType2  = new CLValue::CLType();
