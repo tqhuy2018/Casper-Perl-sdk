@@ -108,6 +108,8 @@ perl -MCPAN -e shell
 install CryptX
 ```
 
+You can now run the libraries for Blake2b256, Ed25519 and Secp256k1
+
 ### Run and test from IDE
 
 There are variety of IDE for Perl as described in this link: https://www.dunebook.com/best-perl-ide-and-editors/. 
