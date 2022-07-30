@@ -156,7 +156,9 @@ The test file for the SDK is in the "t" folder.
 To test for the RPC calls, expand the "t" folder. You will see a list of test file in that folder.
 To test for each file, just click on each file, for example to test for "GetAuctionTest.t" file, Double click on that file. Then in Eclispe hit "Run->Run". You will see the result of the test in the Console window, like this:
 <img width="960" alt="step7" src="https://user-images.githubusercontent.com/94465107/168452870-6e403562-2086-4476-b35b-a7d7aa869547.png">
+
 Follow the same procedure, click on each test file in the "t" folder to test for RPC call that you wish to do.
+
 If eclipse does not see the CryptX module, see the CryptX location by running this command in Terminal if it does not shown in @INC:
 
 ```Perl
