@@ -104,7 +104,7 @@ You can now run the command line to install the outside libraries.
 Open Terminal and type these commands:
 
 ```Perl
-perl -MCPAN -e shell
+sudo perl -MCPAN -e shell
 install CryptX
 ```
 
