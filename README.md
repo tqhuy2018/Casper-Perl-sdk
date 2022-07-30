@@ -162,7 +162,7 @@ If eclipse does not see the CryptX module, see the CryptX location by running th
 ```Perl
 perldoc -l CryptX 
 ```
-Then you can add it to your project in Eclipse.
+Then you can add it to the project in Eclipse.
 
 ### Run and test from command line
 Download the Source code from Github and put it in your local computer.
